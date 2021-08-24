@@ -578,34 +578,23 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QPushButton" name="emps">
-       <property name="minimumSize">
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
         <size>
-         <width>0</width>
-         <height>30</height>
+         <width>40</width>
+         <height>20</height>
         </size>
        </property>
-       <property name="font">
-        <font>
-         <family>Segoe Print</family>
-         <pointsize>11</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Employees</string>
-       </property>
-      </widget>
+      </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="vans">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
+      <widget class="QPushButton" name="create_btn">
        <property name="minimumSize">
         <size>
-         <width>0</width>
+         <width>170</width>
          <height>30</height>
         </size>
        </property>
@@ -618,28 +607,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
         </font>
        </property>
        <property name="text">
-        <string>vehicle</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="planning">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <family>Segoe Print</family>
-         <pointsize>11</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Planning</string>
+        <string>Create </string>
        </property>
       </widget>
      </item>

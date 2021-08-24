@@ -581,7 +581,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
       <widget class="QComboBox" name="groups">
        <property name="minimumSize">
         <size>
-         <width>217</width>
+         <width>171</width>
          <height>27</height>
         </size>
        </property>
@@ -593,13 +593,18 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
          <bold>true</bold>
         </font>
        </property>
+       <item>
+        <property name="text">
+         <string>All Groups</string>
+        </property>
+       </item>
       </widget>
      </item>
      <item>
       <widget class="QLineEdit" name="search">
        <property name="minimumSize">
         <size>
-         <width>0</width>
+         <width>246</width>
          <height>27</height>
         </size>
        </property>
@@ -627,6 +632,30 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
       </spacer>
      </item>
      <item>
+      <widget class="QPushButton" name="edit_btn">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>154</width>
+         <height>27</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe Print</family>
+         <pointsize>11</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Edit</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="add_btn">
        <property name="minimumSize">
         <size>
@@ -652,7 +681,17 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QTableWidget" name="tableWidget"/>
+      <widget class="QTableWidget" name="tableWidget">
+       <property name="selectionBehavior">
+        <enum>QAbstractItemView::SelectRows</enum>
+       </property>
+       <property name="textElideMode">
+        <enum>Qt::ElideMiddle</enum>
+       </property>
+       <attribute name="verticalHeaderVisible">
+        <bool>false</bool>
+       </attribute>
+      </widget>
      </item>
     </layout>
    </item>

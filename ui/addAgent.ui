@@ -53,7 +53,7 @@
       <number>30</number>
      </property>
      <item>
-      <widget class="QLineEdit" name="lineEdit_3">
+      <widget class="QLineEdit" name="Fname">
        <property name="font">
         <font>
          <family>Segoe Print</family>
@@ -70,7 +70,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit_2">
+      <widget class="QLineEdit" name="Lname">
        <property name="font">
         <font>
          <family>Segoe Print</family>
@@ -87,7 +87,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit">
+      <widget class="QLineEdit" name="CIN">
        <property name="font">
         <font>
          <family>Segoe Print</family>
@@ -99,12 +99,39 @@
         <set>Qt::AlignCenter</set>
        </property>
        <property name="placeholderText">
-        <string>Adress</string>
+        <string>CIN</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="comboBox"/>
+      <widget class="QLineEdit" name="ad">
+       <property name="font">
+        <font>
+         <family>Segoe Print</family>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+       <property name="placeholderText">
+        <string>Address</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="grps">
+       <property name="insertPolicy">
+        <enum>QComboBox::InsertAtTop</enum>
+       </property>
+       <property name="sizeAdjustPolicy">
+        <enum>QComboBox::AdjustToContents</enum>
+       </property>
+       <property name="frame">
+        <bool>true</bool>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
