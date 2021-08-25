@@ -18,7 +18,7 @@ def createTrips():
     else:
         tomorrow = datetime.date.today() + datetime.timedelta(days=1)
 
-
+    tomorrow = today #TODO Just for test
     print(tomorrow)
     cnx = con()
     cur = cnx.cursor()
@@ -35,7 +35,7 @@ def createTrips():
             data.append(f'0{i}')
         else:
             data.append(str(i))
-    print(data)
+    # print(data)
     trips = {}
     total = 0
     ids = []
@@ -48,7 +48,7 @@ def createTrips():
 
         cur.execute(query)
         result = cur.fetchall()
-        print(result)
+        # print(result)
 
         count = len(result)
 
@@ -60,12 +60,54 @@ def createTrips():
     maxForVan = 18
     for time, agents in trips.items():
         vansNeeded = 0
-        if len(agents) > maxForVan:
-            vansNeeded = 2
-        else:
-            vansNeeded = 1
+        if agents:
+            if len(agents) > maxForVan:
+                vansNeeded = 2
+            else:
+                vansNeeded = 1
 
-        for i in range(vansNeeded):
+            if vansNeeded == 1:
+                cur.execute(f''' select count(id) from trips where datetime like "{tomorrow} {time}:00:00" and van = 1''')
+                if not cur.fetchone()[0]:
+                    cur.execute(f'''insert into trips(van, driver, datetime) values (1, 1, "{tomorrow} {time}:00:00");''')
+                    cnx.commit()
+                    for agent in agents:
+                        cur.execute(f'''select id from trips where datetime like "{tomorrow} {time}:00:00"''')
+                        cur.execute(f'''insert into trips_history (trip, agent, presence) values ({int(cur.fetchone()[0])}, {agent}, 0)''')
+                        cnx.commit()
+            else:
+                grp1 = [i for i in agents[:len(agents)//2]]
+                grp2 = [i for i in agents[len(agents)//2:]]
+                cur.execute(f'''select count(id) from trips where datetime like "{tomorrow} {time}:00:00" and driver = 1''')
+                if not cur.fetchone()[0]:
+                    cur.execute(f'''insert into trips(van, driver, datetime) values (1, 1, "{tomorrow} {time}:00:00");''')
+
+                cur.execute(f'''select id from trips where datetime like "{tomorrow} {time}:00:00"''')
+
+                trip1, trip2 = [int(i[0]) for i in cur.fetchall()]
+                for agent in grp1:
+                    cur.execute(f'''select count(id) from trips_history where trip = {trip1} and agent = {agent}''')
+                    if not cur.fetchone()[0]:
+                        cur.execute(f'''insert into trips_history (trip, agent, presence) values ({trip1}, {agent}, 0)''')
+                        cnx.commit()
+
+
+                cur.execute(f'''select count(id) from trips where datetime like "{tomorrow} {time}:00:00" and driver = 1''')
+                if not cur.fetchone()[0]:
+                    cur.execute(f'''insert into trips(van, driver, datetime) values (2, 2, "{tomorrow} {time}:00:00");''')
+                cnx.commit()
+                for agent in grp2:
+                    cur.execute(f'''select count(id) from trips_history where trip = {trip2} and agent = {agent}''')
+                    if not cur.fetchone()[0]:
+                        cur.execute(f'''insert into trips_history (trip, agent, presence) values ({trip2}, {agent}, 0)''')
+                        cnx.commit()
+    cnx.close()
+
+
+
+
+
+
 
 
 

@@ -49,6 +49,7 @@ def preparingDB():
 
 preparingDB()
 
+today = datetime.datetime.today().strftime('%Y-%m-%d')
 
 class Splash(QtWidgets.QDialog):
     def __init__(self):
@@ -194,6 +195,29 @@ class Main(QtWidgets.QWidget):
 
         self.emps.clicked.connect(self.openAgentsUI)
         self.planning.clicked.connect(self.openTrips)
+        head = ['Trip ID','Van Matricule','Driver name ','Trip time','Agents numbers']
+        self.trips.setHeaderLabels(head)
+        self.getCurrentPlanning()
+        self.trips.itemSelectionChanged.connect(lambda : print(f'Select ==> {self.trips.selectedItems()[0].text(0)}'))
+        self.trips.itemDoubleClicked.connect(self.trip_View)
+
+
+
+    def trip_View(self):
+        data = [i.text(0) for i in self.trips.selectedItems()]
+        print(f'data ==> {data}')
+        cnx = con()
+        cur = cnx.cursor()
+        cur.execute(f'''select a.id, concat(a.firstName, " ", a.LastName) as fullName, g.name, g.shift, a.address 
+                            from trips_history th inner join agents a on th.agent = a.id 
+                            inner join grps g on a.grp = g.id where th.trip = {int(data[0])};''' )
+        data.append([r for r in [i for i in cur.fetchall()]])
+        self.TV = Trip_View(role=self.role, data=data)
+        self.TV.show()
+        self.close()
+        cnx.close()
+
+
 
 
     def openTrips(self):
@@ -213,13 +237,53 @@ class Main(QtWidgets.QWidget):
         self.close()
 
     def getCurrentPlanning(self):
+        self.trips.clear()
         currentHour = strftime("%H", gmtime())
         cnx = con()
         cur = cnx.cursor()
-        cur.execute('''select name, shift from grps''')
+
+        cur.execute(f'''select t.id, v.matr, CONCAT(d.firstName, ' ', d.LastName) as driverName , t.datetime, (select count(id) from trips_history where trip = t.id) as Agent_numbers
+                    from trips t inner join vans v on t.van = v.id inner join drivers d on t.driver = d.id where t.datetime like "{today}%" order by t.datetime;''')
         data = cur.fetchall()
 
-        # for
+        for i in data:
+            item = QtWidgets.QTreeWidgetItem([str(u) for u in i])
+            cur.execute(f'''select a.id, CONCAT(a.firstName, " ", a.LastName) as agentName, th.pick_time, th.presence, g.name  from trips t inner join trips_history th on th.trip = t.id inner join agents a on th.agent = a.id inner join grps g on a.grp = g.id where t.id = {i[0]};''')
+            agentsForTrip = [i for i in cur.fetchall()]
+            if agentsForTrip:
+                ch1 = QtWidgets.QTreeWidgetItem([f'All The Agents  : {len(agentsForTrip)}'])
+                for agent in agentsForTrip:
+                    rr = QtWidgets.QTreeWidgetItem([str(i) for i in agent])
+                    ch1.addChild(rr)
+                item.addChild(ch1)
+
+            self.trips.addTopLevelItem(item)
+
+        cnx.close()
+
+class Trip_View(QtWidgets.QWidget):
+    def __init__(self, role, data):
+        super(Trip_View, self).__init__()
+        QtWidgets.QWidget.__init__(self)
+        uic.loadUi(os.path.join(os.path.dirname(__file__), "ui/tripView.ui"), self)
+        self.role = role
+        if self.role == 0:
+            print('The Admin')
+        print(data)
+        cnx = con()
+        cur = cnx.cursor()
+        cur.execute(f'''select v.matr, t.datetime, concat(d.firstName, " ", d.LastName) as driverName from vans v inner join trips t on t.van = v.id inner join drivers d t.driver = d.id where t.id = {int(data[0])}''')
+        self.trip_id.setText(data[0])
+        dt = cur.fetchone()
+        self.van_matr.setText(dt[0])
+        self.trip_time.setText(dt[1])
+        self.driver_name.setText(dt[2]) #todo here
+
+
+    def closeEvent(self, event):
+        self.main = Main(self.role)
+        self.main.show()
+        self.close()
 
 
 class Trips(QtWidgets.QWidget):
@@ -229,6 +293,8 @@ class Trips(QtWidgets.QWidget):
         uic.loadUi(os.path.join(os.path.dirname(__file__), "ui/trips.ui"), self)
         self.role = role
         self.getTrips()
+        self.create_btn.clicked.connect(self.createTrips)
+
 
 
     def closeEvent(self, event):
@@ -237,37 +303,138 @@ class Trips(QtWidgets.QWidget):
         self.close()
 
     def createTrips(self):
+        today = datetime.date.today()
+        day = datetime.datetime.today().strftime('%A')
+        print(day)
+        if day.lower() == "Friday".lower():
+            tomorrow = datetime.date.today() + datetime.timedelta(days=3)
+        else:
+            tomorrow = datetime.date.today() + datetime.timedelta(days=1)
+
+        # tomorrow = today #TODO Just for test
+        print(tomorrow)
         cnx = con()
         cur = cnx.cursor()
-        curses
+        cur.execute('select shift from grps')
+        data = []
+        for r in cur.fetchall():
+            for c in r:
+                for cc in str(c).split('-'):
+                    data.append(int(cc))
+        dt = [i for i in set(sorted(data))]
+        data = []
+        for i in dt:
+            if i < 10:
+                data.append(f'0{i}')
+            else:
+                data.append(str(i))
+        # print(data)
+        trips = {}
+        total = 0
+        ids = []
+        for h in data:
+            query = ''
+            if int(h) < 15:
+                query = f'select a.id from agents a inner join grps g on a.grp = g.id where g.shift like "{h}-%"'
+            else:
+                query = f'select a.id from agents a inner join grps g on a.grp = g.id where g.shift like "%-{h}"'
+
+            cur.execute(query)
+            result = cur.fetchall()
+            # print(result)
+
+            count = len(result)
+
+            trips[h] = [i[0] for i in result]
+            total += count
+
+        print(trips)
+        print(total)
+        maxForVan = 18
+        for time, agents in trips.items():
+            vansNeeded = 0
+            if agents:
+                if len(agents) > maxForVan:
+                    vansNeeded = 2
+                else:
+                    vansNeeded = 1
+
+                if vansNeeded == 1:
+                    cur.execute(
+                        f''' select count(id) from trips where datetime like "{tomorrow} {time}:00:00" and van = 1''')
+                    if not cur.fetchone()[0]:
+                        cur.execute(
+                            f'''insert into trips(van, driver, datetime) values (1, 1, "{tomorrow} {time}:00:00");''')
+                        cnx.commit()
+                        for agent in agents:
+                            cur.execute(f'''select id from trips where datetime like "{tomorrow} {time}:00:00"''')
+                            cur.execute(
+                                f'''insert into trips_history (trip, agent, presence) values ({int(cur.fetchone()[0])}, {agent}, 0)''')
+                            cnx.commit()
+                else:
+                    grp1 = [i for i in agents[:len(agents) // 2]]
+                    grp2 = [i for i in agents[len(agents) // 2:]]
+                    cur.execute(
+                        f'''select count(id) from trips where datetime like "{tomorrow} {time}:00:00" and driver = 1''')
+                    if not cur.fetchone()[0]:
+                        cur.execute(
+                            f'''insert into trips(van, driver, datetime) values (1, 1, "{tomorrow} {time}:00:00");''')
+
+                    cur.execute(f'''select id from trips where datetime like "{tomorrow} {time}:00:00"''')
+
+                    trip1, trip2 = [int(i[0]) for i in cur.fetchall()]
+                    for agent in grp1:
+                        cur.execute(f'''select count(id) from trips_history where trip = {trip1} and agent = {agent}''')
+                        if not cur.fetchone()[0]:
+                            cur.execute(
+                                f'''insert into trips_history (trip, agent, presence) values ({trip1}, {agent}, 0)''')
+                            cnx.commit()
+
+                    cur.execute(
+                        f'''select count(id) from trips where datetime like "{tomorrow} {time}:00:00" and driver = 1''')
+                    if not cur.fetchone()[0]:
+                        cur.execute(
+                            f'''insert into trips(van, driver, datetime) values (2, 2, "{tomorrow} {time}:00:00");''')
+                    cnx.commit()
+                    for agent in grp2:
+                        cur.execute(f'''select count(id) from trips_history where trip = {trip2} and agent = {agent}''')
+                        if not cur.fetchone()[0]:
+                            cur.execute(
+                                f'''insert into trips_history (trip, agent, presence) values ({trip2}, {agent}, 0)''')
+                            cnx.commit()
+        cnx.close()
+        self.getTrips()
+
 
 
     def getTrips(self):
-        cnx = con()
-        cur = cnx.cursor()
-        cur.execute('''select t.id, v.matr, d.firstName, d.LastName, t.datetime, (select count(id) from trips_history where trip = t.id) as Agent_numbers
-                from trips t inner join vans v on t.van = v.id inner join drivers d on t.driver = d.id ;''')
-        dt = cur.fetchall()
+            self.tableWidget.setRowCount(0)
+            cnx = con()
+            cur = cnx.cursor()
+            cur.execute('''select t.id, v.matr, d.firstName, d.LastName, t.datetime, (select count(id) from trips_history where trip = t.id) as Agent_numbers
+                    from trips t inner join vans v on t.van = v.id inner join drivers d on t.driver = d.id ;''')
+            dt = cur.fetchall()
 
-        data = []
+            data = []
 
-        for r in dt:
-            data.append([r[0], r[1], f'{r[2]} {r[3]}', r[4], r[5]])
-        head = ['Trip-ID ', 'van Matrecule', 'Driver Name', 'Time', 'Agents Numbers']
-        print(data)
-        self.tableWidget.setColumnCount(len(data[0]))
-        self.tableWidget.setRowCount(len(data))
-        # self.tableWidget.horizontalHeader().setSectionResizeMode(head.index(head[-1]), QHeaderView.Stretch)
-        # self.tableWidget.resizeColumnsToContents()
-        for i in range(self.tableWidget.columnCount()):
-            self.tableWidget.horizontalHeader().setSectionResizeMode(i, QHeaderView.Stretch)
+            for r in dt:
+                data.append([r[0], r[1], f'{r[2]} {r[3]}', r[4], r[5]])
+            head = ['Trip-ID ', 'van Matrecule', 'Driver Name', 'Time', 'Agents Numbers']
 
-        self.tableWidget.setHorizontalHeaderLabels(head)
-        for r in range(len(data)):
-            for c in range(len(data[0])):
-                self.tableWidget.setItem(r, c, QtWidgets.QTableWidgetItem(str(data[r][c])))
+            print(data)
+            self.tableWidget.setColumnCount(len(data[0]))
+            self.tableWidget.setRowCount(len(data))
+            # self.tableWidget.horizontalHeader().setSectionResizeMode(head.index(head[-1]), QHeaderView.Stretch)
+            # self.tableWidget.resizeColumnsToContents()
+            for i in range(self.tableWidget.columnCount()):
+                self.tableWidget.horizontalHeader().setSectionResizeMode(i, QHeaderView.Stretch)
 
-        cnx.close()
+            self.tableWidget.setHorizontalHeaderLabels(head)
+            for r in range(len(data)):
+                for c in range(len(data[0])):
+                    self.tableWidget.setItem(r, c, QtWidgets.QTableWidgetItem(str(data[r][c])))
+
+            cnx.close()
 
 
 class Agents(QtWidgets.QWidget):
