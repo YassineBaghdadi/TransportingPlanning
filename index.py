@@ -204,18 +204,20 @@ class Main(QtWidgets.QWidget):
 
 
     def trip_View(self):
+
         data = [i.text(0) for i in self.trips.selectedItems()]
         print(f'data ==> {data}')
         cnx = con()
         cur = cnx.cursor()
-        cur.execute(f'''select a.id, concat(a.firstName, " ", a.LastName) as fullName, g.name, g.shift, a.address 
-                            from trips_history th inner join agents a on th.agent = a.id 
-                            inner join grps g on a.grp = g.id where th.trip = {int(data[0])};''' )
-        data.append([r for r in [i for i in cur.fetchall()]])
-        self.TV = Trip_View(role=self.role, data=data)
+        cur.execute(f'select datetime from trips where id = {int(data[0])} ;')
+        if int(strftime("%H", gmtime())) > int(str(cur.fetchone()[0]).split(' ')[1].split(':')[0]):
+
+            self.TV = Trip_View(role=self.role, id=data, desibleedit=True)
+            notif(self, title="Error", msg='You can\'t Modify this Trip .')
+        else:
+            self.TV = Trip_View(role=self.role, id=data)
         self.TV.show()
         self.close()
-        cnx.close()
 
 
 
@@ -262,23 +264,121 @@ class Main(QtWidgets.QWidget):
         cnx.close()
 
 class Trip_View(QtWidgets.QWidget):
-    def __init__(self, role, data):
+    def __init__(self, role, id, desibleedit = False):
         super(Trip_View, self).__init__()
         QtWidgets.QWidget.__init__(self)
         uic.loadUi(os.path.join(os.path.dirname(__file__), "ui/tripView.ui"), self)
         self.role = role
         if self.role == 0:
             print('The Admin')
-        print(data)
+        # print(data)
+        self.id_ = id[0]
         cnx = con()
         cur = cnx.cursor()
-        cur.execute(f'''select v.matr, t.datetime, concat(d.firstName, " ", d.LastName) as driverName from vans v inner join trips t on t.van = v.id inner join drivers d t.driver = d.id where t.id = {int(data[0])}''')
-        self.trip_id.setText(data[0])
+        cur.execute(f'''select v.matr, t.datetime, concat(d.firstName, " ", d.LastName) as driverName from vans v inner join trips t on t.van = v.id inner join drivers d on t.driver = d.id where t.id = {int(self.id_)}''')
+
+        self.trip_id.setText(self.id_)
+
         dt = cur.fetchone()
         self.van_matr.setText(dt[0])
         self.trip_time.setText(dt[1])
-        self.driver_name.setText(dt[2]) #todo here
+        self.driver_name.setText(dt[2])
+        self.rmv.clicked.connect(self.removeAgent)
 
+        self.tableWidget.itemSelectionChanged.connect(self.rowSelected)
+        self.agnts.currentIndexChanged.connect(lambda : self.add.setEnabled(True) if self.agnts.currentIndex() != 0 else self.add.setEnabled(False))
+
+        cnx.close()
+
+        self.refreshTable()
+        self.add.clicked.connect(self.add_agent)
+        if desibleedit:
+            self.agnts.setEnabled(False)
+            self.tableWidget.setEnabled(False)
+
+
+    def add_agent(self):
+        cnx = con()
+        cur = cnx.cursor()
+        print(str(self.agnts.currentText()).split('-'))
+        fname, lname = str(self.agnts.currentText()).split('-')
+        print(f'First name ==> {fname}\nLast Name ==> {lname}')
+        cur.execute(f'insert into trips_history(trip, agent, presence) values({int(self.trip_id.text())}, (select id from agents where firstName like "{fname}" and LastName like "{lname}"), 0) ')
+        cnx.commit()
+        cnx.close()
+        self.refreshTable()
+
+    def removeAgent(self):
+        if items := [i.text() for i in self.tableWidget.selectedItems()]:
+            print(items)
+            reply = QtWidgets.QMessageBox.question(self, 'Alert !!', 'Are you sure you want to remove ?',
+                                         QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No, QtWidgets.QMessageBox.No)
+            if reply == QtWidgets.QMessageBox.Yes:
+                print('removing')
+                cnx = con()
+                cur = cnx.cursor()
+                cur.execute(f'delete from trips_history where trip = {int(self.trip_id.text())} and agent = {int(items[0])}')
+                cnx.commit()
+                cnx.close()
+                self.refreshTable()
+
+
+
+    def refreshTable(self):
+
+        cnx = con()
+        cur = cnx.cursor()
+        cur.execute(f'''select a.id, concat(a.firstName, " ", a.LastName) as fullName, g.name, g.shift, a.address 
+                                    from trips_history th inner join agents a on th.agent = a.id 
+                                    inner join grps g on a.grp = g.id where th.trip = {int(self.id_)};''')
+        data = [[c for c in r] for r in cur.fetchall()]
+        cur.execute(f'select max_places from vans where matr like "{self.van_matr.text()}"')
+        maxP = int(cur.fetchone()[0])
+
+        if agents := data:
+            if len(agents) >= maxP:
+                self.agnts.setEnabled(False)
+            [self.tableWidget.removeRow(0) for _ in range(self.tableWidget.rowCount())]
+
+            self.tableWidget.setRowCount(len(agents))
+            self.tableWidget.setColumnCount(len(agents[0]))
+            self.tableWidget.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeToContents)
+            self.tableWidget.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch)
+            self.tableWidget.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeToContents)
+            self.tableWidget.horizontalHeader().setSectionResizeMode(3, QHeaderView.Fixed)
+            self.tableWidget.horizontalHeader().setSectionResizeMode(4, QHeaderView.Stretch)
+
+
+
+            head = [i for i in 'Agent ID-Full Name-Group-Shift-Address'.split('-')]
+            self.tableWidget.setHorizontalHeaderLabels(head)
+            print(agents)
+            for r in range(len(agents)):
+                for c in range(len(agents[r])):
+                    self.tableWidget.setItem(r, c, QtWidgets.QTableWidgetItem(str(agents[r][c])))
+
+        cur.execute(f'select agent from trips_history where trip = {self.trip_id.text()}')
+        # print(f'current agents == > {list(set([i[0] for i in cur.fetchall()]))}')
+        agents = []
+        existsAgents = tuple(set([i[0] for i in cur.fetchall()]))
+        print(f'select concat(firstName, "-", LastName) as fullName from agents where id not in {existsAgents};')
+        cur.execute(
+            f'select concat(firstName, "-", LastName) as fullName from agents where id not in {existsAgents};')
+
+        # print(cur.fetchall())
+        self.agnts.clear()
+        self.agnts.addItems(['Choose Agent ...'])
+        self.agnts.addItems([i[0] for i in cur.fetchall()])
+        self.agnts.setCurrentIndex(0)
+
+        cnx.close()
+    def rowSelected(self):
+        items = [i.text() for i in self.tableWidget.selectedItems()]
+        print(items)
+        if items:
+            self.rmv.setEnabled(True)
+        else:
+            self.rmv.setEnabled(False)
 
     def closeEvent(self, event):
         self.main = Main(self.role)
@@ -499,8 +599,13 @@ class Agents(QtWidgets.QWidget):
             self.tableWidget.setRowCount(len(agents))
             # self.tableWidget.horizontalHeader().setSectionResizeMode(head.index(head[-1]), QHeaderView.Stretch)
             # self.tableWidget.resizeColumnsToContents()
-            for i in range(self.tableWidget.columnCount()):
-                self.tableWidget.horizontalHeader().setSectionResizeMode(i, QHeaderView.Stretch)
+
+            self.tableWidget.horizontalHeader().setSectionResizeMode(0, QHeaderView.Fixed)
+            self.tableWidget.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeToContents)
+            self.tableWidget.horizontalHeader().setSectionResizeMode(2, QHeaderView.Fixed)
+            self.tableWidget.horizontalHeader().setSectionResizeMode(3, QHeaderView.Stretch)
+            self.tableWidget.horizontalHeader().setSectionResizeMode(4, QHeaderView.ResizeToContents)
+            self.tableWidget.horizontalHeader().setSectionResizeMode(5, QHeaderView.Fixed)
 
             self.tableWidget.setHorizontalHeaderLabels(head)
             for r in range(len(agents)):
