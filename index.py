@@ -363,7 +363,7 @@ class Trip_View(QtWidgets.QWidget):
         existsAgents = tuple(set([i[0] for i in cur.fetchall()]))
         print(f'select concat(firstName, "-", LastName) as fullName from agents where id not in {existsAgents};')
         cur.execute(
-            f'select concat(firstName, "-", LastName) as fullName from agents where id not in {existsAgents};')
+            f'select concat(firstName, "-", LastName) as fullName from agents where id not in {existsAgents};' if len(existsAgents) > 1 else f'select concat(firstName, "-", LastName) as fullName from agents where id != {existsAgents[0]};')
 
         # print(cur.fetchall())
         self.agnts.clear()
