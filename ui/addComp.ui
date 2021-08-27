@@ -37,7 +37,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Add New Vihecle</string>
+      <string>Add New Compaign</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -53,7 +53,7 @@
       <number>30</number>
      </property>
      <item>
-      <widget class="QLineEdit" name="matr">
+      <widget class="QLineEdit" name="cname">
        <property name="font">
         <font>
          <family>Segoe Print</family>
@@ -65,29 +65,36 @@
         <set>Qt::AlignCenter</set>
        </property>
        <property name="placeholderText">
-        <string>Matricule</string>
+        <string>name</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="max_places">
+      <widget class="QGroupBox" name="groupBox">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>60</height>
+        </size>
+       </property>
        <property name="font">
         <font>
          <family>Segoe Print</family>
-         <weight>75</weight>
-         <bold>true</bold>
+         <pointsize>9</pointsize>
         </font>
        </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
+       <property name="title">
+        <string>Shift : </string>
        </property>
-       <property name="placeholderText">
-        <string>Max Places</string>
-       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <widget class="QComboBox" name="shiftfrom"/>
+        </item>
+        <item>
+         <widget class="QComboBox" name="shiftto"/>
+        </item>
+       </layout>
       </widget>
-     </item>
-     <item>
-      <widget class="QComboBox" name="drivers"/>
      </item>
     </layout>
    </item>
