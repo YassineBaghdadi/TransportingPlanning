@@ -332,7 +332,7 @@ class Main(QtWidgets.QWidget):
         self.vans.installEventFilter(self)
         STYLESHEET = '''QAbstractItemView QHeaderView {
     show-decoration-selected: 0;
-    background: transparent;
+    
 }
 QAbstractItemView::section QHeaderView::section {
     show-decoration-selected: 0;
@@ -418,6 +418,9 @@ QAbstractItemView::section QHeaderView::section {
     def getCurrentPlanning(self):
         self.trips.clear()
         currentHour = strftime("%H", gmtime())
+        currentMinute = strftime("%M", gmtime())
+        print(f'Current Minute : {currentMinute}')
+
         cnx = con()
         cur = cnx.cursor()
 
@@ -478,11 +481,13 @@ class Trip_View(QtWidgets.QWidget):
 
 
     def add_agent(self):
+
         cnx = con()
         cur = cnx.cursor()
         print(str(self.agnts.currentText()).split('-'))
         fname, lname = str(self.agnts.currentText()).split('-')
         print(f'First name ==> {fname}\nLast Name ==> {lname}')
+
         cur.execute(f'insert into trips_history(trip, agent, presence) values({int(self.trip_id.text())}, (select id from agents where firstName like "{fname}" and LastName like "{lname}"), 0) ')
         cnx.commit()
         cnx.close()
@@ -508,6 +513,10 @@ class Trip_View(QtWidgets.QWidget):
 
         cnx = con()
         cur = cnx.cursor()
+        cur.execute(f'''select max_places from vans where matr like "{self.van_matr.text()}";''')
+        if int(self.tableWidget.rowCount()) == int(cur.fetchone()[0]) :
+            self.agnts.setEnabled(False)
+
         cur.execute(f'''select a.id, concat(a.firstName, " ", a.LastName) as fullName, g.name, g.shift, a.address 
                                     from trips_history th inner join agents a on th.agent = a.id 
                                     inner join grps g on a.grp = g.id where th.trip = {int(self.id_)};''')
@@ -591,7 +600,7 @@ class Trips(QtWidgets.QWidget):
     #     else:
     #         tomorrow = datetime.date.today() + datetime.timedelta(days=1)
     #
-    #     # tomorrow = today #TODO Just for test
+    #     # tomorrow = today
     #     print(tomorrow)
     #     cnx = con()
     #     cur = cnx.cursor()
