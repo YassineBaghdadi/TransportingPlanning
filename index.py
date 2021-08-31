@@ -4,6 +4,7 @@ from PyQt5 import QtWidgets, uic, QtGui, QtCore
 import os, sys, datetime, pymysql, threading, pandas as pd
 
 from PyQt5.QtWidgets import QHeaderView
+from openpyxl.styles import Border, Side
 from plyer import notification
 from openpyxl import load_workbook
 
@@ -11,6 +12,7 @@ from openpyxl import load_workbook
 
 
 
+today = datetime.datetime.today().strftime('%Y-%m-%d')
 
 
 def notif(self = None, title = '', msg = ''):
@@ -38,7 +40,7 @@ def preparingDB():
     cur.execute('''create table if not exists agents (id  INT AUTO_INCREMENT, firstName Varchar(50), LastName Varchar(50), CIN varchar(50), address Varchar(100), grp int , PRIMARY KEY (id), foreign key(grp) references grps(id));''')
     cur.execute('''create table if not exists vans (id  INT AUTO_INCREMENT, matr Varchar(50), driver varchar(50), max_places int , PRIMARY KEY (id))''')
     cur.execute('''create table if not exists vans(id  INT AUTO_INCREMENT, matricule varchar(50), max_places int , PRIMARY KEY (id))''')
-    cur.execute('''create table if not exists drivers(id  INT AUTO_INCREMENT, firstName Varchar(50), LastName varchar(50), PRIMARY KEY (id))''')
+    cur.execute('''create table if not exists drivers(id  INT AUTO_INCREMENT, firstName Varchar(50), LastName varchar(50), username Varchar(45), pass Varchar(45), PRIMARY KEY (id))''')
     cnx.commit()
 
     cur.execute('create table if not exists trips(id  INT AUTO_INCREMENT, van int, driver int, datetime Varchar(50), foreign key(van) references vans(id), foreign key(driver) references drivers(id) , PRIMARY KEY (id))')
@@ -50,9 +52,8 @@ def preparingDB():
     print('tables created ')
 
 
-preparingDB()
+# preparingDB()
 
-today = datetime.datetime.today().strftime('%Y-%m-%d')
 
 def createPlannings():
     today = datetime.date.today()
@@ -176,8 +177,12 @@ class Splash(QtWidgets.QDialog):
         self.setWindowTitle('welcome back')
         self.timer = QtCore.QBasicTimer()
         self.step = 0
+        priparingDB = threading.Thread(target=preparingDB)
+        priparingDB.start()
+
         creatingPlanningThread = threading.Thread(target=createPlannings)
         creatingPlanningThread.start()
+
         self.prog()
 
 
@@ -307,6 +312,8 @@ class Main(QtWidgets.QWidget):
         self.role = role
         if self.role == 0:
             print('The Admin')
+
+        self.setWindowTitle('Home Page')
 
         # self.emps.clicked.connect(self.openAgentsUI)
         self.emps.installEventFilter(self)
@@ -463,7 +470,7 @@ class Trip_View(QtWidgets.QWidget):
         cnx = con()
         cur = cnx.cursor()
         cur.execute(f'''select v.matr, t.datetime, concat(d.firstName, " ", d.LastName) as driverName from vans v inner join trips t on t.van = v.id inner join drivers d on t.driver = d.id where t.id = {int(self.id_)}''')
-
+        self.setWindowTitle('View The Trip\'s Details')
         self.trip_id.setText(self.id_)
 
         dt = cur.fetchone()
@@ -505,6 +512,10 @@ class Trip_View(QtWidgets.QWidget):
                 inner join grps g on a.grp = g.id  
                 where t.id = {self.trip_id.text()} order by g.name asc''')
             data = cur.fetchall()
+            thin_border = Border(left=Side(style='thin'),
+                                 right=Side(style='thin'),
+                                 top=Side(style='thin'),
+                                 bottom=Side(style='thin'))
 
             sheet['D1'] = f'{self.trip_id.text()} / {self.driver_name.text()}'
             sheet['D2'] = f'{self.trip_time.text()}'
@@ -516,8 +527,12 @@ class Trip_View(QtWidgets.QWidget):
                 indx += 1
                 for c in range(len(cc)):
                     sheet[f"{cc[c]}{i}"] = data[i-4][c]
+
                     print(f"{cc[c]}{i}")
 
+            for r in range(1, len(data) + 5):
+                for c in range(1, 8):
+                    sheet.cell(row=r, column=c).border = thin_border
 
             workbook.save(filename=fileName)
             os.startfile(fileName)
@@ -636,6 +651,7 @@ class Trips(QtWidgets.QWidget):
         # self.create_btn.clicked.connect(self.createTrips)
         self.tableWidget.doubleClicked.connect(self.openTripView)
         self.back = True
+        self.setWindowTitle('All Trips')
 
     def closeEvent(self, event):
         if self.back:
@@ -803,7 +819,7 @@ class Agents(QtWidgets.QWidget):
         QtWidgets.QWidget.__init__(self)
         uic.loadUi(os.path.join(os.path.dirname(__file__), "ui/Agents.ui"), self)
         self.add_btn.clicked.connect(self.add)
-
+        self.setWindowTitle('All Agents')
         self.role = role
         if self.role == 0:
             print("The Admin")
@@ -917,7 +933,7 @@ class Vans(QtWidgets.QWidget):
         QtWidgets.QWidget.__init__(self)
         uic.loadUi(os.path.join(os.path.dirname(__file__), "ui/vans.ui"), self)
         self.add_btn.clicked.connect(self.add)
-
+        self.setWindowTitle('All vehicles')
         self.role = role
         if self.role == 0:
             print("The Admin")
@@ -1021,7 +1037,7 @@ class AddVan(QtWidgets.QWidget):
             self.matr.setText(str(self.data[1]))
             self.max_places.setText(str(self.data[2]))
             self.drivers.setCurrentIndex(drivers_names.index(self.data[3]))
-
+        self.setWindowTitle('Add new Vehicle')
 
 
         cnx.close()
@@ -1088,7 +1104,7 @@ class Compaigns(QtWidgets.QWidget):
         self.back = True
 
         self.edit_btn.clicked.connect(self.edit)
-
+        self.setWindowTitle('All Groups')
         self.tableWidget.itemSelectionChanged.connect(self.tableSelectRowChanged)
 
 
@@ -1178,6 +1194,7 @@ class AddComp(QtWidgets.QWidget):
             self.shiftfrom.setCurrentIndex([self.shiftfrom.itemText(i) for i in range(self.shiftfrom.count())].index(f'{str(self.data[2]).split("-")[0]}:00'))
             self.shiftto.setCurrentIndex([self.shiftto.itemText(i) for i in range(self.shiftto.count())].index(f'{str(self.data[2]).split("-")[1]}:00'))
 
+        self.setWindowTitle('Add new Group')
 
 
     def closeEvent(self, event):
@@ -1251,6 +1268,7 @@ class AddAgent(QtWidgets.QWidget):
             self.ad.setText(self.data[3])
             self.grps.setCurrentIndex(grps_names.index(self.data[4]))
 
+        self.setWindowTitle('Add new Agent')
 
 
         cnx.close()
@@ -1303,11 +1321,6 @@ class AddAgent(QtWidgets.QWidget):
 
         else:
             notif(self, title="Error ", msg='you have to write all the infos')
-
-
-
-
-
 
 if __name__ == '__main__' :
     app = QtWidgets.QApplication(sys.argv)
