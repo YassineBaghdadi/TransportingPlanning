@@ -1,10 +1,12 @@
 from time import gmtime, strftime
 
 from PyQt5 import QtWidgets, uic, QtGui, QtCore
-import os, sys, datetime, pymysql, threading
+import os, sys, datetime, pymysql, threading, pandas as pd
 
 from PyQt5.QtWidgets import QHeaderView
 from plyer import notification
+from openpyxl import load_workbook
+
 
 
 
@@ -392,7 +394,8 @@ QAbstractItemView::section QHeaderView::section {
         cnx = con()
         cur = cnx.cursor()
         cur.execute(f'select datetime from trips where id = {int(data[0])} ;')
-        if int(strftime("%H", gmtime())) >= int(str(cur.fetchone()[0]).split(' ')[1].split(':')[0]) :
+        dd = cur.fetchone()[0]
+        if int(strftime("%H", gmtime())) >= int(str(dd).split(' ')[1].split(':')[0]) and int(str(dd).split(' ')[0].split('-')[2]) == int(strftime("%d", gmtime())):
 
             self.TV = Trip_View(role=self.role, id=data, desibleedit=True)
             notif(self, title="Error", msg='You can\'t Modify this Trip .')
@@ -447,7 +450,7 @@ QAbstractItemView::section QHeaderView::section {
         cnx.close()
 
 class Trip_View(QtWidgets.QWidget):
-    def __init__(self, role, id, desibleedit = False):
+    def __init__(self, role, id, desibleedit = False, p=False):
         super(Trip_View, self).__init__()
         QtWidgets.QWidget.__init__(self)
         uic.loadUi(os.path.join(os.path.dirname(__file__), "ui/tripView.ui"), self)
@@ -456,6 +459,7 @@ class Trip_View(QtWidgets.QWidget):
             print('The Admin')
         # print(data)
         self.id_ = id[0]
+        self.p = p
         cnx = con()
         cur = cnx.cursor()
         cur.execute(f'''select v.matr, t.datetime, concat(d.firstName, " ", d.LastName) as driverName from vans v inner join trips t on t.van = v.id inner join drivers d on t.driver = d.id where t.id = {int(self.id_)}''')
@@ -478,7 +482,47 @@ class Trip_View(QtWidgets.QWidget):
         if desibleedit:
             self.agnts.setEnabled(False)
             self.tableWidget.setEnabled(False)
+        self.prnt.clicked.connect(self.printTrip)
 
+
+    def printTrip(self):
+        options = QtWidgets.QFileDialog.Options()
+        options |= QtWidgets.QFileDialog.DontUseNativeDialog
+        fileName, _ = QtWidgets.QFileDialog.getSaveFileName(self, "Save Trip Planning Excel File ...", f"Trip{self.trip_id.text()}_{self.trip_time.text().replace(':', '')}_{self.driver_name.text()}_{self.van_matr.text()}.xlsx",
+                                                  "All Files (*);;Text Files (*.txt)")
+        if fileName:
+
+            workbook = load_workbook(filename=os.path.join(os.getcwd(), 'src', 'template.xlsx'))
+            sheet = workbook.active
+
+            cnx = con()
+            cur = cnx.cursor()
+            cur.execute(
+                f'''select a.firstName, a.LastName, g.name from 
+                trips_history th 
+                inner join agents a on th.agent = a.id 
+                inner join trips t on th.trip = t.id 
+                inner join grps g on a.grp = g.id  
+                where t.id = {self.trip_id.text()} order by g.name asc''')
+            data = cur.fetchall()
+
+            sheet['D1'] = f'{self.trip_id.text()} / {self.driver_name.text()}'
+            sheet['D2'] = f'{self.trip_time.text()}'
+
+            cc = [i for i in 'B C D '.split()]
+            indx = 1
+            for i in range(4, len(data) + 4):
+                sheet[f'A{i}'] = indx
+                indx += 1
+                for c in range(len(cc)):
+                    sheet[f"{cc[c]}{i}"] = data[i-4][c]
+                    print(f"{cc[c]}{i}")
+
+
+            workbook.save(filename=fileName)
+            os.startfile(fileName)
+        else:
+            notif(title='Notice ', msg='The printing Operation Has been Canceled .')
 
     def add_agent(self):
 
@@ -514,8 +558,10 @@ class Trip_View(QtWidgets.QWidget):
         cnx = con()
         cur = cnx.cursor()
         cur.execute(f'''select max_places from vans where matr like "{self.van_matr.text()}";''')
-        if int(self.tableWidget.rowCount()) == int(cur.fetchone()[0]) :
-            self.agnts.setEnabled(False)
+        # if int(self.tableWidget.rowCount()) == int(cur.fetchone()[0]) :
+        #     self.agnts.setEnabled(False)
+        # else:
+        #     self.agnts.setEnabled(True)
 
         cur.execute(f'''select a.id, concat(a.firstName, " ", a.LastName) as fullName, g.name, g.shift, a.address 
                                     from trips_history th inner join agents a on th.agent = a.id 
@@ -527,6 +573,8 @@ class Trip_View(QtWidgets.QWidget):
         if agents := data:
             if len(agents) >= maxP:
                 self.agnts.setEnabled(False)
+            else:
+                self.agnts.setEnabled(True)
             [self.tableWidget.removeRow(0) for _ in range(self.tableWidget.rowCount())]
 
             self.tableWidget.setRowCount(len(agents))
@@ -570,8 +618,11 @@ class Trip_View(QtWidgets.QWidget):
             self.rmv.setEnabled(False)
 
     def closeEvent(self, event):
-        self.main = Main(self.role)
-        self.main.show()
+        if self.p:
+            self.bb = Trips(self.role)
+        else:
+            self.bb = Main(self.role)
+        self.bb.show()
         self.close()
 
 
@@ -583,13 +634,14 @@ class Trips(QtWidgets.QWidget):
         self.role = role
         self.getTrips()
         # self.create_btn.clicked.connect(self.createTrips)
-
-
+        self.tableWidget.doubleClicked.connect(self.openTripView)
+        self.back = True
 
     def closeEvent(self, event):
-        self.main = Main(self.role)
-        self.main.show()
-        self.close()
+        if self.back:
+            self.main = Main(self.role)
+            self.main.show()
+            self.close()
 
     # def createTrips(self):
     #     today = datetime.date.today()
@@ -724,6 +776,25 @@ class Trips(QtWidgets.QWidget):
                     self.tableWidget.setItem(r, c, QtWidgets.QTableWidgetItem(str(data[r][c])))
 
             cnx.close()
+
+    def openTripView(self):
+        self.back = False
+        print(self.tableWidget.currentIndex().siblingAtColumn(0).data())
+
+        data = [self.tableWidget.currentIndex().siblingAtColumn(i).data() for i in range(self.tableWidget.columnCount())]
+        print(f'data ==> {data}')
+        cnx = con()
+        cur = cnx.cursor()
+        cur.execute(f'select datetime from trips where id = {int(data[0])} ;')
+        dd = cur.fetchone()[0]
+        if int(strftime("%H", gmtime())) >= int(str(dd).split(' ')[1].split(':')[0]) and int(str(dd).split(' ')[0].split('-')[2]) <= int(strftime("%d", gmtime())):
+
+            self.TV = Trip_View(role=self.role, id=data, desibleedit=True, p=True)
+            notif(self, title="Error", msg='You can\'t Modify this Trip .')
+        else:
+            self.TV = Trip_View(role=self.role, id=data, p=True)
+        self.TV.show()
+        self.close()
 
 
 class Agents(QtWidgets.QWidget):
