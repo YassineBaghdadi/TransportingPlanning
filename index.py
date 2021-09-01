@@ -43,7 +43,7 @@ def preparingDB():
     cur.execute('''create table if not exists drivers(id  INT AUTO_INCREMENT, firstName Varchar(50), LastName varchar(50), username Varchar(45), pass Varchar(45), PRIMARY KEY (id))''')
     cnx.commit()
 
-    cur.execute('create table if not exists trips(id  INT AUTO_INCREMENT, van int, driver int, datetime Varchar(50), foreign key(van) references vans(id), foreign key(driver) references drivers(id) , PRIMARY KEY (id))')
+    cur.execute('create table if not exists trips(id  INT AUTO_INCREMENT, van int, driver int, datetime Varchar(50), ttype Varchar(5), foreign key(van) references vans(id), foreign key(driver) references drivers(id) , PRIMARY KEY (id))')
 
     cnx.commit()
     cur.execute('''create table if not exists trips_history(id  INT AUTO_INCREMENT,trip int, agent int, pick_time varchar(50), presence int, foreign key(trip) references trips(id), foreign key(agent) references agents(id), PRIMARY KEY (id))''')
@@ -59,7 +59,7 @@ def createPlannings():
     today = datetime.date.today()
     day = datetime.datetime.today().strftime('%A')
     print(day)
-    if day.lower() == "Friday".lower():
+    if day.lower() == "friday":
         tomorrow = datetime.date.today() + datetime.timedelta(days=3)
     else:
         tomorrow = datetime.date.today() + datetime.timedelta(days=1)
@@ -68,7 +68,6 @@ def createPlannings():
     doneDates = []
     for date in [today, tomorrow]:
         print(f'date ==> {date}')
-        print(date)
         cnx = con()
         cur = cnx.cursor()
         cur.execute('select shift from grps')
@@ -108,6 +107,7 @@ def createPlannings():
         print(total)
         maxForVan = 18
         for time, agents in trips.items():
+
             vansNeeded = 0
             if agents:
                 if len(agents) > maxForVan:
@@ -120,9 +120,14 @@ def createPlannings():
                         f''' select count(id) from trips where datetime like "{date} {time}:00:00" and van = 1''')
                     if not cur.fetchone()[0]:
                         cur.execute(
-                            f'''insert into trips(van, driver, datetime) values (1, 1, "{date} {time}:00:00");''')
+                            f'select g.shift from agents a inner join grps g on g.id = a.grp where a.id = {agents[0]}')
+
+                        cur.execute(
+                            f'''insert into trips(van, driver, datetime, ttype) values (1, 1, "{date} {time}:00:00", '{"IN" if [i for i in str(cur.fetchone()[0]).split('-')].index(time) == 0 else "OUT"}');''')
                         cnx.commit()
                         for agent in agents:
+
+
                             cur.execute(f'''select id from trips where datetime like "{date} {time}:00:00"''')
                             cur.execute(
                                 f'''insert into trips_history (trip, agent, presence) values ({int(cur.fetchone()[0])}, {agent}, 0)''')
@@ -283,9 +288,9 @@ class LogIn(QtWidgets.QWidget):
         print(f'UserName : {username}\nPassword : {passwrd}')
         conn = con()
         cur = conn.cursor()
-        cur.execute(f'''SELECT role FROM users Where username like "{username}" and pass like "{passwrd}";''')
-        role = cur.fetchone()
         try:
+            cur.execute(f'''SELECT role FROM users Where username like "{username}" and pass like "{passwrd}";''')
+            role = cur.fetchone()
             if role is not None:
                 self.main = Main(role=int(role[0]))
                 self.main.show()
@@ -332,7 +337,7 @@ class Main(QtWidgets.QWidget):
 
         self.emps_icon.setScaledContents(True)
         self.planning.installEventFilter(self)
-        head = ['Trip ID','Van Matricule','Driver name ','Trip time','Agents numbers']
+        head = ['Trip ID','Van Matricule','Driver name ','Trip time','Agents numbers', 'Trip Type']
         self.trips.setHeaderLabels(head)
         self.getCurrentPlanning()
         self.trips.itemSelectionChanged.connect(lambda : print(f'Select ==> {self.trips.selectedItems()[0].text(0)}'))
@@ -434,12 +439,13 @@ QAbstractItemView::section QHeaderView::section {
         cnx = con()
         cur = cnx.cursor()
 
-        cur.execute(f'''select t.id, v.matr, CONCAT(d.firstName, ' ', d.LastName) as driverName , t.datetime, (select count(id) from trips_history where trip = t.id) as Agent_numbers
+        cur.execute(f'''select t.id, v.matr, CONCAT(d.firstName, ' ', d.LastName) as driverName , t.datetime, (select count(id) from trips_history where trip = t.id) as Agent_numbers, t.ttype
                     from trips t inner join vans v on t.van = v.id inner join drivers d on t.driver = d.id where date(t.datetime) >= "{today} 00:00:00" order by t.datetime;''')
         data = cur.fetchall()
         ind = 0
+        data = [[c for c in r] for r in data]
         for i in data:
-
+            # i.append('IN' if str(i[3]).split(' ')[1].split(':')[0] in "08 09 13 14".split() else "Out")
             item = QtWidgets.QTreeWidgetItem([str(u) for u in i])
             cur.execute(f'''select a.id, CONCAT(a.firstName, " ", a.LastName) as agentName, th.pick_time, th.presence, g.name  from trips t inner join trips_history th on th.trip = t.id inner join agents a on th.agent = a.id inner join grps g on a.grp = g.id where t.id = {i[0]};''')
             agentsForTrip = [i for i in cur.fetchall()]
@@ -491,6 +497,22 @@ class Trip_View(QtWidgets.QWidget):
             self.tableWidget.setEnabled(False)
         self.prnt.clicked.connect(self.printTrip)
 
+
+        self.back_icon.setPixmap(QtGui.QPixmap('src/img/back.png'))
+        self.back_icon.setScaledContents(True)
+        self.back_icon.installEventFilter(self)
+
+    def eventFilter(self, s, e):
+        if s is self.back_icon:
+            if e.type() == QtCore.QEvent.MouseButtonPress:
+                self.close()
+            if e.type() == QtCore.QEvent.Enter:
+                self.back_icon.setStyleSheet("border: 1px solid black; border-radius: 25px;")
+                print('mouse in ')
+            elif e.type() == QtCore.QEvent.Leave:
+                self.back_icon.setStyleSheet('border-color: 0px ;')
+                print('mouse out')
+        return super(Trip_View, self).eventFilter(s, e)
 
     def printTrip(self):
         options = QtWidgets.QFileDialog.Options()
@@ -652,6 +674,23 @@ class Trips(QtWidgets.QWidget):
         self.tableWidget.doubleClicked.connect(self.openTripView)
         self.back = True
         self.setWindowTitle('All Trips')
+
+
+        self.back_icon.setPixmap(QtGui.QPixmap('src/img/back.png'))
+        self.back_icon.setScaledContents(True)
+        self.back_icon.installEventFilter(self)
+
+    def eventFilter(self, s, e):
+        if s is self.back_icon:
+            if e.type() == QtCore.QEvent.MouseButtonPress:
+                self.close()
+            if e.type() == QtCore.QEvent.Enter:
+                self.back_icon.setStyleSheet("border: 1px solid black; border-radius: 25px;")
+                print('mouse in ')
+            elif e.type() == QtCore.QEvent.Leave:
+                self.back_icon.setStyleSheet('border-color: 0px ;')
+                print('mouse out')
+        return super(Trips, self).eventFilter(s, e)
 
     def closeEvent(self, event):
         if self.back:
@@ -835,6 +874,24 @@ class Agents(QtWidgets.QWidget):
         self.tableWidget.itemSelectionChanged.connect(self.tableSelectRowChanged)
         self.search.textChanged.connect(self.searching)
 
+
+        self.back_icon.setPixmap(QtGui.QPixmap('src/img/back.png'))
+        self.back_icon.setScaledContents(True)
+        self.back_icon.installEventFilter(self)
+
+    def eventFilter(self, s, e):
+        if s is self.back_icon:
+            if e.type() == QtCore.QEvent.MouseButtonPress:
+                self.close()
+            if e.type() == QtCore.QEvent.Enter:
+                self.back_icon.setStyleSheet("border: 1px solid black; border-radius: 25px;")
+                print('mouse in ')
+            elif e.type() == QtCore.QEvent.Leave:
+                self.back_icon.setStyleSheet('border-color: 0px ;')
+                print('mouse out')
+
+        return super(Agents, self).eventFilter(s, e)
+
     def searching(self):
         self.refreshTable(key= self.search.text())
 
@@ -947,6 +1004,23 @@ class Vans(QtWidgets.QWidget):
 
         self.tableWidget.itemSelectionChanged.connect(self.tableSelectRowChanged)
 
+
+        self.back_icon.setPixmap(QtGui.QPixmap('src/img/back.png'))
+        self.back_icon.setScaledContents(True)
+        self.back_icon.installEventFilter(self)
+
+    def eventFilter(self, s, e):
+        if s is self.back_icon:
+            if e.type() == QtCore.QEvent.MouseButtonPress:
+                self.close()
+            if e.type() == QtCore.QEvent.Enter:
+                self.back_icon.setStyleSheet("border: 1px solid black; border-radius: 25px;")
+                print('mouse in ')
+            elif e.type() == QtCore.QEvent.Leave:
+                self.back_icon.setStyleSheet('border-color: 0px ;')
+                print('mouse out')
+        return super(Vans, self).eventFilter(s, e)
+
     def searching(self):
         self.refreshTable(key= self.search.text())
 
@@ -1041,6 +1115,21 @@ class AddVan(QtWidgets.QWidget):
 
 
         cnx.close()
+        self.back_icon.setPixmap(QtGui.QPixmap('src/img/back.png'))
+        self.back_icon.setScaledContents(True)
+        self.back_icon.installEventFilter(self)
+
+    def eventFilter(self, s, e):
+        if s is self.back_icon:
+            if e.type() == QtCore.QEvent.MouseButtonPress:
+                self.close()
+            if e.type() == QtCore.QEvent.Enter:
+                self.back_icon.setStyleSheet("border: 1px solid black; border-radius: 25px;")
+                print('mouse in ')
+            elif e.type() == QtCore.QEvent.Leave:
+                self.back_icon.setStyleSheet('border-color: 0px ;')
+                print('mouse out')
+        return super(AddVan, self).eventFilter(s, e)
 
     def closeEvent(self, event):
         self.VansPage = Vans(self.role)
@@ -1107,6 +1196,21 @@ class Compaigns(QtWidgets.QWidget):
         self.setWindowTitle('All Groups')
         self.tableWidget.itemSelectionChanged.connect(self.tableSelectRowChanged)
 
+        self.back_icon.setPixmap(QtGui.QPixmap('src/img/back.png'))
+        self.back_icon.setScaledContents(True)
+        self.back_icon.installEventFilter(self)
+
+    def eventFilter(self, s, e):
+        if s is self.back_icon:
+            if e.type() == QtCore.QEvent.MouseButtonPress:
+                self.close()
+            if e.type() == QtCore.QEvent.Enter:
+                self.back_icon.setStyleSheet("border: 1px solid black; border-radius: 25px;")
+                print('mouse in ')
+            elif e.type() == QtCore.QEvent.Leave:
+                self.back_icon.setStyleSheet('border-color: 0px ;')
+                print('mouse out')
+        return super(Compaigns, self).eventFilter(s, e)
 
     def refreshTable(self, key=None):
 
@@ -1195,6 +1299,23 @@ class AddComp(QtWidgets.QWidget):
             self.shiftto.setCurrentIndex([self.shiftto.itemText(i) for i in range(self.shiftto.count())].index(f'{str(self.data[2]).split("-")[1]}:00'))
 
         self.setWindowTitle('Add new Group')
+        self.back_icon.setPixmap(QtGui.QPixmap('src/img/back.png'))
+        self.back_icon.setScaledContents(True)
+        self.back_icon.installEventFilter(self)
+
+
+
+    def eventFilter(self, s, e):
+        if s is self.back_icon:
+            if e.type() == QtCore.QEvent.MouseButtonPress:
+                self.close()
+            if e.type() == QtCore.QEvent.Enter:
+                self.back_icon.setStyleSheet("border: 1px solid black; border-radius: 25px;")
+                print('mouse in ')
+            elif e.type() == QtCore.QEvent.Leave:
+                self.back_icon.setStyleSheet('border-color: 0px ;')
+                print('mouse out')
+        return super(AddComp, self).eventFilter(s, e)
 
 
     def closeEvent(self, event):
@@ -1270,8 +1391,27 @@ class AddAgent(QtWidgets.QWidget):
 
         self.setWindowTitle('Add new Agent')
 
+        self.back_icon.installEventFilter(self)
+        self.back_icon.setPixmap(QtGui.QPixmap('src/img/back.png'))
+        self.back_icon.setScaledContents(True)
+
 
         cnx.close()
+
+    def eventFilter(self, s, e):
+        if s is self.back_icon:
+            if e.type() == QtCore.QEvent.MouseButtonPress:
+                self.close()
+            if e.type() == QtCore.QEvent.Enter:
+                self.back_icon.setStyleSheet("border: 1px solid black; border-radius: 25px;")
+                print('mouse in ')
+            elif e.type() == QtCore.QEvent.Leave:
+                self.back_icon.setStyleSheet('border-color: 0px ;')
+                print('mouse out')
+
+
+
+        return super(AddAgent, self).eventFilter(s, e)
 
     def closeEvent(self, event):
         self.agentPage = Agents(self.role)

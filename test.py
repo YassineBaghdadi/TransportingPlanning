@@ -118,31 +118,46 @@
 
 
 #########################################################################################################################
+#
+# from index import *
+# import os, pymysql
+# from openpyxl import load_workbook
+# import PyQt5
+#
+# workbook = load_workbook(filename = os.path.join(os.getcwd(), 'src', 'template.xlsx'))
+# sheet = workbook.active
+#
+# cnx = con()
+# cur = cnx.cursor()
+# cur.execute('select a.firstName, a.LastName, g.name from trips_history th inner join agents a on th.agent = a.id inner join trips t on th.trip = t.id inner join grps g on a.grp = g.id  where t.id = 43 ')
+# data = cur.fetchall()
+#
+# sheet['C1'] = 'Trip Id / Driver Name'
+# sheet['C2'] = 'Date Time '
+#
+# print(data)
+# cc = [i for i in 'A B C '.split()]
+# print(cc)
+# for i in range(4, len(data)):
+#     for c in range(len(cc)):
+#         sheet[f"{cc[c]}{i}"] = data[i][c]
+#         print(f"{cc[c]}{i}")
+#
+# fileName = 'test.xlsx'
+# workbook.save(filename = fileName)
+# os.startfile(fileName)
 
-from index import *
-import os, pymysql
-from openpyxl import load_workbook
-import PyQt5
 
-workbook = load_workbook(filename = os.path.join(os.getcwd(), 'src', 'template.xlsx'))
-sheet = workbook.active
+############################################################################################################################################
 
-cnx = con()
+
+import pymysql, index
+
+cnx = index.con()
 cur = cnx.cursor()
-cur.execute('select a.firstName, a.LastName, g.name from trips_history th inner join agents a on th.agent = a.id inner join trips t on th.trip = t.id inner join grps g on a.grp = g.id  where t.id = 43 ')
-data = cur.fetchall()
+cur.execute('select id, datetime from trips')
+for i in cur.fetchall():
+    cur.execute(f'''update trips set ttype = '{"IN" if int(str(i[1]).split(" ")[1].split(":")[0]) < 15 else "OUT"}' where id = {i[0]}''')
+    cnx.commit()
 
-sheet['C1'] = 'Trip Id / Driver Name'
-sheet['C2'] = 'Date Time '
-
-print(data)
-cc = [i for i in 'A B C '.split()]
-print(cc)
-for i in range(4, len(data)):
-    for c in range(len(cc)):
-        sheet[f"{cc[c]}{i}"] = data[i][c]
-        print(f"{cc[c]}{i}")
-
-fileName = 'test.xlsx'
-workbook.save(filename = fileName)
-os.startfile(fileName)
+cnx.close()
