@@ -155,9 +155,11 @@ import pymysql, index
 
 cnx = index.con()
 cur = cnx.cursor()
-cur.execute('select id, datetime from trips')
-for i in cur.fetchall():
-    cur.execute(f'''update trips set ttype = '{"IN" if int(str(i[1]).split(" ")[1].split(":")[0]) < 15 else "OUT"}' where id = {i[0]}''')
-    cnx.commit()
+cur.execute('select id from trips ')
+# for i in cur.fetchall():
+#     cur.execute(f'''update trips set ttype = '{"IN" if int(str(i[1]).split(" ")[1].split(":")[0]) < 15 else "OUT"}' where id = {i[0]}''')
+#     cnx.commit()
+
+print(cur.fetchall())
 
 cnx.close()

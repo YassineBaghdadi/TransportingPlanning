@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>830</width>
-    <height>542</height>
+    <width>1000</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -575,6 +575,18 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
 }</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
+   <property name="leftMargin">
+    <number>30</number>
+   </property>
+   <property name="topMargin">
+    <number>30</number>
+   </property>
+   <property name="rightMargin">
+    <number>30</number>
+   </property>
+   <property name="bottomMargin">
+    <number>30</number>
+   </property>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
@@ -592,6 +604,9 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
          <weight>75</weight>
          <bold>true</bold>
         </font>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
        </property>
        <item>
         <property name="text">
@@ -650,6 +665,9 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
          <bold>true</bold>
         </font>
        </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
        <property name="text">
         <string>Edit</string>
        </property>
@@ -671,6 +689,9 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
          <bold>true</bold>
         </font>
        </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
        <property name="text">
         <string>Add New Agent</string>
        </property>
@@ -680,14 +701,45 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
       <widget class="QLabel" name="back_icon">
        <property name="minimumSize">
         <size>
-         <width>50</width>
-         <height>50</height>
+         <width>30</width>
+         <height>30</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>50</width>
-         <height>50</height>
+         <width>30</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLabel#back_icon:hover {
+	
+	border-color: rgb(23, 155, 255);
+}</string>
+       </property>
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="cls">
+       <property name="minimumSize">
+        <size>
+         <width>30</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>30</width>
+         <height>30</height>
         </size>
        </property>
        <property name="cursor">

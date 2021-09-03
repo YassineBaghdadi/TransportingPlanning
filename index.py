@@ -3,13 +3,14 @@ from time import gmtime, strftime
 from PyQt5 import QtWidgets, uic, QtGui, QtCore
 import os, sys, datetime, pymysql, threading, pandas as pd
 
-from PyQt5.QtWidgets import QHeaderView
+from PyQt5.QtGui import QPainter, QPalette
+from PyQt5.QtWidgets import QHeaderView, QGraphicsDropShadowEffect
 from openpyxl.styles import Border, Side
 from plyer import notification
 from openpyxl import load_workbook
 
 
-
+radius = 40.0
 
 
 today = datetime.datetime.today().strftime('%Y-%m-%d')
@@ -178,7 +179,7 @@ class Splash(QtWidgets.QDialog):
         uic.loadUi(os.path.join(os.path.dirname(__file__), "ui/splash.ui"), self)
 
 
-        self.setWindowFlag(QtCore.Qt.WindowCloseButtonHint, False)
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
         self.setWindowTitle('welcome back')
         self.timer = QtCore.QBasicTimer()
         self.step = 0
@@ -190,7 +191,20 @@ class Splash(QtWidgets.QDialog):
 
         self.prog()
 
+        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
 
+    def paintEvent(self, event):
+        # get current window size
+        opt = QtWidgets.QStyleOption()
+        opt.initFrom(self)
+        rect = opt.rect
+
+        p = QPainter(self)
+        p.setRenderHint(QPainter.Antialiasing, True)
+        p.setBrush(opt.palette.brush(QPalette.Window))
+        p.setPen(QtCore.Qt.NoPen)
+        p.drawRoundedRect(rect, 40, 40)
+        p.end()
 
     def isConnected(self):
         conn = con()
@@ -227,8 +241,9 @@ class LogIn(QtWidgets.QWidget):
         super(LogIn, self).__init__()
         QtWidgets.QWidget.__init__(self)
         uic.loadUi(os.path.join(os.path.dirname(__file__), "ui/logIn.ui"), self)
-
-        self.setWindowFlag(QtCore.Qt.WindowCloseButtonHint, False)
+        # path.addRoundedRect(QtCore.QRectF(self.rect()), radius, radius)
+        # self.setWindowFlag(QtCore.Qt.WindowCloseButtonHint, False)
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
 
         self.cnx.setEnabled(False)
 
@@ -239,17 +254,48 @@ class LogIn(QtWidgets.QWidget):
         self.label.setPixmap(QtGui.QPixmap('src/img/login.png'))
         self.label.setScaledContents(True)
         self.setWindowTitle('Transporting Planning ')
-
         self.username_in.setPlaceholderText('User Name')
         self.passwrd_in.setPlaceholderText('Password')
-
+        self.cancel.clicked.connect(lambda : os._exit(0))
 
         self.username_in.textChanged.connect(self.typing)
         self.passwrd_in.textChanged.connect(self.typing1)
         self.passwrd_in.returnPressed.connect(self.login)
         self.username_in.returnPressed.connect(self.login)
         self.cnx.clicked.connect(self.login)
+        self.label_2.setPixmap(QtGui.QPixmap('src/img/logo.png'))
+        self.label_2.setScaledContents(True)
+        self.offset = None
+        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
 
+    def paintEvent(self, event):
+        # get current window size
+        opt = QtWidgets.QStyleOption()
+        opt.initFrom(self)
+        rect = opt.rect
+
+        p = QPainter(self)
+        p.setRenderHint(QPainter.Antialiasing, True)
+        p.setBrush(opt.palette.brush(QPalette.Window))
+        p.setPen(QtCore.Qt.NoPen)
+        p.drawRoundedRect(rect, 40, 40)
+        p.end()
+
+    def mousePressEvent(self, event):
+            if event.button() == QtCore.Qt.LeftButton:
+                self.offset = event.pos()
+            else:
+                super().mousePressEvent(event)
+
+    def mouseMoveEvent(self, event):
+            if self.offset is not None and event.buttons() == QtCore.Qt.LeftButton:
+                self.move(self.pos() + event.pos() - self.offset)
+            else:
+                super().mouseMoveEvent(event)
+
+    def mouseReleaseEvent(self, event):
+            self.offset = None
+            super().mouseReleaseEvent(event)
 
 
 
@@ -308,7 +354,6 @@ class LogIn(QtWidgets.QWidget):
 
         conn.close()
 
-
 class Main(QtWidgets.QWidget):
     def __init__(self, role):
         super(Main, self).__init__()
@@ -345,18 +390,52 @@ class Main(QtWidgets.QWidget):
         self.comps.installEventFilter(self)
         self.vans.installEventFilter(self)
         STYLESHEET = '''QAbstractItemView QHeaderView {
-    show-decoration-selected: 0;
-    
-}
-QAbstractItemView::section QHeaderView::section {
-    show-decoration-selected: 0;
-    background: transparent;
-}
+                show-decoration-selected: 0;
+                
+            }
+            QAbstractItemView::section QHeaderView::section {
+                show-decoration-selected: 0;
+                background: transparent;
+            }
             '''
         self.trips.setStyleSheet(STYLESHEET)
 
-        # self.getTrips()
-        #TODO
+        self.cls.setPixmap(QtGui.QPixmap('src/img/cls.png'))
+        self.cls.setScaledContents(True)
+        self.cls.installEventFilter(self)
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.offset = None
+        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+
+
+    def paintEvent(self, event):
+        # get current window size
+        opt = QtWidgets.QStyleOption()
+        opt.initFrom(self)
+        rect = opt.rect
+
+        p = QPainter(self)
+        p.setRenderHint(QPainter.Antialiasing, True)
+        p.setBrush(opt.palette.brush(QPalette.Window))
+        p.setPen(QtCore.Qt.NoPen)
+        p.drawRoundedRect(rect, 40, 40)
+        p.end()
+
+    def mousePressEvent(self, event):
+            if event.button() == QtCore.Qt.LeftButton:
+                self.offset = event.pos()
+            else:
+                super().mousePressEvent(event)
+
+    def mouseMoveEvent(self, event):
+            if self.offset is not None and event.buttons() == QtCore.Qt.LeftButton:
+                self.move(self.pos() + event.pos() - self.offset)
+            else:
+                super().mouseMoveEvent(event)
+
+    def mouseReleaseEvent(self, event):
+            self.offset = None
+            super().mouseReleaseEvent(event)
 
     def eventFilter(self, s, e):
         if e.type() == QtCore.QEvent.MouseButtonPress:
@@ -371,20 +450,15 @@ QAbstractItemView::section QHeaderView::section {
 
             if s is self.planning:
                 self.openTrips()
-            # if s is self.emps:
-            #     pass
-            # if s is self.emps:
-            #     pass
-            # if s is self.emps:
-            #     pass
-            # if s is self.emps:
-            #     pass
-            # if s is self.emps:
-            #     pass
-            # if s is self.emps:
-            #     pass
-            # if s is self.emps:
-            #     pass
+        if s is self.cls:
+            if e.type() == QtCore.QEvent.Enter:
+                self.cls.setStyleSheet("border: 1px solid black; border-radius: 25px;")
+                print('mouse in ')
+            elif e.type() == QtCore.QEvent.Leave:
+                self.cls.setStyleSheet('border-color: 0px ;')
+                print('mouse out')
+            elif e.type() == QtCore.QEvent.MouseButtonPress:
+                os._exit(0)
 
         return super(Main, self).eventFilter(s, e)
 
@@ -477,7 +551,7 @@ class Trip_View(QtWidgets.QWidget):
         cur = cnx.cursor()
         cur.execute(f'''select v.matr, t.datetime, concat(d.firstName, " ", d.LastName) as driverName from vans v inner join trips t on t.van = v.id inner join drivers d on t.driver = d.id where t.id = {int(self.id_)}''')
         self.setWindowTitle('View The Trip\'s Details')
-        self.trip_id.setText(self.id_)
+        self.trip_id.setText(str(self.id_))
 
         dt = cur.fetchone()
         self.van_matr.setText(dt[0])
@@ -490,7 +564,6 @@ class Trip_View(QtWidgets.QWidget):
 
         cnx.close()
 
-        self.refreshTable()
         self.add.clicked.connect(self.add_agent)
         if desibleedit:
             self.agnts.setEnabled(False)
@@ -498,9 +571,46 @@ class Trip_View(QtWidgets.QWidget):
         self.prnt.clicked.connect(self.printTrip)
 
 
+        self.refreshTable()
         self.back_icon.setPixmap(QtGui.QPixmap('src/img/back.png'))
         self.back_icon.setScaledContents(True)
         self.back_icon.installEventFilter(self)
+        self.cls.setPixmap(QtGui.QPixmap('src/img/cls.png'))
+        self.cls.setScaledContents(True)
+        self.cls.installEventFilter(self)
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.offset = None
+
+        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+
+    def paintEvent(self, event):
+        # get current window size
+        opt = QtWidgets.QStyleOption()
+        opt.initFrom(self)
+        rect = opt.rect
+
+        p = QPainter(self)
+        p.setRenderHint(QPainter.Antialiasing, True)
+        p.setBrush(opt.palette.brush(QPalette.Window))
+        p.setPen(QtCore.Qt.NoPen)
+        p.drawRoundedRect(rect, 40, 40)
+        p.end()
+
+    def mousePressEvent(self, event):
+        if event.button() == QtCore.Qt.LeftButton:
+            self.offset = event.pos()
+        else:
+            super().mousePressEvent(event)
+
+    def mouseMoveEvent(self, event):
+        if self.offset is not None and event.buttons() == QtCore.Qt.LeftButton:
+            self.move(self.pos() + event.pos() - self.offset)
+        else:
+            super().mouseMoveEvent(event)
+
+    def mouseReleaseEvent(self, event):
+        self.offset = None
+        super().mouseReleaseEvent(event)
 
     def eventFilter(self, s, e):
         if s is self.back_icon:
@@ -512,6 +622,16 @@ class Trip_View(QtWidgets.QWidget):
             elif e.type() == QtCore.QEvent.Leave:
                 self.back_icon.setStyleSheet('border-color: 0px ;')
                 print('mouse out')
+        if s is self.cls:
+            if e.type() == QtCore.QEvent.Enter:
+                self.cls.setStyleSheet("border: 1px solid black; border-radius: 25px;")
+                print('mouse in ')
+            elif e.type() == QtCore.QEvent.Leave:
+                self.cls.setStyleSheet('border-color: 0px ;')
+                print('mouse out')
+            elif e.type() == QtCore.QEvent.MouseButtonPress:
+                os._exit(0)
+
         return super(Trip_View, self).eventFilter(s, e)
 
     def printTrip(self):
@@ -592,6 +712,7 @@ class Trip_View(QtWidgets.QWidget):
 
     def refreshTable(self):
 
+        [self.tableWidget.removeRow(0) for _ in range(self.tableWidget.rowCount())]
         cnx = con()
         cur = cnx.cursor()
         cur.execute(f'''select max_places from vans where matr like "{self.van_matr.text()}";''')
@@ -612,7 +733,6 @@ class Trip_View(QtWidgets.QWidget):
                 self.agnts.setEnabled(False)
             else:
                 self.agnts.setEnabled(True)
-            [self.tableWidget.removeRow(0) for _ in range(self.tableWidget.rowCount())]
 
             self.tableWidget.setRowCount(len(agents))
             self.tableWidget.setColumnCount(len(agents[0]))
@@ -634,18 +754,30 @@ class Trip_View(QtWidgets.QWidget):
         cur.execute(f'select agent from trips_history where trip = {self.trip_id.text()}')
         # print(f'current agents == > {list(set([i[0] for i in cur.fetchall()]))}')
         agents = []
-        existsAgents = tuple(set([i[0] for i in cur.fetchall()]))
-        print(f'select concat(firstName, "-", LastName) as fullName from agents where id not in {existsAgents};')
-        cur.execute(
-            f'select concat(firstName, "-", LastName) as fullName from agents where id not in {existsAgents};' if len(existsAgents) > 1 else f'select concat(firstName, "-", LastName) as fullName from agents where id != {existsAgents[0]};')
+        dtt = cur.fetchall()
+        print(dtt)
+        query = ''
+        if dtt:
+            existsAgents = tuple(set([i[0] for i in dtt])) if len(dtt) > 1 else (dtt[0]) if dtt else "()"
+            if len(existsAgents) > 1:
+                query = f'select concat(firstName, "-", LastName) as fullName from agents where id not in {existsAgents};'
+            else:
+                query = f'select concat(firstName, "-", LastName) as fullName from agents where id != {existsAgents[0]};'
 
-        # print(cur.fetchall())
+        else:
+            query = f'select concat(firstName, "-", LastName) as fullName from agents;'
+
+        cur.execute(query= query)
         self.agnts.clear()
         self.agnts.addItems(['Choose Agent ...'])
         self.agnts.addItems([i[0] for i in cur.fetchall()])
         self.agnts.setCurrentIndex(0)
 
         cnx.close()
+
+        print('reched finiched')
+
+
     def rowSelected(self):
         items = [i.text() for i in self.tableWidget.selectedItems()]
         print(items)
@@ -661,6 +793,90 @@ class Trip_View(QtWidgets.QWidget):
             self.bb = Main(self.role)
         self.bb.show()
         self.close()
+
+
+class AddTrip(QtWidgets.QWidget):
+    def __init__(self, role):
+        super(AddTrip, self).__init__()
+        QtWidgets.QWidget.__init__(self)
+        uic.loadUi(os.path.join(os.path.dirname(__file__), "ui/addTrip.ui"), self)
+        self.save_btn.clicked.connect(self.save_)
+        self.role = role
+        if self.role == 0:
+            print('The Admin')
+
+
+
+        self.back_icon.setPixmap(QtGui.QPixmap('src/img/back.png'))
+        self.back_icon.setScaledContents(True)
+        self.back_icon.installEventFilter(self)
+        # cur_date_time = strftime("%Y-%MM-%dd %hh:%mm:%ss", gmtime())
+        # now = QtCore.QDateTime.fromString(cur_date_time, 'yyyy-MM-dd hh:mm:ss')f
+        # print(now)
+        now = datetime.datetime.now()
+        self.dateTimeEdit.setDateTime(now)
+        print(now == self.dateTimeEdit.dateTime())
+        self.dateTimeEdit.dateTimeChanged.connect(lambda : self.save_btn.setEnabled(True) if datetime.datetime.now() <= self.dateTimeEdit.dateTime() else self.save_btn.setEnabled(False))
+        cnx = con()
+        cur = cnx.cursor()
+        cur.execute('select concat(firstName, " ", LastName) as fullName from drivers;')
+        self.drivers_.addItems([i[0] for i in cur.fetchall()])
+        cur.execute('select matr from vans;')
+        self.van_.addItems([i[0] for i in cur.fetchall()])
+        self.back = True
+        cnx.close()
+
+    def eventFilter(self, s, e):
+        if s is self.back_icon:
+            if e.type() == QtCore.QEvent.MouseButtonPress:
+                self.close()
+            if e.type() == QtCore.QEvent.Enter:
+                self.back_icon.setStyleSheet("border: 1px solid black; border-radius: 25px;")
+                print('mouse in ')
+            elif e.type() == QtCore.QEvent.Leave:
+                self.back_icon.setStyleSheet('border-color: 0px ;')
+                print('mouse out')
+        return super(AddTrip, self).eventFilter(s, e)
+
+    def closeEvent(self, event):
+        if self.back:
+            self.TripsPage = Trips(self.role)
+            self.TripsPage.show()
+            self.close()
+
+
+    def save_(self):
+        dt = self.dateTimeEdit.dateTime().toString(("yyyy-MM-dd HH"))
+        if datetime.datetime.now() <= self.dateTimeEdit.dateTime():
+            cnx = con()
+            cur = cnx.cursor()
+
+            cur.execute(f'select id from trips where datetime like "{dt}%"')
+            trip = cur.fetchone()
+            if not trip:
+
+                cur.execute(f'''insert into trips(van, driver, datetime, ttype) values(
+                (select id from vans where matr like "{self.van_.currentText()}"), 
+                (select id from drivers where firstName like "{str(self.drivers_.currentText()).split(" ")[0]}" and LastName like "{str(self.drivers_.currentText()).split(" ")[1]}"),
+                 "{dt}:00:00",
+                  "{"IN" if self.IN.isChecked() else "OUT"}"
+                  )''')
+                cnx.commit()
+
+            print(f'DT = {dt}')
+            cur.execute(f'select id from trips where datetime like "{dt}%"')
+            id = [cur.fetchone()[0]]
+            # print(id)
+            self.tripView = Trip_View(id=id, role=self.role)
+            self.tripView.show()
+            self.back = False
+            self.close()
+
+
+            cnx.close()
+
+        else:
+            notif(title="ERORR", msg=f"Can't create a trip with this date : {dt}")
 
 
 class Trips(QtWidgets.QWidget):
@@ -679,6 +895,50 @@ class Trips(QtWidgets.QWidget):
         self.back_icon.setPixmap(QtGui.QPixmap('src/img/back.png'))
         self.back_icon.setScaledContents(True)
         self.back_icon.installEventFilter(self)
+        self.create_btn.clicked.connect(self.createManualTrip)
+        self.cls.setPixmap(QtGui.QPixmap('src/img/cls.png'))
+        self.cls.setScaledContents(True)
+        self.cls.installEventFilter(self)
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.offset = None
+        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+
+
+    def paintEvent(self, event):
+        # get current window size
+        opt = QtWidgets.QStyleOption()
+        opt.initFrom(self)
+        rect = opt.rect
+
+        p = QPainter(self)
+        p.setRenderHint(QPainter.Antialiasing, True)
+        p.setBrush(opt.palette.brush(QPalette.Window))
+        p.setPen(QtCore.Qt.NoPen)
+        p.drawRoundedRect(rect, 40, 40)
+        p.end()
+
+    def mousePressEvent(self, event):
+            if event.button() == QtCore.Qt.LeftButton:
+                self.offset = event.pos()
+            else:
+                super().mousePressEvent(event)
+
+    def mouseMoveEvent(self, event):
+            if self.offset is not None and event.buttons() == QtCore.Qt.LeftButton:
+                self.move(self.pos() + event.pos() - self.offset)
+            else:
+                super().mouseMoveEvent(event)
+
+    def mouseReleaseEvent(self, event):
+            self.offset = None
+            super().mouseReleaseEvent(event)
+
+
+    def createManualTrip(self):
+        self.back = False
+        self.addTripPage = AddTrip(role=self.role)
+        self.addTripPage.show()
+        self.close()
 
     def eventFilter(self, s, e):
         if s is self.back_icon:
@@ -690,6 +950,17 @@ class Trips(QtWidgets.QWidget):
             elif e.type() == QtCore.QEvent.Leave:
                 self.back_icon.setStyleSheet('border-color: 0px ;')
                 print('mouse out')
+
+        if s is self.cls:
+            if e.type() == QtCore.QEvent.Enter:
+                self.cls.setStyleSheet("border: 1px solid black; border-radius: 25px;")
+                print('mouse in ')
+            elif e.type() == QtCore.QEvent.Leave:
+                self.cls.setStyleSheet('border-color: 0px ;')
+                print('mouse out')
+            elif e.type() == QtCore.QEvent.MouseButtonPress:
+                os._exit(0)
+
         return super(Trips, self).eventFilter(s, e)
 
     def closeEvent(self, event):
@@ -878,6 +1149,44 @@ class Agents(QtWidgets.QWidget):
         self.back_icon.setPixmap(QtGui.QPixmap('src/img/back.png'))
         self.back_icon.setScaledContents(True)
         self.back_icon.installEventFilter(self)
+        self.cls.setPixmap(QtGui.QPixmap('src/img/cls.png'))
+        self.cls.setScaledContents(True)
+        self.cls.installEventFilter(self)
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.offset = None
+
+        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+
+    def paintEvent(self, event):
+        # get current window size
+        opt = QtWidgets.QStyleOption()
+        opt.initFrom(self)
+        rect = opt.rect
+
+        p = QPainter(self)
+        p.setRenderHint(QPainter.Antialiasing, True)
+        p.setBrush(opt.palette.brush(QPalette.Window))
+        p.setPen(QtCore.Qt.NoPen)
+        p.drawRoundedRect(rect, 40, 40)
+        p.end()
+
+    def mousePressEvent(self, event):
+            if event.button() == QtCore.Qt.LeftButton:
+                self.offset = event.pos()
+            else:
+                super().mousePressEvent(event)
+
+    def mouseMoveEvent(self, event):
+            if self.offset is not None and event.buttons() == QtCore.Qt.LeftButton:
+                self.move(self.pos() + event.pos() - self.offset)
+            else:
+                super().mouseMoveEvent(event)
+
+    def mouseReleaseEvent(self, event):
+            self.offset = None
+            super().mouseReleaseEvent(event)
+
+
 
     def eventFilter(self, s, e):
         if s is self.back_icon:
@@ -889,6 +1198,15 @@ class Agents(QtWidgets.QWidget):
             elif e.type() == QtCore.QEvent.Leave:
                 self.back_icon.setStyleSheet('border-color: 0px ;')
                 print('mouse out')
+        if s is self.cls:
+            if e.type() == QtCore.QEvent.Enter:
+                self.cls.setStyleSheet("border: 1px solid black; border-radius: 25px;")
+                print('mouse in ')
+            elif e.type() == QtCore.QEvent.Leave:
+                self.cls.setStyleSheet('border-color: 0px ;')
+                print('mouse out')
+            elif e.type() == QtCore.QEvent.MouseButtonPress:
+                os._exit(0)
 
         return super(Agents, self).eventFilter(s, e)
 
@@ -1008,6 +1326,45 @@ class Vans(QtWidgets.QWidget):
         self.back_icon.setPixmap(QtGui.QPixmap('src/img/back.png'))
         self.back_icon.setScaledContents(True)
         self.back_icon.installEventFilter(self)
+        self.cls.setPixmap(QtGui.QPixmap('src/img/cls.png'))
+        self.cls.setScaledContents(True)
+        self.cls.installEventFilter(self)
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.offset = None
+
+        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+
+    def paintEvent(self, event):
+        # get current window size
+        opt = QtWidgets.QStyleOption()
+        opt.initFrom(self)
+        rect = opt.rect
+
+        p = QPainter(self)
+        p.setRenderHint(QPainter.Antialiasing, True)
+        p.setBrush(opt.palette.brush(QPalette.Window))
+        p.setPen(QtCore.Qt.NoPen)
+        p.drawRoundedRect(rect, 40, 40)
+        p.end()
+
+
+    def mousePressEvent(self, event):
+            if event.button() == QtCore.Qt.LeftButton:
+                self.offset = event.pos()
+            else:
+                super().mousePressEvent(event)
+
+    def mouseMoveEvent(self, event):
+            if self.offset is not None and event.buttons() == QtCore.Qt.LeftButton:
+                self.move(self.pos() + event.pos() - self.offset)
+            else:
+                super().mouseMoveEvent(event)
+
+    def mouseReleaseEvent(self, event):
+            self.offset = None
+            super().mouseReleaseEvent(event)
+
+
 
     def eventFilter(self, s, e):
         if s is self.back_icon:
@@ -1019,6 +1376,17 @@ class Vans(QtWidgets.QWidget):
             elif e.type() == QtCore.QEvent.Leave:
                 self.back_icon.setStyleSheet('border-color: 0px ;')
                 print('mouse out')
+
+        if s is self.cls:
+            if e.type() == QtCore.QEvent.Enter:
+                self.cls.setStyleSheet("border: 1px solid black; border-radius: 25px;")
+                print('mouse in ')
+            elif e.type() == QtCore.QEvent.Leave:
+                self.cls.setStyleSheet('border-color: 0px ;')
+                print('mouse out')
+            elif e.type() == QtCore.QEvent.MouseButtonPress:
+                os._exit(0)
+
         return super(Vans, self).eventFilter(s, e)
 
     def searching(self):
@@ -1199,6 +1567,43 @@ class Compaigns(QtWidgets.QWidget):
         self.back_icon.setPixmap(QtGui.QPixmap('src/img/back.png'))
         self.back_icon.setScaledContents(True)
         self.back_icon.installEventFilter(self)
+        self.cls.setPixmap(QtGui.QPixmap('src/img/cls.png'))
+        self.cls.setScaledContents(True)
+        self.cls.installEventFilter(self)
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.offset = None
+        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+
+    def paintEvent(self, event):
+        # get current window size
+        opt = QtWidgets.QStyleOption()
+        opt.initFrom(self)
+        rect = opt.rect
+
+        p = QPainter(self)
+        p.setRenderHint(QPainter.Antialiasing, True)
+        p.setBrush(opt.palette.brush(QPalette.Window))
+        p.setPen(QtCore.Qt.NoPen)
+        p.drawRoundedRect(rect, 40, 40)
+        p.end()
+
+    def mousePressEvent(self, event):
+            if event.button() == QtCore.Qt.LeftButton:
+                self.offset = event.pos()
+            else:
+                super().mousePressEvent(event)
+
+    def mouseMoveEvent(self, event):
+            if self.offset is not None and event.buttons() == QtCore.Qt.LeftButton:
+                self.move(self.pos() + event.pos() - self.offset)
+            else:
+                super().mouseMoveEvent(event)
+
+    def mouseReleaseEvent(self, event):
+            self.offset = None
+            super().mouseReleaseEvent(event)
+
+
 
     def eventFilter(self, s, e):
         if s is self.back_icon:
@@ -1210,6 +1615,18 @@ class Compaigns(QtWidgets.QWidget):
             elif e.type() == QtCore.QEvent.Leave:
                 self.back_icon.setStyleSheet('border-color: 0px ;')
                 print('mouse out')
+
+        if s is self.cls:
+            if e.type() == QtCore.QEvent.Enter:
+                self.cls.setStyleSheet("border: 1px solid black; border-radius: 25px;")
+                print('mouse in ')
+            elif e.type() == QtCore.QEvent.Leave:
+                self.cls.setStyleSheet('border-color: 0px ;')
+                print('mouse out')
+            elif e.type() == QtCore.QEvent.MouseButtonPress:
+                os._exit(0)
+
+
         return super(Compaigns, self).eventFilter(s, e)
 
     def refreshTable(self, key=None):
