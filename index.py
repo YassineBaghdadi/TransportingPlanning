@@ -364,7 +364,8 @@ class Main(QtWidgets.QWidget):
             print('The Admin')
 
         self.setWindowTitle('Home Page')
-
+        width = 120
+        height = 67
         # self.emps.clicked.connect(self.openAgentsUI)
         self.emps.installEventFilter(self)
         self.emps_icon.setPixmap(QtGui.QPixmap('src/img/emps.png'))
@@ -377,6 +378,7 @@ class Main(QtWidgets.QWidget):
 
         self.plan_icon.installEventFilter(self)
         self.plan_icon.setPixmap(QtGui.QPixmap('src/img/planning.png'))
+        print(self.plan_icon.width(), self.plan_icon.height())
         # self.emps.setFixedSize()
 
 
@@ -450,6 +452,15 @@ class Main(QtWidgets.QWidget):
 
             if s is self.planning:
                 self.openTrips()
+
+        if e.type() == QtCore.QEvent.Enter:
+            if s  in (self.emps, self.vans, self.comps, self.planning):
+                self.inhover(s=s)
+
+        if e.type() == QtCore.QEvent.Leave:
+            if s  in (self.emps, self.vans, self.comps, self.planning):
+                self.outhover(s=s)
+
         if s is self.cls:
             if e.type() == QtCore.QEvent.Enter:
                 self.cls.setStyleSheet("border: 1px solid black; border-radius: 25px;")
@@ -460,7 +471,16 @@ class Main(QtWidgets.QWidget):
             elif e.type() == QtCore.QEvent.MouseButtonPress:
                 os._exit(0)
 
+
+
         return super(Main, self).eventFilter(s, e)
+
+    def inhover(self, s):
+        s.setStyleSheet("border: 1px solid black; border-radius: 25px;")
+
+    def outhover(self, s):
+        s.setStyleSheet('border-color: 0px ;')
+
 
     def openVans(self):
         self.vansUI = Vans(role=self.role)
