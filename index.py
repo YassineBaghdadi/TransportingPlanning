@@ -453,13 +453,13 @@ class Main(QtWidgets.QWidget):
             if s is self.planning:
                 self.openTrips()
 
-        if e.type() == QtCore.QEvent.Enter:
-            if s  in (self.emps, self.vans, self.comps, self.planning):
-                self.inhover(s=s)
-
-        if e.type() == QtCore.QEvent.Leave:
-            if s  in (self.emps, self.vans, self.comps, self.planning):
-                self.outhover(s=s)
+        # if e.type() == QtCore.QEvent.Enter:
+        #     if s  in (self.emps, self.vans, self.comps, self.planning):
+        #         self.inhover(s=s)
+        #
+        # if e.type() == QtCore.QEvent.Leave:
+        #     if s  in (self.emps, self.vans, self.comps, self.planning):
+        #         self.outhover(s=s)
 
         if s is self.cls:
             if e.type() == QtCore.QEvent.Enter:
@@ -501,8 +501,14 @@ class Main(QtWidgets.QWidget):
         cur = cnx.cursor()
         cur.execute(f'select datetime from trips where id = {int(data[0])} ;')
         dd = cur.fetchone()[0]
-        if int(strftime("%H", gmtime())) >= int(str(dd).split(' ')[1].split(':')[0]) and int(str(dd).split(' ')[0].split('-')[2]) == int(strftime("%d", gmtime())):
+        print(f'thr date : {dd}')
+        trDate = datetime.datetime.strptime(f"{str(dd).split(' ')[0]} {str(dd).split(' ')[1].split(':')[0]}", '%Y-%m-%d %H')
+        now = datetime.datetime.strptime(datetime.datetime.today().strftime('%Y-%m-%d %H'), '%Y-%m-%d %H')
 
+
+        # if int(strftime("%H", gmtime())) >= int(str(dd).split(' ')[1].split(':')[0]) and int(str(dd).split(' ')[0].split('-')[2]) < int(strftime("%d", gmtime())) and int(str(dd).split(' ')[0].split('-')[1]) <= int(strftime("%m", gmtime())) :
+        if now > trDate:
+            print('the combo should desibled ')
             self.TV = Trip_View(role=self.role, id=data, desibleedit=True)
             notif(self, title="Error", msg='You can\'t Modify this Trip .')
         else:
@@ -585,7 +591,8 @@ class Trip_View(QtWidgets.QWidget):
         cnx.close()
 
         self.add.clicked.connect(self.add_agent)
-        if desibleedit:
+        self.readOnly = desibleedit
+        if self.readOnly:
             self.agnts.setEnabled(False)
             self.tableWidget.setEnabled(False)
         self.prnt.clicked.connect(self.printTrip)
@@ -749,10 +756,11 @@ class Trip_View(QtWidgets.QWidget):
         maxP = int(cur.fetchone()[0])
 
         if agents := data:
-            if len(agents) >= maxP:
-                self.agnts.setEnabled(False)
-            else:
-                self.agnts.setEnabled(True)
+            if not self.readOnly:
+                if len(agents) >= maxP :
+                    self.agnts.setEnabled(False)
+                else:
+                    self.agnts.setEnabled(True)
 
             self.tableWidget.setRowCount(len(agents))
             self.tableWidget.setColumnCount(len(agents[0]))
@@ -1133,8 +1141,13 @@ class Trips(QtWidgets.QWidget):
         cur = cnx.cursor()
         cur.execute(f'select datetime from trips where id = {int(data[0])} ;')
         dd = cur.fetchone()[0]
-        if int(strftime("%H", gmtime())) >= int(str(dd).split(' ')[1].split(':')[0]) and int(str(dd).split(' ')[0].split('-')[2]) <= int(strftime("%d", gmtime())):
 
+        trDate = datetime.datetime.strptime(f"{str(dd).split(' ')[0]} {str(dd).split(' ')[1].split(':')[0]}",
+                                            '%Y-%m-%d %H')
+        now = datetime.datetime.strptime(datetime.datetime.today().strftime('%Y-%m-%d %H'), '%Y-%m-%d %H')
+
+        # if int(strftime("%H", gmtime())) >= int(str(dd).split(' ')[1].split(':')[0]) and int(str(dd).split(' ')[0].split('-')[2]) < int(strftime("%d", gmtime())) and int(str(dd).split(' ')[0].split('-')[1]) <= int(strftime("%m", gmtime())) :
+        if now > trDate:
             self.TV = Trip_View(role=self.role, id=data, desibleedit=True, p=True)
             notif(self, title="Error", msg='You can\'t Modify this Trip .')
         else:
@@ -1231,7 +1244,8 @@ class Agents(QtWidgets.QWidget):
         return super(Agents, self).eventFilter(s, e)
 
     def searching(self):
-        self.refreshTable(key= self.search.text())
+
+        self.refreshTable(key= self.search.text() if self.search.text() else None)
 
     def refreshTable(self, key = None):
 
@@ -1239,24 +1253,40 @@ class Agents(QtWidgets.QWidget):
 
         cnx = con()
         cur = cnx.cursor()
-        if self.groups.currentIndex() == 0:
-            self.search.setEnabled(True)
-            self.search.setStyleSheet('border : 1px solid blue')
-            if key:
-                cur.execute(
-                    f'select a.id, a.firstName, a.LastName, a.CIN, a.address, g.name, g.shift from agents a inner join grps g on a.grp = g.id where a.firstName like "%{key}%" or a.LastName like "%{key}%" or a.CIN like "%{key}%" or a.address like "%{key}%" or g.name like "%{key}%";')
-            else:
-                cur.execute(
-                f'select a.id, a.firstName, a.LastName, a.CIN, a.address, g.name, g.shift from agents a inner join grps g on a.grp = g.id;')
+
+        if key:= self.search.text():
+            query = f'''select a.id, a.firstName, a.LastName, a.CIN, a.address, g.name, g.shift  from 
+            agents a inner join grps g on a.grp = g.id where
+            {f"(g.name like '{self.groups.currentText()}') and "if self.groups.currentIndex() != 0 else " "} ( a.firstName like "%{key}%" or a.LastName like "%{key}%" or a.CIN like "%{key}%" or a.address like "%{key}%" or g.name like "%{key}%");'''
         else:
-            self.search.setEnabled(False)
-            self.search.setStyleSheet('border : 2px solid red')
-            cur.execute(f'select id from grps where name = "{self.groups.currentText()}"')
-            cur.execute(
-                f'select a.id, a.firstName, a.LastName, a.CIN, a.address, g.name, g.shift from agents a inner join grps g on a.grp = g.id  where a.grp = {cur.fetchone()[0]};')
+            query = f'''select a.id, a.firstName, a.LastName, a.CIN, a.address, g.name, g.shift  from 
+                        agents a inner join grps g on a.grp = g.id {f" where g.name like '{self.groups.currentText()}'" if self.groups.currentIndex() != 0 else ""}'''
+
+        print('#'*30)
+        print(key)
+
+        print(query)
+        # if self.groups.currentIndex() == 0:
+        #
+        #
+        #     # self.search.setEnabled(True)
+        #     self.search.setStyleSheet('border : 1px solid blue')
+        #     if key:
+        #         cur.execute(
+        #             f'select {clms} from agents a inner join grps g on a.grp = g.id where a.firstName like "%{key}%" or a.LastName like "%{key}%" or a.CIN like "%{key}%" or a.address like "%{key}%" or g.name like "%{key}%";')
+        #     else:
+        #         cur.execute(
+        #         f'select a.id, a.firstName, a.LastName, a.CIN, a.address, g.name, g.shift from agents a inner join grps g on a.grp = ;')
+        # else:
+        #     # self.search.setEnabled(False)
+        #     # self.search.setStyleSheet('border : 2px solid red')
+        #     cur.execute(f'select id from grps where name = "{self.groups.currentText()}"')
+        #     cur.execute(
+        #         f'select a.id, a.firstName, a.LastName, a.CIN, a.address, g.name, g.shift from agents a inner join grps g on a.grp = g.id  where a.grp = {cur.fetchone()[0]} and (a.firstName like "%{key}%" or a.LastName like "%{key}%" or a.CIN like "%{key}%" or a.address like "%{key}%");')
 
 
         agents = []
+        cur.execute(query)
         data = cur.fetchall()
 
         if data:
@@ -1284,9 +1314,17 @@ class Agents(QtWidgets.QWidget):
                     self.tableWidget.setItem(r, c, QtWidgets.QTableWidgetItem(str(agents[r][c])))
 
             cur.execute('select name from grps')
-            grps_names = [i[0] for i in cur.fetchall()]
+            print(f'Groups Items : {[self.groups.itemText(i) for i in range(self.groups.count())]}')
+            grps_names = []
+            for o in cur.fetchall():
+                if o[0] not in [self.groups.itemText(i) for i in range(self.groups.count())]:
+                    grps_names.append(o[0])
+
+
+
             print(grps_names)
-            self.groups.addItems(grps_names)
+            # self.groups.clear()
+            self.groups.addItems([str(i) for i in grps_names])
         else:
             print('no data found ')
         cnx.close()
