@@ -700,6 +700,24 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
       </widget>
      </item>
      <item>
+      <widget class="QComboBox" name="strr">
+       <property name="insertPolicy">
+        <enum>QComboBox::InsertAtTop</enum>
+       </property>
+       <property name="sizeAdjustPolicy">
+        <enum>QComboBox::AdjustToContents</enum>
+       </property>
+       <property name="frame">
+        <bool>true</bool>
+       </property>
+       <item>
+        <property name="text">
+         <string>Choose Neighberhood ...</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item>
       <widget class="QLineEdit" name="ad">
        <property name="font">
         <font>

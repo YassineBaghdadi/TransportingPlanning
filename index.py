@@ -38,7 +38,7 @@ def preparingDB():
     cur.execute('''Create table if not exists users (id  INT AUTO_INCREMENT, firstName Varchar(50), LastName Varchar(50), username Varchar(50), pass Varchar(50), role INT , PRIMARY KEY (id));''')
     cur.execute('''create table if not exists grps (id  INT AUTO_INCREMENT, name Varchar(50), shift Varchar(20) , PRIMARY KEY (id));''')
     cnx.commit()
-    cur.execute('''create table if not exists agents (id  INT AUTO_INCREMENT, firstName Varchar(50), LastName Varchar(50), CIN varchar(50), address Varchar(100), grp int , PRIMARY KEY (id), foreign key(grp) references grps(id));''')
+    cur.execute('''create table if not exists agents (id  INT AUTO_INCREMENT, firstName Varchar(50), LastName Varchar(50), CIN varchar(50), address Varchar(100), grp int, zone Varchar(45), street  Varchar(45), PRIMARY KEY (id), foreign key(grp) references grps(id));''')
     cur.execute('''create table if not exists vans (id  INT AUTO_INCREMENT, matr Varchar(50), driver varchar(50), max_places int , PRIMARY KEY (id))''')
     cur.execute('''create table if not exists vans(id  INT AUTO_INCREMENT, matricule varchar(50), max_places int , PRIMARY KEY (id))''')
     cur.execute('''create table if not exists drivers(id  INT AUTO_INCREMENT, firstName Varchar(50), LastName varchar(50), username Varchar(45), pass Varchar(45), PRIMARY KEY (id))''')
@@ -354,6 +354,7 @@ class LogIn(QtWidgets.QWidget):
 
         conn.close()
 
+
 class Main(QtWidgets.QWidget):
     def __init__(self, role):
         super(Main, self).__init__()
@@ -505,6 +506,7 @@ class Main(QtWidgets.QWidget):
         trDate = datetime.datetime.strptime(f"{str(dd).split(' ')[0]} {str(dd).split(' ')[1].split(':')[0]}", '%Y-%m-%d %H')
         now = datetime.datetime.strptime(datetime.datetime.today().strftime('%Y-%m-%d %H'), '%Y-%m-%d %H')
 
+        # print(f'{"*"*100}\nnow ({now}) > trDate ({trDate}) = {now > trDate}\n{"*"*100}')
 
         # if int(strftime("%H", gmtime())) >= int(str(dd).split(' ')[1].split(':')[0]) and int(str(dd).split(' ')[0].split('-')[2]) < int(strftime("%d", gmtime())) and int(str(dd).split(' ')[0].split('-')[1]) <= int(strftime("%m", gmtime())) :
         if now > trDate:
@@ -561,6 +563,7 @@ class Main(QtWidgets.QWidget):
             self.trips.addTopLevelItem(item)
             ind += 1
         cnx.close()
+
 
 class Trip_View(QtWidgets.QWidget):
     def __init__(self, role, id, desibleedit = False, p=False):
@@ -1255,11 +1258,11 @@ class Agents(QtWidgets.QWidget):
         cur = cnx.cursor()
 
         if key:= self.search.text():
-            query = f'''select a.id, a.firstName, a.LastName, a.CIN, a.address, g.name, g.shift  from 
+            query = f'''select a.id, a.firstName, a.LastName, a.CIN, a.address, g.name, g.shift, a.zone  from 
             agents a inner join grps g on a.grp = g.id where
             {f"(g.name like '{self.groups.currentText()}') and "if self.groups.currentIndex() != 0 else " "} ( a.firstName like "%{key}%" or a.LastName like "%{key}%" or a.CIN like "%{key}%" or a.address like "%{key}%" or g.name like "%{key}%");'''
         else:
-            query = f'''select a.id, a.firstName, a.LastName, a.CIN, a.address, g.name, g.shift  from 
+            query = f'''select a.id, a.firstName, a.LastName, a.CIN, a.address, g.name, g.shift, a.zone  from 
                         agents a inner join grps g on a.grp = g.id {f" where g.name like '{self.groups.currentText()}'" if self.groups.currentIndex() != 0 else ""}'''
 
         print('#'*30)
@@ -1293,20 +1296,21 @@ class Agents(QtWidgets.QWidget):
 
 
             for r in data:
-                agents.append([r[0], f'{r[1]} {r[2]}', r[3], r[4], r[5], r[6]])
-            head = ['Agent ID ', 'Full Name', 'CIN', 'Adress', 'Group', 'Shift']
+                agents.append([r[0], f'{r[1]} {r[2]}', r[3], r[4], r[5], r[6], r[7]])
+            head = ['Agent ID ', 'Full Name', 'CIN', 'Adress', 'Group', 'Shift', 'Zone']
             print(agents)
             self.tableWidget.setColumnCount(len(agents[0]))
             self.tableWidget.setRowCount(len(agents))
             # self.tableWidget.horizontalHeader().setSectionResizeMode(head.index(head[-1]), QHeaderView.Stretch)
             # self.tableWidget.resizeColumnsToContents()
 
-            self.tableWidget.horizontalHeader().setSectionResizeMode(0, QHeaderView.Fixed)
-            self.tableWidget.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeToContents)
+            self.tableWidget.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeToContents)
+            self.tableWidget.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch)
             self.tableWidget.horizontalHeader().setSectionResizeMode(2, QHeaderView.Fixed)
-            self.tableWidget.horizontalHeader().setSectionResizeMode(3, QHeaderView.Stretch)
+            self.tableWidget.horizontalHeader().setSectionResizeMode(3, QHeaderView.ResizeToContents)
             self.tableWidget.horizontalHeader().setSectionResizeMode(4, QHeaderView.ResizeToContents)
-            self.tableWidget.horizontalHeader().setSectionResizeMode(5, QHeaderView.Fixed)
+            self.tableWidget.horizontalHeader().setSectionResizeMode(5, QHeaderView.ResizeToContents)
+            self.tableWidget.horizontalHeader().setSectionResizeMode(6, QHeaderView.ResizeToContents)
 
             self.tableWidget.setHorizontalHeaderLabels(head)
             for r in range(len(agents)):
@@ -1342,7 +1346,12 @@ class Agents(QtWidgets.QWidget):
     def edit(self):
 
         self.back = False
-        self.eA = AddAgent(self.role, do='edit', data=[i.text() for i in self.tableWidget.selectedItems()])
+        dt = [i.text() for i in self.tableWidget.selectedItems()]
+        cnx = con()
+        cur = cnx.cursor()
+        cur.execute(f'select street from agents where id = {int(dt[0])}')
+        dt.append(cur.fetchone()[0])
+        self.eA = AddAgent(self.role, do='edit', data=dt)
         self.eA.show()
         self.close()
 
@@ -1857,6 +1866,30 @@ class AddAgent(QtWidgets.QWidget):
         print(grps_names)
         self.grps.addItems(grps_names)
         self.data = data
+
+
+        self.ONSM = ['HAY ALMANAR RTE AHFIR', 'HAY JARF LAKHDAR', 'HAY AMAL 1 et 2', 'LOTS SALAMA', 'HAY ANGADI',
+                'hay ALOUAHDA RTE TAZA', 'HAY ENNAHDA ( ex amr alboulissi)', 'hay khaloufi , hay alouafae',
+                'LOTS AZIZI , AZOUHOUr , BENKHALDOUN RTE JERADA', 'HAY ALJAWHARA , BENAZZI', 'LOTS MILITAIRE OLM',
+                'HAY LAMHALLA RHA TBOUL', 'HAY ESSALAM AOUINAT ESSARAK', 'HAY ASSAADA AOUINAT ESSARAK',
+                "HAY STADE D'HONNEUR", 'HAY BENKHIRANE', 'LOT IRIS', 'HAY ALHIKMA , HAY ALAIRFANE', 'HAY BELAMRAH',
+                'HAY BOUARFA', 'HAY ERRABIE , LOTS BELLAOUI', 'HAY ALQODS', 'HAY ALANDALOUS', 'HAY HAKKOU',
+                'ADOUHA']
+        self.DK = ['CGI Rte Ahfir', 'LOTS TALHAOUI ET MIR', 'RIAD ISLY', 'LOTS ALJ RTE AHFIR',
+              'CITE GOLF RTE AHFIR', 'Sadrat bouamoud hay med belkhdar', 'HAY JARF LAKHDAR',
+              'HAY ALHASSANI ( KOULOUCH)', 'TOBA INTERIEUR', 'HAY TANMIA', 'HAY MAURITANIA', 'Hay tenis',
+              'HAY ALBOUSTANE', 'HAY ANNASR , RJAF ALLAH , HAY GHAR ALBAROUD']
+        self.SY = ['HAY ALFATH , LOTS ANGAD , HAY ESSALAM , DEM', 'HAY MY MILOUD',
+              'HAY LABYAYED , HAY FARAH , HAY MEXICO , LOTS MINICIPALITE', 'HAY LAHBOUS DEM', 'HAY MY MUSTAPHA',
+              'HAY EZZAYTOUNE', 'HAY AGDAL', 'HAY ANAJD , HASSANIA']
+        self.SZ = ['CENTRE VILLE', 'HAY BOUDIR', 'DERB MBASSOU', 'HAY RAS OUSFOUR', 'LOTS BOUKNADEL RTE TAIRET',
+              'HAY AL MASSIRA', 'HAY LAMHALLA , BD ALHIJAZ', 'CENTRE VILLE (VILLE NOUVELLE)', 'MEDINA']
+
+
+        self.allhoods = self.ONSM + self.DK + self.SY + self.SZ
+
+        print(f'the data that i want ====>  {self.data}')
+        #TODO : The Data ===> ['19', 'RIME ZAHIRI', 'F652030', 'HAY SAADA RUE AL BATRIQ', 'TDE', '08-17', 'None']
         if self.data:
             self.Fname.setText(str(self.data[1]).split(' ')[0])
             self.Lname.setText(str(self.data[1]).split(' ')[1])
@@ -1864,13 +1897,17 @@ class AddAgent(QtWidgets.QWidget):
             self.ad.setText(self.data[3])
             self.grps.setCurrentIndex(grps_names.index(self.data[4]))
 
+            self.strr.setCurrentIndex(self.allhoods.index(self.data[7]) if self.data[7] != None else 0)
+
         self.setWindowTitle('Add new Agent')
 
         self.back_icon.installEventFilter(self)
         self.back_icon.setPixmap(QtGui.QPixmap('src/img/back.png'))
         self.back_icon.setScaledContents(True)
 
-
+        print('+' *100)
+        print(self.allhoods)
+        self.strr.addItems(self.allhoods)
         cnx.close()
 
     def eventFilter(self, s, e):
@@ -1881,7 +1918,7 @@ class AddAgent(QtWidgets.QWidget):
                 self.back_icon.setStyleSheet("border: 1px solid black; border-radius: 25px;")
                 print('mouse in ')
             elif e.type() == QtCore.QEvent.Leave:
-                self.back_icon.setStyleSheet('border-color: 0px ;')
+                self.back_icon.setStyleSheet('border-color: 0px;')
                 print('mouse out')
 
 
@@ -1896,11 +1933,23 @@ class AddAgent(QtWidgets.QWidget):
 
 
     def save(self):
-        if len(self.Fname.text()) > 3 and len(self.Lname.text()) > 3 and len(self.CIN.text()) > 3 and len(self.ad.text()) > 3:
+        if len(self.Fname.text()) > 3 and len(self.Lname.text()) > 3 and len(self.CIN.text()) > 3 and len(self.ad.text()) > 3 and self.strr.currentIndex() != 0:
             cnx = con()
             cur = cnx.cursor()
             cur.execute(f'select id from grps where name like "{self.grps.currentText()}"')
             grp = int(cur.fetchone()[0])
+            zone = ''
+
+
+
+            if self.strr.currentText() in self.ONSM:
+                zone = "Oued Nachef Sidi Maafa"
+            elif self.strr.currentText() in self.DK:
+                zone = "Sidi Driss EL Kadi"
+            elif self.strr.currentText() in self.SY:
+                zone = "Sidi Yahya"
+            elif  self.strr.currentText() in self.SZ:
+                zone = "Sidi Ziane"
 
             if self.action == 'save':
                 cur.execute(
@@ -1911,7 +1960,7 @@ class AddAgent(QtWidgets.QWidget):
                     self.Lname.setStyleSheet('border : 2px solid red')
                     notif(self, title='Transport Planning ', msg='This Agent already exists in the Database ')
                 else:
-                    cur.execute(f'insert into agents (firstName, LastName, CIN, address, grp) value ("{self.Fname.text()}", "{self.Lname.text()}", "{self.CIN.text()}", "{self.ad.text()}", {grp});')
+                    cur.execute(f'insert into agents (firstName, LastName, CIN, address, grp, zone, street) value ("{self.Fname.text()}", "{self.Lname.text()}", "{self.CIN.text()}", "{self.ad.text()}", {grp}, "{zone}", "{self.strr.currentText()}");')
                     cnx.commit()
             elif self.action == 'edit':
                     cur.execute(f'''
@@ -1919,7 +1968,9 @@ class AddAgent(QtWidgets.QWidget):
                                             LastName = "{self.Lname.text()}",
                                             CIN = "{self.CIN.text()}",
                                             address = "{self.ad.text()}",
-                                            grp = {grp}
+                                            grp = {grp},
+                                            zone = "{zone}",
+                                            street = "{self.strr.currentText()}",
                                             where id = {int(self.data[0])}
                         ''')
                     cnx.commit()
@@ -1931,6 +1982,8 @@ class AddAgent(QtWidgets.QWidget):
             self.CIN.clear()
             self.ad.clear()
             self.grps.setCurrentIndex(0)
+            self.strr.setCurrentIndex(0)
+
 
             cnx.close()
 
