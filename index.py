@@ -22,7 +22,7 @@ def notif(self = None, title = '', msg = ''):
             title=title,
             message=msg,
             app_icon=os.path.join(os.getcwd(), 'src/img/it.ico'),
-            timeout=60,
+            timeout=5,
         )
     except:
         QtWidgets.QMessageBox.about(self, title, msg)
@@ -50,7 +50,7 @@ def preparingDB():
     cur.execute('''create table if not exists trips_history(id  INT AUTO_INCREMENT,trip int, agent int, pick_time varchar(50), presence int, foreign key(trip) references trips(id), foreign key(agent) references agents(id), PRIMARY KEY (id))''')
     cnx.commit()
     cnx.close()
-    print('tables created ')
+    #print('tables created ')
 
 
 # preparingDB()
@@ -59,7 +59,7 @@ def preparingDB():
 def createPlannings():
     today = datetime.date.today()
     day = datetime.datetime.today().strftime('%A')
-    print(day)
+    #print(day)
     if day.lower() == "friday":
         tomorrow = datetime.date.today() + datetime.timedelta(days=3)
     else:
@@ -68,7 +68,7 @@ def createPlannings():
     # tomorrow = today #TODO Just for test
     doneDates = []
     for date in [today, tomorrow]:
-        print(f'date ==> {date}')
+        #print(f'date ==> {date}')
         cnx = con()
         cur = cnx.cursor()
         cur.execute('select shift from grps')
@@ -84,7 +84,7 @@ def createPlannings():
                 data.append(f'0{i}')
             else:
                 data.append(str(i))
-        # print(data)
+        #print(data)
         trips = {}
         total = 0
         ids = []
@@ -97,16 +97,18 @@ def createPlannings():
 
             cur.execute(query)
             result = cur.fetchall()
-            # print(result)
+            # ##print(result)
 
             count = len(result)
 
             trips[h] = [i[0] for i in result]
             total += count
 
-        print(trips)
-        print(total)
+        ##print(trips)
+        ##print(total)
         maxForVan = 18
+        v1 = [8, 13, 17, 22]
+        v2 = [9, 14, 18, 23]
         for time, agents in trips.items():
 
             vansNeeded = 0
@@ -115,6 +117,7 @@ def createPlannings():
                     vansNeeded = 2
                 else:
                     vansNeeded = 1
+
 
                 if vansNeeded == 1:
                     cur.execute(
@@ -172,6 +175,8 @@ def createPlannings():
     notif(title="Saccom IT Departement : ", msg=f'{len(doneDates)} Plannings has been created : {doneDates} ')
 
 
+
+
 class Splash(QtWidgets.QDialog):
     def __init__(self):
         super(Splash, self).__init__()
@@ -210,7 +215,7 @@ class Splash(QtWidgets.QDialog):
         conn = con()
         #todo prepaire the error interface
         if not conn:
-            print('can\'t connect to the database ...')
+            ##print('can\'t connect to the database ...')
             exit()
         conn.close()
         return True
@@ -331,7 +336,7 @@ class LogIn(QtWidgets.QWidget):
         username = self.username_in.text()
         passwrd = self.passwrd_in.text()
 
-        print(f'UserName : {username}\nPassword : {passwrd}')
+        ##print(f'UserName : {username}\nPassword : {passwrd}')
         conn = con()
         cur = conn.cursor()
         try:
@@ -379,7 +384,7 @@ class Main(QtWidgets.QWidget):
 
         self.plan_icon.installEventFilter(self)
         self.plan_icon.setPixmap(QtGui.QPixmap('src/img/planning.png'))
-        print(self.plan_icon.width(), self.plan_icon.height())
+        ##print(self.plan_icon.width(), self.plan_icon.height())
         # self.emps.setFixedSize()
 
 
@@ -389,7 +394,8 @@ class Main(QtWidgets.QWidget):
         self.trips.setHeaderLabels(head)
         self.getCurrentPlanning()
         self.trips.itemSelectionChanged.connect(lambda : print(f'Select ==> {self.trips.selectedItems()[0].text(0)}'))
-        self.trips.itemDoubleClicked.connect(self.trip_View)
+        # self.trips.itemDoubleClicked.connect(self.trip_View)
+        self.trips.itemDoubleClicked.connect(lambda : [print(ind.data()) for ind in self.trips.selectedItems()])
         self.comps.installEventFilter(self)
         self.vans.installEventFilter(self)
         STYLESHEET = '''QAbstractItemView QHeaderView {
@@ -465,10 +471,10 @@ class Main(QtWidgets.QWidget):
         if s is self.cls:
             if e.type() == QtCore.QEvent.Enter:
                 self.cls.setStyleSheet("border: 1px solid black; border-radius: 25px;")
-                print('mouse in ')
+                ##print('mouse in ')
             elif e.type() == QtCore.QEvent.Leave:
                 self.cls.setStyleSheet('border-color: 0px ;')
-                print('mouse out')
+                ##print('mouse out')
             elif e.type() == QtCore.QEvent.MouseButtonPress:
                 os._exit(0)
 
@@ -497,20 +503,20 @@ class Main(QtWidgets.QWidget):
     def trip_View(self):
 
         data = [i.text(0) for i in self.trips.selectedItems()]
-        print(f'data ==> {data}')
+        ##print(f'data ==> {data}')
         cnx = con()
         cur = cnx.cursor()
         cur.execute(f'select datetime from trips where id = {int(data[0])} ;')
         dd = cur.fetchone()[0]
-        print(f'thr date : {dd}')
+        ##print(f'thr date : {dd}')
         trDate = datetime.datetime.strptime(f"{str(dd).split(' ')[0]} {str(dd).split(' ')[1].split(':')[0]}", '%Y-%m-%d %H')
         now = datetime.datetime.strptime(datetime.datetime.today().strftime('%Y-%m-%d %H'), '%Y-%m-%d %H')
 
-        # print(f'{"*"*100}\nnow ({now}) > trDate ({trDate}) = {now > trDate}\n{"*"*100}')
+        # ##print(f'{"*"*100}\nnow ({now}) > trDate ({trDate}) = {now > trDate}\n{"*"*100}')
 
         # if int(strftime("%H", gmtime())) >= int(str(dd).split(' ')[1].split(':')[0]) and int(str(dd).split(' ')[0].split('-')[2]) < int(strftime("%d", gmtime())) and int(str(dd).split(' ')[0].split('-')[1]) <= int(strftime("%m", gmtime())) :
         if now > trDate:
-            print('the combo should desibled ')
+            ##print('the combo should desibled ')
             self.TV = Trip_View(role=self.role, id=data, desibleedit=True)
             notif(self, title="Error", msg='You can\'t Modify this Trip .')
         else:
@@ -536,7 +542,7 @@ class Main(QtWidgets.QWidget):
         self.trips.clear()
         currentHour = strftime("%H", gmtime())
         currentMinute = strftime("%M", gmtime())
-        print(f'Current Minute : {currentMinute}')
+        ##print(f'Current Minute : {currentMinute}')
 
         cnx = con()
         cur = cnx.cursor()
@@ -558,7 +564,7 @@ class Main(QtWidgets.QWidget):
                     ch1.addChild(rr)
                 item.addChild(ch1)
             # if f'{datetime.date.today()}' in  i[3] :
-            #     print(self.trips.topLevelItem(ind))
+            #     ##print(self.trips.topLevelItem(ind))
 
             self.trips.addTopLevelItem(item)
             ind += 1
@@ -573,7 +579,7 @@ class Trip_View(QtWidgets.QWidget):
         self.role = role
         if self.role == 0:
             print('The Admin')
-        # print(data)
+        # ##print(data)
         self.id_ = id[0]
         self.p = p
         cnx = con()
@@ -648,17 +654,17 @@ class Trip_View(QtWidgets.QWidget):
                 self.close()
             if e.type() == QtCore.QEvent.Enter:
                 self.back_icon.setStyleSheet("border: 1px solid black; border-radius: 25px;")
-                print('mouse in ')
+                ##print('mouse in ')
             elif e.type() == QtCore.QEvent.Leave:
                 self.back_icon.setStyleSheet('border-color: 0px ;')
-                print('mouse out')
+                ##print('mouse out')
         if s is self.cls:
             if e.type() == QtCore.QEvent.Enter:
                 self.cls.setStyleSheet("border: 1px solid black; border-radius: 25px;")
-                print('mouse in ')
+                ##print('mouse in ')
             elif e.type() == QtCore.QEvent.Leave:
                 self.cls.setStyleSheet('border-color: 0px ;')
-                print('mouse out')
+                ##print('mouse out')
             elif e.type() == QtCore.QEvent.MouseButtonPress:
                 os._exit(0)
 
@@ -700,7 +706,7 @@ class Trip_View(QtWidgets.QWidget):
                 for c in range(len(cc)):
                     sheet[f"{cc[c]}{i}"] = data[i-4][c]
 
-                    print(f"{cc[c]}{i}")
+                    ##print(f"{cc[c]}{i}")
 
             for r in range(1, len(data) + 5):
                 for c in range(1, 8):
@@ -715,9 +721,9 @@ class Trip_View(QtWidgets.QWidget):
 
         cnx = con()
         cur = cnx.cursor()
-        print(str(self.agnts.currentText()).split('-'))
+        ##print(str(self.agnts.currentText()).split('-'))
         fname, lname = str(self.agnts.currentText()).split('-')
-        print(f'First name ==> {fname}\nLast Name ==> {lname}')
+        ##print(f'First name ==> {fname}\nLast Name ==> {lname}')
 
         cur.execute(f'insert into trips_history(trip, agent, presence) values({int(self.trip_id.text())}, (select id from agents where firstName like "{fname}" and LastName like "{lname}"), 0) ')
         cnx.commit()
@@ -726,11 +732,11 @@ class Trip_View(QtWidgets.QWidget):
 
     def removeAgent(self):
         if items := [i.text() for i in self.tableWidget.selectedItems()]:
-            print(items)
+            ##print(items)
             reply = QtWidgets.QMessageBox.question(self, 'Alert !!', 'Are you sure you want to remove ?',
                                          QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No, QtWidgets.QMessageBox.No)
             if reply == QtWidgets.QMessageBox.Yes:
-                print('removing')
+                ##print('removing')
                 cnx = con()
                 cur = cnx.cursor()
                 cur.execute(f'delete from trips_history where trip = {int(self.trip_id.text())} and agent = {int(items[0])}')
@@ -777,16 +783,16 @@ class Trip_View(QtWidgets.QWidget):
 
             head = [i for i in 'Agent ID-Full Name-Group-Shift-Address'.split('-')]
             self.tableWidget.setHorizontalHeaderLabels(head)
-            print(agents)
+            ##print(agents)
             for r in range(len(agents)):
                 for c in range(len(agents[r])):
                     self.tableWidget.setItem(r, c, QtWidgets.QTableWidgetItem(str(agents[r][c])))
 
         cur.execute(f'select agent from trips_history where trip = {self.trip_id.text()}')
-        # print(f'current agents == > {list(set([i[0] for i in cur.fetchall()]))}')
+        # ##print(f'current agents == > {list(set([i[0] for i in cur.fetchall()]))}')
         agents = []
         dtt = cur.fetchall()
-        print(dtt)
+        ##print(dtt)
         query = ''
         if dtt:
             existsAgents = tuple(set([i[0] for i in dtt])) if len(dtt) > 1 else (dtt[0]) if dtt else "()"
@@ -806,12 +812,12 @@ class Trip_View(QtWidgets.QWidget):
 
         cnx.close()
 
-        print('reched finiched')
+        ##print('reched finiched')
 
 
     def rowSelected(self):
         items = [i.text() for i in self.tableWidget.selectedItems()]
-        print(items)
+        ##print(items)
         if items:
             self.rmv.setEnabled(True)
         else:
@@ -843,10 +849,10 @@ class AddTrip(QtWidgets.QWidget):
         self.back_icon.installEventFilter(self)
         # cur_date_time = strftime("%Y-%MM-%dd %hh:%mm:%ss", gmtime())
         # now = QtCore.QDateTime.fromString(cur_date_time, 'yyyy-MM-dd hh:mm:ss')f
-        # print(now)
+        # ##print(now)
         now = datetime.datetime.now()
         self.dateTimeEdit.setDateTime(now)
-        print(now == self.dateTimeEdit.dateTime())
+        ##print(now == self.dateTimeEdit.dateTime())
         self.dateTimeEdit.dateTimeChanged.connect(lambda : self.save_btn.setEnabled(True) if datetime.datetime.now() <= self.dateTimeEdit.dateTime() else self.save_btn.setEnabled(False))
         cnx = con()
         cur = cnx.cursor()
@@ -863,10 +869,10 @@ class AddTrip(QtWidgets.QWidget):
                 self.close()
             if e.type() == QtCore.QEvent.Enter:
                 self.back_icon.setStyleSheet("border: 1px solid black; border-radius: 25px;")
-                print('mouse in ')
+                ##print('mouse in ')
             elif e.type() == QtCore.QEvent.Leave:
                 self.back_icon.setStyleSheet('border-color: 0px ;')
-                print('mouse out')
+                #print('mouse out')
         return super(AddTrip, self).eventFilter(s, e)
 
     def closeEvent(self, event):
@@ -894,10 +900,10 @@ class AddTrip(QtWidgets.QWidget):
                   )''')
                 cnx.commit()
 
-            print(f'DT = {dt}')
+            #print(f'DT = {dt}')
             cur.execute(f'select id from trips where datetime like "{dt}%"')
             id = [cur.fetchone()[0]]
-            # print(id)
+            # #print(id)
             self.tripView = Trip_View(id=id, role=self.role)
             self.tripView.show()
             self.back = False
@@ -977,18 +983,18 @@ class Trips(QtWidgets.QWidget):
                 self.close()
             if e.type() == QtCore.QEvent.Enter:
                 self.back_icon.setStyleSheet("border: 1px solid black; border-radius: 25px;")
-                print('mouse in ')
+                #print('mouse in ')
             elif e.type() == QtCore.QEvent.Leave:
                 self.back_icon.setStyleSheet('border-color: 0px ;')
-                print('mouse out')
+                #print('mouse out')
 
         if s is self.cls:
             if e.type() == QtCore.QEvent.Enter:
                 self.cls.setStyleSheet("border: 1px solid black; border-radius: 25px;")
-                print('mouse in ')
+                #print('mouse in ')
             elif e.type() == QtCore.QEvent.Leave:
                 self.cls.setStyleSheet('border-color: 0px ;')
-                print('mouse out')
+                #print('mouse out')
             elif e.type() == QtCore.QEvent.MouseButtonPress:
                 os._exit(0)
 
@@ -1003,14 +1009,14 @@ class Trips(QtWidgets.QWidget):
     # def createTrips(self):
     #     today = datetime.date.today()
     #     day = datetime.datetime.today().strftime('%A')
-    #     print(day)
+    #     #print(day)
     #     if day.lower() == "Friday".lower():
     #         tomorrow = datetime.date.today() + datetime.timedelta(days=3)
     #     else:
     #         tomorrow = datetime.date.today() + datetime.timedelta(days=1)
     #
     #     # tomorrow = today
-    #     print(tomorrow)
+    #     #print(tomorrow)
     #     cnx = con()
     #     cur = cnx.cursor()
     #     cur.execute('select shift from grps')
@@ -1026,7 +1032,7 @@ class Trips(QtWidgets.QWidget):
     #             data.append(f'0{i}')
     #         else:
     #             data.append(str(i))
-    #     # print(data)
+    #     # #print(data)
     #     trips = {}
     #     total = 0
     #     ids = []
@@ -1039,15 +1045,15 @@ class Trips(QtWidgets.QWidget):
     #
     #         cur.execute(query)
     #         result = cur.fetchall()
-    #         # print(result)
+    #         # #print(result)
     #
     #         count = len(result)
     #
     #         trips[h] = [i[0] for i in result]
     #         total += count
     #
-    #     print(trips)
-    #     print(total)
+    #     #print(trips)
+    #     #print(total)
     #     maxForVan = 18
     #     for time, agents in trips.items():
     #         vansNeeded = 0
@@ -1119,7 +1125,7 @@ class Trips(QtWidgets.QWidget):
                 data.append([r[0], r[1], f'{r[2]} {r[3]}', r[4], r[5]])
             head = ['Trip-ID ', 'van Matrecule', 'Driver Name', 'Time', 'Agents Numbers']
 
-            print(data)
+            #print(data)
             self.tableWidget.setColumnCount(len(data[0]))
             self.tableWidget.setRowCount(len(data))
             # self.tableWidget.horizontalHeader().setSectionResizeMode(head.index(head[-1]), QHeaderView.Stretch)
@@ -1136,10 +1142,10 @@ class Trips(QtWidgets.QWidget):
 
     def openTripView(self):
         self.back = False
-        print(self.tableWidget.currentIndex().siblingAtColumn(0).data())
+        #print(self.tableWidget.currentIndex().siblingAtColumn(0).data())
 
         data = [self.tableWidget.currentIndex().siblingAtColumn(i).data() for i in range(self.tableWidget.columnCount())]
-        print(f'data ==> {data}')
+        #print(f'data ==> {data}')
         cnx = con()
         cur = cnx.cursor()
         cur.execute(f'select datetime from trips where id = {int(data[0])} ;')
@@ -1230,17 +1236,17 @@ class Agents(QtWidgets.QWidget):
                 self.close()
             if e.type() == QtCore.QEvent.Enter:
                 self.back_icon.setStyleSheet("border: 1px solid black; border-radius: 25px;")
-                print('mouse in ')
+                #print('mouse in ')
             elif e.type() == QtCore.QEvent.Leave:
                 self.back_icon.setStyleSheet('border-color: 0px ;')
-                print('mouse out')
+                #print('mouse out')
         if s is self.cls:
             if e.type() == QtCore.QEvent.Enter:
                 self.cls.setStyleSheet("border: 1px solid black; border-radius: 25px;")
-                print('mouse in ')
+                #print('mouse in ')
             elif e.type() == QtCore.QEvent.Leave:
                 self.cls.setStyleSheet('border-color: 0px ;')
-                print('mouse out')
+                #print('mouse out')
             elif e.type() == QtCore.QEvent.MouseButtonPress:
                 os._exit(0)
 
@@ -1265,10 +1271,10 @@ class Agents(QtWidgets.QWidget):
             query = f'''select a.id, a.firstName, a.LastName, a.CIN, a.address, g.name, g.shift, a.zone  from 
                         agents a inner join grps g on a.grp = g.id {f" where g.name like '{self.groups.currentText()}'" if self.groups.currentIndex() != 0 else ""}'''
 
-        print('#'*30)
-        print(key)
+        #print('#'*30)
+        #print(key)
 
-        print(query)
+        #print(query)
         # if self.groups.currentIndex() == 0:
         #
         #
@@ -1298,7 +1304,7 @@ class Agents(QtWidgets.QWidget):
             for r in data:
                 agents.append([r[0], f'{r[1]} {r[2]}', r[3], r[4], r[5], r[6], r[7]])
             head = ['Agent ID ', 'Full Name', 'CIN', 'Adress', 'Group', 'Shift', 'Zone']
-            print(agents)
+            #print(agents)
             self.tableWidget.setColumnCount(len(agents[0]))
             self.tableWidget.setRowCount(len(agents))
             # self.tableWidget.horizontalHeader().setSectionResizeMode(head.index(head[-1]), QHeaderView.Stretch)
@@ -1318,7 +1324,7 @@ class Agents(QtWidgets.QWidget):
                     self.tableWidget.setItem(r, c, QtWidgets.QTableWidgetItem(str(agents[r][c])))
 
             cur.execute('select name from grps')
-            print(f'Groups Items : {[self.groups.itemText(i) for i in range(self.groups.count())]}')
+            #print(f'Groups Items : {[self.groups.itemText(i) for i in range(self.groups.count())]}')
             grps_names = []
             for o in cur.fetchall():
                 if o[0] not in [self.groups.itemText(i) for i in range(self.groups.count())]:
@@ -1326,7 +1332,7 @@ class Agents(QtWidgets.QWidget):
 
 
 
-            print(grps_names)
+            #print(grps_names)
             # self.groups.clear()
             self.groups.addItems([str(i) for i in grps_names])
         else:
@@ -1336,7 +1342,7 @@ class Agents(QtWidgets.QWidget):
 
     def tableSelectRowChanged(self):
         items = [i.text() for i in self.tableWidget.selectedItems()]
-        print(items)
+        #print(items)
         if items:
             self.edit_btn.setEnabled(True)
         else:
@@ -1439,18 +1445,18 @@ class Vans(QtWidgets.QWidget):
                 self.close()
             if e.type() == QtCore.QEvent.Enter:
                 self.back_icon.setStyleSheet("border: 1px solid black; border-radius: 25px;")
-                print('mouse in ')
+                #print('mouse in ')
             elif e.type() == QtCore.QEvent.Leave:
                 self.back_icon.setStyleSheet('border-color: 0px ;')
-                print('mouse out')
+                #print('mouse out')
 
         if s is self.cls:
             if e.type() == QtCore.QEvent.Enter:
                 self.cls.setStyleSheet("border: 1px solid black; border-radius: 25px;")
-                print('mouse in ')
+                #print('mouse in ')
             elif e.type() == QtCore.QEvent.Leave:
                 self.cls.setStyleSheet('border-color: 0px ;')
-                print('mouse out')
+                #print('mouse out')
             elif e.type() == QtCore.QEvent.MouseButtonPress:
                 os._exit(0)
 
@@ -1476,7 +1482,7 @@ class Vans(QtWidgets.QWidget):
         if data:
             vans = [[c for c in r] for r in data]
             head = ['Vehicle ID ', 'Matricule', 'Max Places', 'Driver\'s name']
-            print(vans)
+            #print(vans)
             self.tableWidget.setColumnCount(len(vans[0]))
             self.tableWidget.setRowCount(len(vans))
             # self.tableWidget.horizontalHeader().setSectionResizeMode(head.index(head[-1]), QHeaderView.Stretch)
@@ -1497,7 +1503,7 @@ class Vans(QtWidgets.QWidget):
 
     def tableSelectRowChanged(self):
         items = [i.text() for i in self.tableWidget.selectedItems()]
-        print(items)
+        #print(items)
         if items:
             self.edit_btn.setEnabled(True)
         else:
@@ -1539,7 +1545,7 @@ class AddVan(QtWidgets.QWidget):
         cur = cnx.cursor()
         cur.execute('select concat(firstName, " ", LastName) as fullName from drivers;')
         drivers_names = [i[0] for i in cur.fetchall()]
-        print(drivers_names)
+        #print(drivers_names)
         self.drivers.addItems(drivers_names)
         self.data = data
         if self.data:
@@ -1560,10 +1566,10 @@ class AddVan(QtWidgets.QWidget):
                 self.close()
             if e.type() == QtCore.QEvent.Enter:
                 self.back_icon.setStyleSheet("border: 1px solid black; border-radius: 25px;")
-                print('mouse in ')
+                #print('mouse in ')
             elif e.type() == QtCore.QEvent.Leave:
                 self.back_icon.setStyleSheet('border-color: 0px ;')
-                print('mouse out')
+                #print('mouse out')
         return super(AddVan, self).eventFilter(s, e)
 
     def closeEvent(self, event):
@@ -1584,7 +1590,7 @@ class AddVan(QtWidgets.QWidget):
                 cur.execute(
                     f'select count(id) from vans where matr like "{self.matr.text()}";')
                 if cur.fetchone()[0]:
-                    print('this Van alredy exists ')
+                    #print('this Van alredy exists ')
                     self.matr.setStyleSheet('border : 2px solid red')
                     notif(self, title='Transport Planning ', msg='This Vehicle already exists in the Database ')
                 else:
@@ -1678,18 +1684,18 @@ class Compaigns(QtWidgets.QWidget):
                 self.close()
             if e.type() == QtCore.QEvent.Enter:
                 self.back_icon.setStyleSheet("border: 1px solid black; border-radius: 25px;")
-                print('mouse in ')
+                #print('mouse in ')
             elif e.type() == QtCore.QEvent.Leave:
                 self.back_icon.setStyleSheet('border-color: 0px ;')
-                print('mouse out')
+                #print('mouse out')
 
         if s is self.cls:
             if e.type() == QtCore.QEvent.Enter:
                 self.cls.setStyleSheet("border: 1px solid black; border-radius: 25px;")
-                print('mouse in ')
+                #print('mouse in ')
             elif e.type() == QtCore.QEvent.Leave:
                 self.cls.setStyleSheet('border-color: 0px ;')
-                print('mouse out')
+                #print('mouse out')
             elif e.type() == QtCore.QEvent.MouseButtonPress:
                 os._exit(0)
 
@@ -1717,7 +1723,7 @@ class Compaigns(QtWidgets.QWidget):
                 data.append(row)
 
             head = ['Compaign ID ', 'Compaign Name', 'Shift', 'Agents Number']
-            print(data)
+            #print(data)
             self.tableWidget.setColumnCount(len(data[0]))
             self.tableWidget.setRowCount(len(data))
             # self.tableWidget.horizontalHeader().setSectionResizeMode(head.index(head[-1]), QHeaderView.Stretch)
@@ -1737,7 +1743,7 @@ class Compaigns(QtWidgets.QWidget):
 
     def tableSelectRowChanged(self):
         items = [i.text() for i in self.tableWidget.selectedItems()]
-        print(items)
+        #print(items)
         if items:
             self.edit_btn.setEnabled(True)
         else:
@@ -1795,10 +1801,10 @@ class AddComp(QtWidgets.QWidget):
                 self.close()
             if e.type() == QtCore.QEvent.Enter:
                 self.back_icon.setStyleSheet("border: 1px solid black; border-radius: 25px;")
-                print('mouse in ')
+                #print('mouse in ')
             elif e.type() == QtCore.QEvent.Leave:
                 self.back_icon.setStyleSheet('border-color: 0px ;')
-                print('mouse out')
+                #print('mouse out')
         return super(AddComp, self).eventFilter(s, e)
 
 
@@ -1822,7 +1828,7 @@ class AddComp(QtWidgets.QWidget):
                 cur.execute(
                     f'select count(id) from grps where name like "{self.cname.text()}";')
                 if cur.fetchone()[0]:
-                    print('this Compaogns alredy exists ')
+                    #print('this Compaogns alredy exists ')
                     self.matr.setStyleSheet('border : 2px solid red')
                     notif(self, title='Transport Planning ', msg='This Compaign already exists in the Database ')
                 else:
@@ -1863,7 +1869,7 @@ class AddAgent(QtWidgets.QWidget):
         cur = cnx.cursor()
         cur.execute('select name from grps')
         grps_names = [i[0] for i in cur.fetchall()]
-        print(grps_names)
+        #print(grps_names)
         self.grps.addItems(grps_names)
         self.data = data
 
@@ -1888,7 +1894,7 @@ class AddAgent(QtWidgets.QWidget):
 
         self.allhoods = self.ONSM + self.DK + self.SY + self.SZ
 
-        print(f'the data that i want ====>  {self.data}')
+        #print(f'the data that i want ====>  {self.data}')
         #TODO : The Data ===> ['19', 'RIME ZAHIRI', 'F652030', 'HAY SAADA RUE AL BATRIQ', 'TDE', '08-17', 'None']
         if self.data:
             self.Fname.setText(str(self.data[1]).split(' ')[0])
@@ -1905,8 +1911,8 @@ class AddAgent(QtWidgets.QWidget):
         self.back_icon.setPixmap(QtGui.QPixmap('src/img/back.png'))
         self.back_icon.setScaledContents(True)
 
-        print('+' *100)
-        print(self.allhoods)
+        #print('+' *100)
+        #print(self.allhoods)
         self.strr.addItems(self.allhoods)
         cnx.close()
 
@@ -1916,10 +1922,10 @@ class AddAgent(QtWidgets.QWidget):
                 self.close()
             if e.type() == QtCore.QEvent.Enter:
                 self.back_icon.setStyleSheet("border: 1px solid black; border-radius: 25px;")
-                print('mouse in ')
+                #print('mouse in ')
             elif e.type() == QtCore.QEvent.Leave:
                 self.back_icon.setStyleSheet('border-color: 0px;')
-                print('mouse out')
+                #print('mouse out')
 
 
 
@@ -1955,7 +1961,7 @@ class AddAgent(QtWidgets.QWidget):
                 cur.execute(
                     f'select count(id) from agents where FirstName like "{self.Fname.text()}" and LastName like "{self.Lname.text()}"')
                 if cur.fetchone()[0]:
-                    print('thsi Agent alredy exists ')
+                    #print('thsi Agent alredy exists ')
                     self.Fname.setStyleSheet('border : 2px solid red')
                     self.Lname.setStyleSheet('border : 2px solid red')
                     notif(self, title='Transport Planning ', msg='This Agent already exists in the Database ')
