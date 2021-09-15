@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/TransportingPlanning/Mobile/STM/app/src/main/res/layout/Trip_list.xml" value="0.278125" />
+        <entry key="..\:/TransportingPlanning/Mobile/STM/app/src/main/res/layout/activity_log_in.xml" value="0.2640625" />
+        <entry key="..\:/TransportingPlanning/Mobile/STM/app/src/main/res/layout/activity_login.xml" value="0.278125" />
+        <entry key="..\:/TransportingPlanning/Mobile/STM/app/src/main/res/layout/activity_main.xml" value="0.278125" />
+        <entry key="..\:/TransportingPlanning/Mobile/STM/app/src/main/res/layout/agent.xml" value="0.25" />
+        <entry key="..\:/TransportingPlanning/Mobile/STM/app/src/main/res/layout/agent_list_layout.xml" value="0.14583333333333334" />
+        <entry key="..\:/TransportingPlanning/Mobile/STM/app/src/main/res/layout/main.xml" value="0.278125" />
+        <entry key="..\:/TransportingPlanning/Mobile/STM/app/src/main/res/layout/test.xml" value="0.278125" />
+        <entry key="..\:/TransportingPlanning/Mobile/STM/app/src/main/res/layout/trip.xml" value="0.278125" />
+        <entry key="..\:/TransportingPlanning/Mobile/STM/app/src/main/res/layout/trip_list_layout.xml" value="0.15670289855072464" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

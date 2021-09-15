@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="12dp"
+    android:elevation="90dp"
+    android:layout_margin="15dp"
+    android:background="@android:color/background_light"
+    android:focusable="true"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+
+    >
+
+
+
+    <com.chauthai.swipereveallayout.SwipeRevealLayout
+        android:id="@+id/swipRevealLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:mode="same_level"
+        app:dragEdge="right"
+        android:focusable="true"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+
+        >
+
+        <!-- Your secondary layout here -->
+        <FrameLayout
+
+            android:id="@+id/swiped_layout"
+            android:layout_width="210dp"
+            android:layout_height="100dp"
+            android:background="#F1F2F3"
+            android:focusable="true"
+            android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center_vertical"
+                >
+
+            <ImageView
+                android:id="@+id/enter"
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/enter"
+                android:background="@android:color/holo_green_dark"
+                android:focusable="true"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                />
+
+            <ImageView
+                android:id="@+id/leave"
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/leave"
+                android:background="@android:color/holo_orange_dark"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+
+                android:focusable="true"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                />
+            <ImageView
+                android:id="@+id/absent"
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:background="@android:color/holo_red_light"
+                android:src="@drawable/absent"
+
+                android:focusable="true"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                />
+            </LinearLayout>
+        </FrameLayout
+            >
+
+        <!-- Your main layout here -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:focusable="true"
+            android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackground">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:orientation="horizontal"
+                android:id="@+id/container"
+
+                >
+
+                <ImageView
+                    android:id="@+id/icon"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/agent"
+                    />
+
+                <RelativeLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_toRightOf="@+id/icon"
+                    android:orientation="horizontal">
+
+
+                    <TextView
+                        android:id="@+id/agentName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="20dp"
+                        android:text="test"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+
+                        />
+
+
+                </RelativeLayout>
+
+
+            </RelativeLayout>
+
+        </FrameLayout>
+
+    </com.chauthai.swipereveallayout.SwipeRevealLayout>
+
+</androidx.cardview.widget.CardView>

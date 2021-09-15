@@ -8,6 +8,9 @@ from PyQt5.QtWidgets import QHeaderView, QGraphicsDropShadowEffect
 from openpyxl.styles import Border, Side
 from plyer import notification
 from openpyxl import load_workbook
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import db
 
 
 radius = 40.0
@@ -49,132 +52,315 @@ def preparingDB():
     cnx.commit()
     cur.execute('''create table if not exists trips_history(id  INT AUTO_INCREMENT,trip int, agent int, pick_time varchar(50), presence int, foreign key(trip) references trips(id), foreign key(agent) references agents(id), PRIMARY KEY (id))''')
     cnx.commit()
+    # cur.execute()
     cnx.close()
     #print('tables created ')
 
 
 # preparingDB()
 
+print('test')
 
-def createPlannings():
-    today = datetime.date.today()
-    day = datetime.datetime.today().strftime('%A')
-    #print(day)
-    if day.lower() == "friday":
-        tomorrow = datetime.date.today() + datetime.timedelta(days=3)
-    else:
-        tomorrow = datetime.date.today() + datetime.timedelta(days=1)
+# def createPlannings():
+#     today = datetime.date.today()
+#     day = datetime.datetime.today().strftime('%A')
+#     #print(day)
+#     if day.lower() == "friday":
+#         tomorrow = datetime.date.today() + datetime.timedelta(days=3)
+#     else:
+#         tomorrow = datetime.date.today() + datetime.timedelta(days=1)
+#
+#     # tomorrow = today #TODO Just for test
+#     doneDates = []
+#     for date in [today, tomorrow]:
+#         #print(f'date ==> {date}')
+#         cnx = con()
+#         cur = cnx.cursor()
+#         cur.execute('select shift from grps')
+#         data = []
+#         for r in cur.fetchall():
+#             for c in r:
+#                 for cc in str(c).split('-'):
+#                     data.append(int(cc))
+#         dt = [i for i in set(sorted(data))]
+#         data = []
+#         for i in dt:
+#             if i < 10:
+#                 data.append(f'0{i}')
+#             else:
+#                 data.append(str(i))
+#         #print(data)
+#         trips = {}
+#         total = 0
+#         ids = []
+#         for h in data:
+#             query = ''
+#             if int(h) < 15:
+#                 query = f'select a.id from agents a inner join grps g on a.grp = g.id where g.shift like "{h}-%"'
+#             else:
+#                 query = f'select a.id from agents a inner join grps g on a.grp = g.id where g.shift like "%-{h}"'
+#
+#             cur.execute(query)
+#             result = cur.fetchall()
+#             # ##print(result)
+#
+#             count = len(result)
+#
+#             trips[h] = [i[0] for i in result]
+#             total += count
+#
+#         ##print(trips)
+#         ##print(total)
+#         maxForVan = 18
+#         v1 = [8, 13, 17, 22]
+#         v2 = [9, 14, 18, 23]
+#         for time, agents in trips.items():
+#
+#             vansNeeded = 0
+#             if agents:
+#                 if len(agents) > maxForVan:
+#                     vansNeeded = 2
+#                 else:
+#                     vansNeeded = 1
+#
+#
+#                 if vansNeeded == 1:
+#                     cur.execute(
+#                         f''' select count(id) from trips where datetime like "{date} {time}:00:00" and van = 1''')
+#                     if not cur.fetchone()[0]:
+#                         cur.execute(
+#                             f'select g.shift from agents a inner join grps g on g.id = a.grp where a.id = {agents[0]}')
+#
+#                         cur.execute(
+#                             f'''insert into trips(van, driver, datetime, ttype) values (1, 1, "{date} {time}:00:00", '{"IN" if [i for i in str(cur.fetchone()[0]).split('-')].index(time) == 0 else "OUT"}');''')
+#                         cnx.commit()
+#                         for agent in agents:
+#
+#
+#                             cur.execute(f'''select id from trips where datetime like "{date} {time}:00:00"''')
+#                             cur.execute(
+#                                 f'''insert into trips_history (trip, agent, presence) values ({int(cur.fetchone()[0])}, {agent}, 0)''')
+#                             cnx.commit()
+#                 else:
+#                     grp1 = [i for i in agents[:len(agents) // 2]]
+#                     grp2 = [i for i in agents[len(agents) // 2:]]
+#                     cur.execute(
+#                         f'''select count(id) from trips where datetime like "{date} {time}:00:00" and driver = 1''')
+#                     if not cur.fetchone()[0]:
+#                         cur.execute(
+#                             f'''insert into trips(van, driver, datetime) values (1, 1, "{date} {time}:00:00");''')
+#
+#                     cur.execute(f'''select id from trips where datetime like "{date} {time}:00:00"''')
+#
+#                     trip1, trip2 = [int(i[0]) for i in cur.fetchall()]
+#                     for agent in grp1:
+#                         cur.execute(
+#                             f'''select count(id) from trips_history where trip = {trip1} and agent = {agent}''')
+#                         if not cur.fetchone()[0]:
+#                             cur.execute(
+#                                 f'''insert into trips_history (trip, agent, presence) values ({trip1}, {agent}, 0)''')
+#                             cnx.commit()
+#
+#                     cur.execute(
+#                         f'''select count(id) from trips where datetime like "{date} {time}:00:00" and driver = 1''')
+#                     if not cur.fetchone()[0]:
+#                         cur.execute(
+#                             f'''insert into trips(van, driver, datetime) values (2, 2, "{date} {time}:00:00");''')
+#                     cnx.commit()
+#                     for agent in grp2:
+#                         cur.execute(
+#                             f'''select count(id) from trips_history where trip = {trip2} and agent = {agent}''')
+#                         if not cur.fetchone()[0]:
+#                             cur.execute(
+#                                 f'''insert into trips_history (trip, agent, presence) values ({trip2}, {agent}, 0)''')
+#                             cnx.commit()
+#         doneDates.append(f'{date}')
+#     cnx.close()
+#
+#     notif(title="Saccom IT Departement : ", msg=f'{len(doneDates)} Plannings has been created : {doneDates} ')
 
-    # tomorrow = today #TODO Just for test
-    doneDates = []
-    for date in [today, tomorrow]:
-        #print(f'date ==> {date}')
-        cnx = con()
-        cur = cnx.cursor()
-        cur.execute('select shift from grps')
-        data = []
-        for r in cur.fetchall():
-            for c in r:
-                for cc in str(c).split('-'):
-                    data.append(int(cc))
-        dt = [i for i in set(sorted(data))]
-        data = []
-        for i in dt:
-            if i < 10:
-                data.append(f'0{i}')
-            else:
-                data.append(str(i))
-        #print(data)
-        trips = {}
-        total = 0
-        ids = []
-        for h in data:
-            query = ''
-            if int(h) < 15:
-                query = f'select a.id from agents a inner join grps g on a.grp = g.id where g.shift like "{h}-%"'
-            else:
-                query = f'select a.id from agents a inner join grps g on a.grp = g.id where g.shift like "%-{h}"'
 
-            cur.execute(query)
-            result = cur.fetchall()
-            # ##print(result)
+def create_trip(date, type, driver, van):
+    cnx = con()
+    cur = cnx.cursor()
+    cur.execute(f'''select id from vans where matr like "{van}"''')
+    van = int(cur.fetchone()[0])
+    cur.execute(f'''select id from drivers where firstName like "{driver.split(" ")[0]}" and LastName like "{driver.split(" ")[1]}"''')
+    driver = int(cur.fetchone()[0])
 
-            count = len(result)
+    tday, trips_time, trip_type = date.split(' ')[0], int(date.split(' ')[1].split(':')[0]), type
+    cur.execute(f'''select count(id) from trips where datetime like "{date}";''')
+    if not cur.fetchone()[0]:
+        cur.execute(f'''select max_places from vans where id = {van}''')
+        max_places = int(cur.fetchone()[0])
+        beforHour = trips_time - 1
+        afterHour = trips_time + 1
+        cur.execute(f'''select count(id) from trips 
+        where (datetime like "{tday} {beforHour if beforHour > 9 else f"0{beforHour}"}:00:00" 
+        OR datetime like "{tday} {afterHour if afterHour > 9 else f"0{afterHour}"}:00:00") 
+        and driver = {driver} and van = {van};''')
+        if not cur.fetchone()[0]:
 
-            trips[h] = [i[0] for i in result]
-            total += count
+            if 6 > trips_time > 20:
+                cur.execute('''select zone from agents''')
+                zones = set(i[0] for i in cur.fetchall())
+                zone1 = []
+                zone2 = []
+                for z in zones:
+                    if z in ['Sidi Yahya', 'Sidi Ziane']:
+                        zone1.append(z)
+                    else:
+                        zone2.append(z)
 
-        ##print(trips)
-        ##print(total)
-        maxForVan = 18
-        v1 = [8, 13, 17, 22]
-        v2 = [9, 14, 18, 23]
-        for time, agents in trips.items():
+                cur.execute(
+                    f'''select id from agents where zone in ({[i for i in zone1]})'''.replace('[', '').replace(']', ''))
 
-            vansNeeded = 0
-            if agents:
-                if len(agents) > maxForVan:
-                    vansNeeded = 2
-                else:
-                    vansNeeded = 1
+                agentZone1 = [i[0] for i in cur.fetchall()]
 
+                cur.execute(
+                    f'''select id from agents where zone in ({[i for i in zone2]})'''.replace('[', '').replace(']', ''))
 
-                if vansNeeded == 1:
+                agentZone2 = [i[0] for i in cur.fetchall()]
+
+                for i in range(1, 3):
                     cur.execute(
-                        f''' select count(id) from trips where datetime like "{date} {time}:00:00" and van = 1''')
-                    if not cur.fetchone()[0]:
-                        cur.execute(
-                            f'select g.shift from agents a inner join grps g on g.id = a.grp where a.id = {agents[0]}')
-
-                        cur.execute(
-                            f'''insert into trips(van, driver, datetime, ttype) values (1, 1, "{date} {time}:00:00", '{"IN" if [i for i in str(cur.fetchone()[0]).split('-')].index(time) == 0 else "OUT"}');''')
-                        cnx.commit()
-                        for agent in agents:
-
-
-                            cur.execute(f'''select id from trips where datetime like "{date} {time}:00:00"''')
-                            cur.execute(
-                                f'''insert into trips_history (trip, agent, presence) values ({int(cur.fetchone()[0])}, {agent}, 0)''')
-                            cnx.commit()
-                else:
-                    grp1 = [i for i in agents[:len(agents) // 2]]
-                    grp2 = [i for i in agents[len(agents) // 2:]]
-                    cur.execute(
-                        f'''select count(id) from trips where datetime like "{date} {time}:00:00" and driver = 1''')
-                    if not cur.fetchone()[0]:
-                        cur.execute(
-                            f'''insert into trips(van, driver, datetime) values (1, 1, "{date} {time}:00:00");''')
-
-                    cur.execute(f'''select id from trips where datetime like "{date} {time}:00:00"''')
-
-                    trip1, trip2 = [int(i[0]) for i in cur.fetchall()]
-                    for agent in grp1:
-                        cur.execute(
-                            f'''select count(id) from trips_history where trip = {trip1} and agent = {agent}''')
-                        if not cur.fetchone()[0]:
-                            cur.execute(
-                                f'''insert into trips_history (trip, agent, presence) values ({trip1}, {agent}, 0)''')
-                            cnx.commit()
-
-                    cur.execute(
-                        f'''select count(id) from trips where datetime like "{date} {time}:00:00" and driver = 1''')
-                    if not cur.fetchone()[0]:
-                        cur.execute(
-                            f'''insert into trips(van, driver, datetime) values (2, 2, "{date} {time}:00:00");''')
+                        f'''insert into trips (van, driver, datetime, ttype)values ({i}, {i}, "{tday} {trips_time if trips_time > 9 else f"0{trips_time}"}:00:00", "{trip_type}")''')
                     cnx.commit()
-                    for agent in grp2:
+                    cur.execute(f'''select id from trips where datetime like "{date}" and van = {i} and diver = {i}''')
+                    trip_id = cur.fetchone()[0]
+                    if i == 1:
                         cur.execute(
-                            f'''select count(id) from trips_history where trip = {trip2} and agent = {agent}''')
-                        if not cur.fetchone()[0]:
-                            cur.execute(
-                                f'''insert into trips_history (trip, agent, presence) values ({trip2}, {agent}, 0)''')
+                            f'''insert into trips_histoy(trip, agent) values {[f"({trip_id}, {agent})" for agent in agentZone1]}'''.replace(
+                                '[', '').replace(']', '').replace("'", ""))
+
+                    if i == 2:
+                        cur.execute(
+                            f'''insert into trips_histoy(trip, agent) values {[f"({trip_id}, {agent})" for agent in agentZone2]}'''.replace(
+                                '[', '').replace(']', '').replace("'", ""))
+
+
+                    cnx.commit()
+                    Trip_View(role=0, id=(trip_id,))
+
+            else:
+                cur.execute(
+                    f'''insert into trips (van, driver, datetime, ttype)values ({van}, {driver}, "{tday} {trips_time if trips_time > 9 else f"0{trips_time}"}:00:00", "{trip_type}")''')
+                cnx.commit()
+                cur.execute(f'''select id from trips where datetime like "{date}"''')
+                trip_id = cur.fetchone()[0]
+                cur.execute(f'''select a.id from agents a inner join grps g on a.grp = g.id inner join trips_history th on th.agent = a.id inner join trips t on th.trip = t.id
+                where g.shift like "{f"{trips_time if trips_time > 9 else f'0{trips_time}'}-%" if trip_type == 'IN' else f"%-{trips_time if trips_time > 9 else f'0{trips_time}'}"}" 
+                and t.datetime != "{date}" order by a.zone''')
+                agents = [i[0] for i in set(cur.fetchall())]
+                print(agents)
+                if agents:
+                    if len(agents) > max_places:
+
+                        grp1 = [i for i in agents[:len(agents) // 2]]
+                        for a in grp1:
+                            # query = f'''insert into trips_history(trip, agent) values {[f"({trip_id}, {agent})" for agent in grp1]}'''.replace('[', '').replace(']', '').replace("'", "")
+                            query = f'''insert into trips_history(trip, agent) values({trip_id}, {a}) ;'''
+                            print(query)
+                            cur.execute(query)
                             cnx.commit()
-        doneDates.append(f'{date}')
+                        Trip_View(role=0, id=(trip_id,)).show()
+                        cur.execute(
+                            f'''select d.id from drivers d inner join trips t on t.driver = d.id  where d.id != (select driver from trips where id = {trip_id})''')
+                        driver2 = cur.fetchone()[0]
+                        cur.execute(
+                            f'''select v.id from vans v inner join trips t on t.van = v.id  where v.id != (select van from trips where id = {trip_id})''')
+                        van2 = cur.fetchone()[0]
+                        create_trip(date=date, driver=driver2, van=van2, type=trip_type)
+                    else:
+                        for a in agents:
+                            # query = f'''insert into trips_history(trip, agent) values {[f"({trip_id}, {agent})" for agent in agents]}'''.replace('[', '').replace(']', '').replace("'", "")
+                            query = f'''insert into trips_history(trip, agent) values({trip_id}, {a}) ;'''
+                            print(query)
+                            cur.execute(query)
+                            cnx.commit()
+                        Trip_View(role=0, id=(trip_id,)).show()
+
+
+
+
+
+
+        else:
+            print('cant create this trip right now')
+
+    else:
+        print('the trip already exists ...')
+
     cnx.close()
 
-    notif(title="Saccom IT Departement : ", msg=f'{len(doneDates)} Plannings has been created : {doneDates} ')
+def syncFirebase():
+    print('synchronizing with Firebase ...')
+    # Fetch the service account key JSON file contents
+    cred = credentials.Certificate("src/key.json")
+
+    # Initialize the app with a service account, granting admin privileges
+
+    firebase_admin.initialize_app(cred, {
+        'databaseURL': 'https://saccom-tm-default-rtdb.firebaseio.com',
+
+    })
+
+    users = db.reference('users')
+    # users = ref.child('users')
+    print(users.child('YassineBaghdadi').get())
+    cnx = con()
+    cur = cnx.cursor()
+    # cur.execute('select concat(firstName, LastName) as fullName , username, pass from users;')
+    # dt = cur.fetchall()
+    # for d in dt:
+    #     if not users.child(f'{d[0]}').get():
+    #         users.child(f'{d[0]}').set({
+    #             'username': d[1],
+    #             'pass': d[2],
+    #         }
+    #         )
+
+    drvrs = db.reference('drivers')
+    cur.execute('select username, pass from drivers;')
+    users = cur.fetchall()
+    for d in users:
+        if not drvrs.child(f'{d[0]}').get():
+            drvrs.child(f'{d[0]}').set({'pass': d[1],})
+
+    drivers_firebase = db.reference('drivers')
+
+    cur.execute(f'''select t.id, v.matr, d.firstName , t.datetime, (select count(id) from trips_history where trip = t.id) as Agent_numbers, t.ttype
+                        from trips t inner join vans v on t.van = v.id inner join drivers d on t.driver = d.id where date(t.datetime) < "{today} 00:00:00" order by t.datetime;''')
+
+    toDelete = cur.fetchall()
+
+    # for i in toDelete:
+    #     drivers_firebase.child(f'{i[2]}').child('trips').child(f'{i[3]}').delete()
+
+    cur.execute(f'''select t.id, v.matr, d.firstName , t.datetime, (select count(id) from trips_history where trip = t.id) as Agent_numbers, t.ttype
+                        from trips t inner join vans v on t.van = v.id inner join drivers d on t.driver = d.id where date(t.datetime) >= "{today} 00:00:00" order by t.datetime;''')
+
+    trips = cur.fetchall()
+
+    for trip in trips:
+        trp = drivers_firebase.child(f'{trip[2]}').child('trips').child(f'{trip[3]}')
+        cur.execute(f'''select a.id, concat(a.firstName, " ", a.LastName) as fullName
+                                        from trips_history th inner join agents a on th.agent = a.id 
+                                        where th.trip = {int(trip[0])};''')
+
+        agents = [f"{i[0]} - {i[1]}" for i in cur.fetchall()]
+
+        print(f'Agents : {agents}')
+        if not trp.get():
+
+            trp.child("id").set({trip[0]})
+            trp.child("agents").set({agents})
 
 
+
+    print(trips)
+    print('trips synchronized with FireBase successfully.')
+    cnx.close()
 
 
 class Splash(QtWidgets.QDialog):
@@ -191,7 +377,7 @@ class Splash(QtWidgets.QDialog):
         priparingDB = threading.Thread(target=preparingDB)
         priparingDB.start()
 
-        creatingPlanningThread = threading.Thread(target=createPlannings)
+        creatingPlanningThread = threading.Thread(target=syncFirebase)
         creatingPlanningThread.start()
 
         self.prog()
@@ -366,6 +552,7 @@ class Main(QtWidgets.QWidget):
         QtWidgets.QWidget.__init__(self)
         uic.loadUi(os.path.join(os.path.dirname(__file__), "ui/main.ui"), self)
         self.role = role
+
         if self.role == 0:
             print('The Admin')
 
@@ -394,8 +581,8 @@ class Main(QtWidgets.QWidget):
         self.trips.setHeaderLabels(head)
         self.getCurrentPlanning()
         self.trips.itemSelectionChanged.connect(lambda : print(f'Select ==> {self.trips.selectedItems()[0].text(0)}'))
-        # self.trips.itemDoubleClicked.connect(self.trip_View)
-        self.trips.itemDoubleClicked.connect(lambda : [print(ind.data()) for ind in self.trips.selectedItems()])
+        self.trips.itemDoubleClicked.connect(self.trip_View)
+        # self.trips.itemDoubleClicked.connect(lambda : [print(ind.data()) for ind in self.trips.selectedItems()])
         self.comps.installEventFilter(self)
         self.vans.installEventFilter(self)
         STYLESHEET = '''QAbstractItemView QHeaderView {
@@ -539,6 +726,8 @@ class Main(QtWidgets.QWidget):
 
 
     def getCurrentPlanning(self):
+        tread = threading.Thread(target=syncFirebase)
+        tread.start()
         self.trips.clear()
         currentHour = strftime("%H", gmtime())
         currentMinute = strftime("%M", gmtime())
@@ -884,34 +1073,35 @@ class AddTrip(QtWidgets.QWidget):
 
     def save_(self):
         dt = self.dateTimeEdit.dateTime().toString(("yyyy-MM-dd HH"))
+        print(dt)
         if datetime.datetime.now() <= self.dateTimeEdit.dateTime():
-            cnx = con()
-            cur = cnx.cursor()
-
-            cur.execute(f'select id from trips where datetime like "{dt}%"')
-            trip = cur.fetchone()
-            if not trip:
-
-                cur.execute(f'''insert into trips(van, driver, datetime, ttype) values(
-                (select id from vans where matr like "{self.van_.currentText()}"), 
-                (select id from drivers where firstName like "{str(self.drivers_.currentText()).split(" ")[0]}" and LastName like "{str(self.drivers_.currentText()).split(" ")[1]}"),
-                 "{dt}:00:00",
-                  "{"IN" if self.IN.isChecked() else "OUT"}"
-                  )''')
-                cnx.commit()
-
-            #print(f'DT = {dt}')
-            cur.execute(f'select id from trips where datetime like "{dt}%"')
-            id = [cur.fetchone()[0]]
-            # #print(id)
-            self.tripView = Trip_View(id=id, role=self.role)
-            self.tripView.show()
-            self.back = False
-            self.close()
-
-
-            cnx.close()
-
+            # cnx = con()
+            # cur = cnx.cursor()
+            #
+            # cur.execute(f'select id from trips where datetime like "{dt}%"')
+            # trip = cur.fetchone()
+            # if not trip:
+            #
+            #     cur.execute(f'''insert into trips(van, driver, datetime, ttype) values(
+            #     (select id from vans where matr like "{self.van_.currentText()}"),
+            #     (select id from drivers where firstName like "{str(self.drivers_.currentText()).split(" ")[0]}" and LastName like "{str(self.drivers_.currentText()).split(" ")[1]}"),
+            #      "{dt}:00:00",
+            #       "{"IN" if self.IN.isChecked() else "OUT"}"
+            #       )''')
+            #     cnx.commit()
+            #
+            # #print(f'DT = {dt}')
+            # cur.execute(f'select id from trips where datetime like "{dt}%"')
+            # id = [cur.fetchone()[0]]
+            # # #print(id)
+            # self.tripView = Trip_View(id=id, role=self.role)
+            # self.tripView.show()
+            # self.back = False
+            # self.close()
+            #
+            #
+            # cnx.close()
+            create_trip(date=f'{dt}:00:00', van=self.van_.currentText(), type="IN" if self.IN.isChecked() else "OUT", driver=self.drivers_.currentText())
         else:
             notif(title="ERORR", msg=f"Can't create a trip with this date : {dt}")
 
@@ -1116,7 +1306,7 @@ class Trips(QtWidgets.QWidget):
             cnx = con()
             cur = cnx.cursor()
             cur.execute('''select t.id, v.matr, d.firstName, d.LastName, t.datetime, (select count(id) from trips_history where trip = t.id) as Agent_numbers
-                    from trips t inner join vans v on t.van = v.id inner join drivers d on t.driver = d.id ;''')
+                    from trips t inner join vans v on t.van = v.id inner join drivers d on t.driver = d.id order by t.datetime desc;''')
             dt = cur.fetchall()
 
             data = []
@@ -1357,6 +1547,7 @@ class Agents(QtWidgets.QWidget):
         cur = cnx.cursor()
         cur.execute(f'select street from agents where id = {int(dt[0])}')
         dt.append(cur.fetchone()[0])
+        print(f'Data ==> {dt}')
         self.eA = AddAgent(self.role, do='edit', data=dt)
         self.eA.show()
         self.close()
@@ -1896,6 +2087,8 @@ class AddAgent(QtWidgets.QWidget):
 
         #print(f'the data that i want ====>  {self.data}')
         #TODO : The Data ===> ['19', 'RIME ZAHIRI', 'F652030', 'HAY SAADA RUE AL BATRIQ', 'TDE', '08-17', 'None']
+        self.strr.addItems(self.allhoods)
+        # print(self.allhoods[self.allhoods.index(self.data[7]) + 1])
         if self.data:
             self.Fname.setText(str(self.data[1]).split(' ')[0])
             self.Lname.setText(str(self.data[1]).split(' ')[1])
@@ -1903,7 +2096,7 @@ class AddAgent(QtWidgets.QWidget):
             self.ad.setText(self.data[3])
             self.grps.setCurrentIndex(grps_names.index(self.data[4]))
 
-            self.strr.setCurrentIndex(self.allhoods.index(self.data[7]) if self.data[7] != None else 0)
+            self.strr.setCurrentIndex(self.allhoods.index(self.data[7]) + 1 if self.data[7] and self.data[7] != 'None' else 0 )
 
         self.setWindowTitle('Add new Agent')
 
@@ -1913,7 +2106,6 @@ class AddAgent(QtWidgets.QWidget):
 
         #print('+' *100)
         #print(self.allhoods)
-        self.strr.addItems(self.allhoods)
         cnx.close()
 
     def eventFilter(self, s, e):
@@ -1969,16 +2161,18 @@ class AddAgent(QtWidgets.QWidget):
                     cur.execute(f'insert into agents (firstName, LastName, CIN, address, grp, zone, street) value ("{self.Fname.text()}", "{self.Lname.text()}", "{self.CIN.text()}", "{self.ad.text()}", {grp}, "{zone}", "{self.strr.currentText()}");')
                     cnx.commit()
             elif self.action == 'edit':
-                    cur.execute(f'''
+                    query = f'''
                             update agents set firstName = "{self.Fname.text()}",
                                             LastName = "{self.Lname.text()}",
                                             CIN = "{self.CIN.text()}",
                                             address = "{self.ad.text()}",
                                             grp = {grp},
                                             zone = "{zone}",
-                                            street = "{self.strr.currentText()}",
+                                            street = "{self.strr.currentText()}"
                                             where id = {int(self.data[0])}
-                        ''')
+                        '''
+                    print(query)
+                    cur.execute(query=query)
                     cnx.commit()
                     # self.agents = Agents(self.role)
                     # self.agents.show()
