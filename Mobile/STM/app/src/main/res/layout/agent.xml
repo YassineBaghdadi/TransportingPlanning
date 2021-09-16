@@ -32,7 +32,7 @@
         <FrameLayout
 
             android:id="@+id/swiped_layout"
-            android:layout_width="210dp"
+            android:layout_width="280dp"
             android:layout_height="100dp"
             android:background="#F1F2F3"
             android:focusable="true"
@@ -47,11 +47,21 @@
                 >
 
             <ImageView
+                android:id="@+id/call"
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/call"
+                android:background="@android:color/holo_green_dark"
+                android:focusable="true"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                />
+            <ImageView
                 android:id="@+id/enter"
                 android:layout_width="70dp"
                 android:layout_height="match_parent"
                 android:src="@drawable/enter"
-                android:background="@android:color/holo_green_dark"
+                android:background="@color/teal_200"
                 android:focusable="true"
                 android:clickable="true"
                 android:foreground="?android:attr/selectableItemBackground"
@@ -98,12 +108,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:orientation="horizontal"
-                android:id="@+id/container"
+                android:id="@+id/agentcontainer"
 
                 >
 
                 <ImageView
-                    android:id="@+id/icon"
+                    android:id="@+id/agent_pic"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_marginStart="10dp"
@@ -111,8 +121,7 @@
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="10dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/agent"
-                    />
+                    android:src="@drawable/agent" />
 
                 <RelativeLayout
 
@@ -122,15 +131,19 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="10dp"
-                    android:layout_toRightOf="@+id/icon"
+                    android:layout_toRightOf="@+id/agent_pic"
                     android:orientation="horizontal">
-
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_centerVertical="true"
+                    >
 
                     <TextView
                         android:id="@+id/agentName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
                         android:layout_marginLeft="20dp"
                         android:text="test"
                         android:textSize="20sp"
@@ -138,6 +151,29 @@
 
                         />
 
+                    <TextView
+                        android:id="@+id/phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="test"
+                        android:textSize="15sp"
+                        android:textStyle="italic"
+
+
+                        />
+                    <TextView
+                        android:id="@+id/agrntGrp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="test"
+                        android:textSize="15sp"
+                        android:textStyle="italic"
+
+
+                        />
+                </LinearLayout>
 
                 </RelativeLayout>
 

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -52,19 +53,21 @@ public class TripsList extends AppCompatActivity {
         userName = pref.getString("user", null);
         System.out.println(userName);
         trips = dbref.child(userName).child("trips");
+
         trips.addValueEventListener(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-//
+                trips_dates.clear();
 
                 for(DataSnapshot dataSnapshot : snapshot.getChildren()){
                     String trip = dataSnapshot.getKey();
                     trips_dates.add(trip);
 
                 }
-                Toast.makeText(getApplicationContext(), "welcome back Mr "+userName+" you have "+snapshot.getChildrenCount()+" Trips .", Toast.LENGTH_SHORT).show();
+
                 myAdapter.notifyDataSetChanged();
+                Toast.makeText(getApplicationContext(), "welcome back Mr "+userName+" you have "+trips_dates.size()+" Trips .", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -77,6 +80,11 @@ public class TripsList extends AppCompatActivity {
 
 
     }
-
-
+//
+//    @Override
+//    public void onBackPressed() {
+//        super.onBackPressed();
+//        startActivity(new Intent(this, login.class));
+//        finish();
+//    }
 }
