@@ -1,8 +1,21 @@
 package com.saccomxd.baghdadi.yassine;
 
+import static android.content.Context.LOCATION_SERVICE;
+import static androidx.core.content.ContextCompat.startActivity;
+
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.location.LocationRequest;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +26,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -20,6 +35,10 @@ import com.chauthai.swipereveallayout.SwipeRevealLayout;
 import com.chauthai.swipereveallayout.ViewBinderHelper;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.SettingsClient;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
@@ -27,11 +46,38 @@ import com.squareup.picasso.Picasso;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 public class AgentAdapter extends RecyclerView.Adapter<AgentAdapter.ViewHolder> {
     private ArrayList<agent> dataModalArrayList;
     private Context context;
     private final ViewBinderHelper viewBinderHelper = new ViewBinderHelper();
+    static agent modal;
+
+
+
+    private LocationManager locationManager;
+    private LocationListener listener;
+
+    // location last updated time
+    private String mLastUpdateTime;
+
+    // bunch of location related apis
+    private FusedLocationProviderClient mFusedLocationClient;
+    private SettingsClient mSettingsClient;
+    private LocationRequest mLocationRequest;
+    private LocationSettingsRequest mLocationSettingsRequest;
+    private LocationCallback mLocationCallback;
+    private Location mCurrentLocation;
+
+    Location gps_loc;
+    Location network_loc;
+    Location final_loc;
+    double longitude;
+    double latitude;
+    String userCountry, userAddress;
+
     public AgentAdapter(ArrayList<agent> dataModalArrayList, Context context) {
         this.dataModalArrayList = dataModalArrayList;
         this.context = context;
@@ -48,7 +94,7 @@ public class AgentAdapter extends RecyclerView.Adapter<AgentAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull AgentAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
 // setting data to our views in Recycler view items.
-        final agent modal = dataModalArrayList.get(position);
+        modal = dataModalArrayList.get(position);
         holder.agentName.setText(modal.getName());
         holder.agentPhone.setText(modal.getPhone());
         holder.agentGrp.setText(modal.getGrp());
@@ -61,13 +107,9 @@ public class AgentAdapter extends RecyclerView.Adapter<AgentAdapter.ViewHolder> 
         viewBinderHelper.setOpenOnlyOne(true);
         viewBinderHelper.bind(holder.swipRevealLayout,String.valueOf(modal.getName()));
         viewBinderHelper.closeLayout(String.valueOf(modal.getName()));
-        holder.call.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                System.out.println();
-                Toast.makeText(context, "Calling : "+modal.getPhone(), Toast.LENGTH_SHORT).show();
-            }
-        });
+
+
+
 
         holder.abssent.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,6 +134,7 @@ public class AgentAdapter extends RecyclerView.Adapter<AgentAdapter.ViewHolder> 
                 String time = datetime.split("\\s+")[0];
                 holder.myRef.child(holder.user).child("trips").child(holder.currentTrip).child("agents").child(String.valueOf(position)).child("picktime").setValue(datetime.split("\\s+")[1]);
                 holder.myRef.child(holder.user).child("trips").child(holder.currentTrip).child("agents").child(String.valueOf(position)).child("presence").setValue("1");
+                holder.myRef.child(holder.user).child("trips").child(holder.currentTrip).child("agents").child(String.valueOf(position)).child("pickloc").setValue(getLocation(holder.itemView.getContext()));
 
                 holder.swipRevealLayout.close(true);
 
@@ -107,12 +150,102 @@ public class AgentAdapter extends RecyclerView.Adapter<AgentAdapter.ViewHolder> 
 
                 holder.myRef.child(holder.user).child("trips").child(holder.currentTrip).child("agents").child(String.valueOf(position)).child("droptime").setValue(datetime.split("\\s+")[1]);
                 holder.myRef.child(holder.user).child("trips").child(holder.currentTrip).child("agents").child(String.valueOf(position)).child("presence").setValue("1");
+                holder.myRef.child(holder.user).child("trips").child(holder.currentTrip).child("agents").child(String.valueOf(position)).child("droploc").setValue(getLocation(holder.itemView.getContext()));
                 Toast.makeText(holder.itemView.getContext(), "Leave BTN clicked", Toast.LENGTH_SHORT).show();
                 holder.swipRevealLayout.close(true);
             }
         });
 
+        holder.call.setOnClickListener(new View.OnClickListener() {
+
+
+            @Override
+            public void onClick(View view) {
+//                System.out.println();
+                Toast.makeText(context, "Calling : " + modal.getPhone(), Toast.LENGTH_SHORT).show();
+
+
+                if (ActivityCompat.checkSelfPermission(context,
+                        Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    return;
+                }
+                Intent intent = new Intent(Intent.ACTION_CALL);
+                intent.setData(Uri.parse("tel:"+modal.getPhone()));
+                startActivity(holder.itemView.getContext(), intent, null);
+            }
+
+////                Intent intent = new Intent(Intent.ACTION_DIAL);
+//                Intent intent = new Intent(Intent.ACTION_CALL);
+//                intent.setData(Uri.parse("tel:"+modal.getPhone()));
+//                context.startActivity(intent);
+
+
+
+        });
+
+
+
     }
+
+
+    public String getLocation(Context context){
+
+        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_NETWORK_STATE) != PackageManager.PERMISSION_GRANTED) {
+
+            return "error";
+        }
+
+        try {
+
+            gps_loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            network_loc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (gps_loc != null) {
+            final_loc = gps_loc;
+            latitude = final_loc.getLatitude();
+            longitude = final_loc.getLongitude();
+        }
+        else if (network_loc != null) {
+            final_loc = network_loc;
+            latitude = final_loc.getLatitude();
+            longitude = final_loc.getLongitude();
+        }
+        else {
+            latitude = 0.0;
+            longitude = 0.0;
+        }
+//        ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_NETWORK_STATE}, 1);
+        try {
+
+            Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+            List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+            if (addresses != null && addresses.size() > 0) {
+                userCountry = addresses.get(0).getCountryName();
+                userAddress = addresses.get(0).getAddressLine(0);
+                Toast.makeText(context, "Latitude : "+addresses.get(0).getLatitude()+" - Longitude : "+addresses.get(0).getLongitude(), Toast.LENGTH_SHORT).show();
+//                editor.putString("loc", addresses.get(0).getLatitude()+","+addresses.get(0).getLongitude());
+                return addresses.get(0).getLatitude()+","+addresses.get(0).getLongitude();
+
+
+            }
+            else {
+                userCountry = "Unknown";
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "0";
+    }
+
 
     @Override
     public int getItemCount() {

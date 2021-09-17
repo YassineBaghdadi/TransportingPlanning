@@ -2,9 +2,11 @@ package com.saccomxd.baghdadi.yassine;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -48,7 +50,7 @@ public class TripsList extends AppCompatActivity {
         recyclerView.setAdapter(myAdapter);
         pref = getApplicationContext().getSharedPreferences("var", Context.MODE_PRIVATE);
         editor = pref.edit();
-
+//        ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_NETWORK_STATE}, 1);
         String b = "yassine";
         userName = pref.getString("user", null);
         System.out.println(userName);
@@ -67,6 +69,7 @@ public class TripsList extends AppCompatActivity {
                 }
 
                 myAdapter.notifyDataSetChanged();
+//                recyclerView.notifyAll();
                 Toast.makeText(getApplicationContext(), "welcome back Mr "+userName+" you have "+trips_dates.size()+" Trips .", Toast.LENGTH_SHORT).show();
             }
 
@@ -75,16 +78,22 @@ public class TripsList extends AppCompatActivity {
 
             }
         });
-//        Toast.makeText(getApplicationContext(), "You have " + snapshot.getChildrenCount() + " trips .", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getApplicationContext(), "You have " + list.size() + " trips .", Toast.LENGTH_SHORT).show();
 //        Toast.makeText(getApplicationContext(), "welcome back Mr "+userName+" you have ", Toast.LENGTH_SHORT).show();
 
 
     }
 //
-//    @Override
-//    public void onBackPressed() {
-//        super.onBackPressed();
-//        startActivity(new Intent(this, login.class));
-//        finish();
-//    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(this, login.class));
+        finish();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
+    }
 }

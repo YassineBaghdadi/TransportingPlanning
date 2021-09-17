@@ -47,6 +47,18 @@ dependencies {
     // Glide v4 uses this new annotation processor -- see https://bumptech.github.io/glide/doc/generatedapi.html
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    // location play services
+    implementation 'com.google.android.gms:play-services-location:18.0.0'
+
+    // dexter runtime permissions
+    implementation 'com.karumi:dexter:4.2.0'
+
+    // ButterKnife view binding
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
+
 
 }
 apply plugin: 'com.google.gms.google-services'
