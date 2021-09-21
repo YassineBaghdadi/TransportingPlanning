@@ -649,6 +649,23 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
       <number>30</number>
      </property>
      <item>
+      <widget class="QLineEdit" name="matrr">
+       <property name="font">
+        <font>
+         <family>Segoe Print</family>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+       <property name="placeholderText">
+        <string>Matriculation</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QLineEdit" name="Fname">
        <property name="font">
         <font>

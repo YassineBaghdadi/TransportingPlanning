@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">STM</string>
+    <string name="dbURL">https://saccom-tm-2e9ec-default-rtdb.firebaseio.com</string>
 </resources>

@@ -8,10 +8,10 @@ from PyQt5.QtWidgets import QHeaderView, QGraphicsDropShadowEffect
 from openpyxl.styles import Border, Side
 from plyer import notification
 from openpyxl import load_workbook
-import firebase_admin
-from firebase_admin import credentials
-from firebase_admin import db
-
+# import firebase_admin
+# from firebase_admin import credentials
+# from firebase_admin import db
+import pyrebase
 
 radius = 40.0
 
@@ -41,7 +41,7 @@ def preparingDB():
     cur.execute('''Create table if not exists users (id  INT AUTO_INCREMENT, firstName Varchar(50), LastName Varchar(50), username Varchar(50), pass Varchar(50), role INT , PRIMARY KEY (id));''')
     cur.execute('''create table if not exists grps (id  INT AUTO_INCREMENT, name Varchar(50), shift Varchar(20) , PRIMARY KEY (id));''')
     cnx.commit()
-    cur.execute('''create table if not exists agents (id  INT AUTO_INCREMENT, firstName Varchar(50), LastName Varchar(50), CIN varchar(50), address Varchar(100), grp int, zone Varchar(45), street  Varchar(45), PRIMARY KEY (id), foreign key(grp) references grps(id));''')
+    cur.execute('''create table if not exists agents (id  INT AUTO_INCREMENT, matrr varchar(50) not null, firstName Varchar(50), LastName Varchar(50), CIN varchar(50), address Varchar(100), grp int, zone Varchar(45), street  Varchar(45), pic text, PRIMARY KEY (id), foreign key(grp) references grps(id));''')
     cur.execute('''create table if not exists vans (id  INT AUTO_INCREMENT, matr Varchar(50), driver varchar(50), max_places int , PRIMARY KEY (id))''')
     cur.execute('''create table if not exists vans(id  INT AUTO_INCREMENT, matricule varchar(50), max_places int , PRIMARY KEY (id))''')
     cur.execute('''create table if not exists drivers(id  INT AUTO_INCREMENT, firstName Varchar(50), LastName varchar(50), username Varchar(45), pass Varchar(45), PRIMARY KEY (id))''')
@@ -50,7 +50,9 @@ def preparingDB():
     cur.execute('create table if not exists trips(id  INT AUTO_INCREMENT, van int, driver int, datetime Varchar(50), ttype Varchar(5), foreign key(van) references vans(id), foreign key(driver) references drivers(id) , PRIMARY KEY (id))')
 
     cnx.commit()
-    cur.execute('''create table if not exists trips_history(id  INT AUTO_INCREMENT,trip int, agent int, pick_time varchar(50), presence int, foreign key(trip) references trips(id), foreign key(agent) references agents(id), PRIMARY KEY (id))''')
+    cur.execute('''create table if not exists trips_history(id  INT AUTO_INCREMENT,trip int, agent int, presence varchar(50), picktime varchar(50), pickloc varchar(50), droptime varchar(50), droploc varchar(50), foreign key(trip) references trips(id), foreign key(agent) references agents(id), PRIMARY KEY (id))''')
+    cnx.commit()
+    cur.execute("CREATE TABLE if not exists logsfile (id INT AUTO_INCREMENT,user VARCHAR(45) ,query VARCHAR(500) ,status VARCHAR(50), descr VARCHAR(500) ,PRIMARY KEY (id))")
     cnx.commit()
     # cur.execute()
     cnx.close()
@@ -293,21 +295,33 @@ def create_trip(date, type, driver, van):
 
     cnx.close()
 
+firebaseConfig = {"apiKey": "AIzaSyAIV0qDv7WI3kU_krALZEc-PlTCkBRMp9g",
+                  "authDomain": "saccomxd-stm-yassine-baghdadi.firebaseapp.com",
+                  "databaseURL": "https://saccomxd-stm-yassine-baghdadi-default-rtdb.firebaseio.com",
+                  "projectId": "saccomxd-stm-yassine-baghdadi",
+                  "storageBucket": "saccomxd-stm-yassine-baghdadi.appspot.com",
+                  "messagingSenderId": "817733299864",
+                  "appId": "1:817733299864:web:517bd7f4b0a11e5b62aaed",
+                  "measurementId": "G-B5NV6TETGS",
+                  "databaseURL" :"https://saccomxd-stm-yassine-baghdadi-default-rtdb.firebaseio.com/" }
+#
+firebase = pyrebase.initialize_app(firebaseConfig)
+database = firebase.database()
+# cred = credentials.Certificate("src/key.json")
+# firebase_admin.initialize_app(cred, {
+#         'databaseURL': 'https://saccomxd-stm-yassine-baghdadi-default-rtdb.firebaseio.com/',
+#
+#     })
 def syncFirebase():
     print('synchronizing with Firebase ...')
     # Fetch the service account key JSON file contents
-    cred = credentials.Certificate("src/key.json")
 
     # Initialize the app with a service account, granting admin privileges
 
-    firebase_admin.initialize_app(cred, {
-        'databaseURL': 'https://saccom-tm-default-rtdb.firebaseio.com',
 
-    })
-
-    users = db.reference('users')
+    # users = db.reference('users')
     # users = ref.child('users')
-    print(users.child('YassineBaghdadi').get())
+    # print(users.child('YassineBaghdadi').get())
     cnx = con()
     cur = cnx.cursor()
     # cur.execute('select concat(firstName, LastName) as fullName , username, pass from users;')
@@ -320,46 +334,72 @@ def syncFirebase():
     #         }
     #         )
 
-    drvrs = db.reference('drivers')
-    cur.execute('select username, pass from drivers;')
-    users = cur.fetchall()
-    for d in users:
-        if not drvrs.child(f'{d[0]}').get():
-            drvrs.child(f'{d[0]}').set({'pass': d[1],})
+    drvrs = database.child('drivers')
+    # cur.execute('select username, pass from drivers;')
+    # users = cur.fetchall()
+    # for d in users:
+    #     if not drvrs.child(f'{d[0]}').get():
+    #         drvrs.child(f'{d[0]}').set({'pass': d[1],})
 
-    drivers_firebase = db.reference('drivers')
 
-    cur.execute(f'''select t.id, v.matr, d.firstName , t.datetime, (select count(id) from trips_history where trip = t.id) as Agent_numbers, t.ttype
+
+    cur.execute(f'''select t.id, v.matr, d.username , t.datetime, (select count(id) from trips_history where trip = t.id) as Agent_numbers, t.ttype
                         from trips t inner join vans v on t.van = v.id inner join drivers d on t.driver = d.id where date(t.datetime) < "{today} 00:00:00" order by t.datetime;''')
 
     toDelete = cur.fetchall()
 
     # for i in toDelete:
-    #     drivers_firebase.child(f'{i[2]}').child('trips').child(f'{i[3]}').delete()
+    #     tt = drvrs.child(f'{i[2]}').child('trips').child(f'{i[3]}')
+    #     if tt.get().val():
+    #         tripID = tt.child("id").get()
+    #         print(f"tripID = {tripID}")
+    #         print(tt.child("agents").get())
+    #         agents = tt.child("agents").get().val()
+    #
+    #         print(agents)
+    #         if agents:
+    #             for ag in agents:
+    #                 try:
+    #                     print(ag)
+    #                     print(type(ag))
+    #                     cur.execute(
+    #                         f'''update trips_history set picktime = "{ag['picktime']}", pickloc = "{ag["pickloc"]}", droptime = "{ag["droptime"]}", droploc = "{ag["droploc"]}", presence = "{ag["presence"]}"
+    #                     where trip = {tripID} and agent = {str(ag["name"]).split(" ")[0]}''')
+    #                     cnx.commit()
+    #                 except Exception as e:
+    #                     # cur.execute(f"insert into logs(user, query, status, desc)value("", "", "", "")")
+    #                     # cnx.commit()
+    #                     print(e)
+    #     tt.remove()
 
-    cur.execute(f'''select t.id, v.matr, d.firstName , t.datetime, (select count(id) from trips_history where trip = t.id) as Agent_numbers, t.ttype
+
+    cur.execute(f'''select t.id, v.matr, d.username , t.datetime, (select count(id) from trips_history where trip = t.id) as Agent_numbers, t.ttype
                         from trips t inner join vans v on t.van = v.id inner join drivers d on t.driver = d.id where date(t.datetime) >= "{today} 00:00:00" order by t.datetime;''')
 
     trips = cur.fetchall()
 
     for trip in trips:
-        trp = drivers_firebase.child(f'{trip[2]}').child('trips').child(f'{trip[3]}')
-        cur.execute(f'''select a.id, concat(a.firstName, " ", a.LastName) as fullName
-                                        from trips_history th inner join agents a on th.agent = a.id 
-                                        where th.trip = {int(trip[0])};''')
+        trp = drvrs.child(f'{trip[2]}').child('trips').child(f'{trip[3]}')
+        cur.execute(f'''select a.id, concat(a.firstName, " ", a.LastName) as fullName,
+                                             g.name, a.pic from trips_history th inner join agents a on th.agent = a.id inner join grps g on a.grp = g.id
+                                             where th.trip = {int(trip[0])};''')
 
-        agents = [f"{i[0]} - {i[1]}" for i in cur.fetchall()]
+        agents = [{"name" : f"{i[0]} - {i[1]}", "phone" : "0630504606", "pic" : i[3], "grp" : i[2], "droptime":"", "droploc":"", "picktime":"", "pickloc":"", "presence":""} for i in cur.fetchall()]
 
-        print(f'Agents : {agents}')
-        if not trp.get():
 
-            trp.child("id").set({trip[0]})
-            trp.child("agents").set({agents})
+        if not trp.get().val():
+            trp.push({
+                            'id' : trip[0],
+                            'agents' : agents,
+
+                        })
+            print(f'Agents : {agents}')
 
 
 
     print(trips)
     print('trips synchronized with FireBase successfully.')
+
     cnx.close()
 
 
@@ -551,6 +591,7 @@ class Main(QtWidgets.QWidget):
         super(Main, self).__init__()
         QtWidgets.QWidget.__init__(self)
         uic.loadUi(os.path.join(os.path.dirname(__file__), "ui/main.ui"), self)
+
         self.role = role
 
         if self.role == 0:
@@ -736,15 +777,15 @@ class Main(QtWidgets.QWidget):
         cnx = con()
         cur = cnx.cursor()
 
-        cur.execute(f'''select t.id, v.matr, CONCAT(d.firstName, ' ', d.LastName) as driverName , t.datetime, (select count(id) from trips_history where trip = t.id) as Agent_numbers, t.ttype
-                    from trips t inner join vans v on t.van = v.id inner join drivers d on t.driver = d.id where date(t.datetime) >= "{today} 00:00:00" order by t.datetime;''')
+        cur.execute(f'''select t.matrr, v.matr, CONCAT(d.firstName, ' ', d.LastName) as driverName , t.datetime, (select count(id) from trips_history where trip = t.id) as Agent_numbers, t.ttype
+                    from trips t inner join vans v on t.van = v.id inner join drivers d on t.driver = d.matrr where date(t.datetime) >= "{today} 00:00:00" order by t.datetime;''')
         data = cur.fetchall()
         ind = 0
         data = [[c for c in r] for r in data]
         for i in data:
             # i.append('IN' if str(i[3]).split(' ')[1].split(':')[0] in "08 09 13 14".split() else "Out")
             item = QtWidgets.QTreeWidgetItem([str(u) for u in i])
-            cur.execute(f'''select a.id, CONCAT(a.firstName, " ", a.LastName) as agentName, th.pick_time, th.presence, g.name  from trips t inner join trips_history th on th.trip = t.id inner join agents a on th.agent = a.id inner join grps g on a.grp = g.id where t.id = {i[0]};''')
+            cur.execute(f'''select a.matrr, CONCAT(a.firstName, " ", a.LastName) as agentName, th.pick_time, th.presence, g.name  from trips t inner join trips_history th on th.trip = t.id inner join agents a on th.agent = a.id inner join grps g on a.grp = g.id where t.matrr = {i[0]};''')
             agentsForTrip = [i for i in cur.fetchall()]
             if agentsForTrip:
                 ch1 = QtWidgets.QTreeWidgetItem([f'All The Agents  : {len(agentsForTrip)}'])
@@ -1454,11 +1495,11 @@ class Agents(QtWidgets.QWidget):
         cur = cnx.cursor()
 
         if key:= self.search.text():
-            query = f'''select a.id, a.firstName, a.LastName, a.CIN, a.address, g.name, g.shift, a.zone  from 
+            query = f'''select a.matrr, a.firstName, a.LastName, a.CIN, a.address, g.name, g.shift, a.zone  from 
             agents a inner join grps g on a.grp = g.id where
             {f"(g.name like '{self.groups.currentText()}') and "if self.groups.currentIndex() != 0 else " "} ( a.firstName like "%{key}%" or a.LastName like "%{key}%" or a.CIN like "%{key}%" or a.address like "%{key}%" or g.name like "%{key}%");'''
         else:
-            query = f'''select a.id, a.firstName, a.LastName, a.CIN, a.address, g.name, g.shift, a.zone  from 
+            query = f'''select a.matrr, a.firstName, a.LastName, a.CIN, a.address, g.name, g.shift, a.zone  from 
                         agents a inner join grps g on a.grp = g.id {f" where g.name like '{self.groups.currentText()}'" if self.groups.currentIndex() != 0 else ""}'''
 
         #print('#'*30)
@@ -2131,9 +2172,14 @@ class AddAgent(QtWidgets.QWidget):
 
 
     def save(self):
-        if len(self.Fname.text()) > 3 and len(self.Lname.text()) > 3 and len(self.CIN.text()) > 3 and len(self.ad.text()) > 3 and self.strr.currentIndex() != 0:
+        if len(self.Fname.text()) > 3 and len(self.Lname.text()) > 2 and len(self.CIN.text()) > 3 and len(self.ad.text()) > 2 and self.strr.currentIndex() != 0 and len(self.matrr.text()) > 1:
             cnx = con()
             cur = cnx.cursor()
+            cur.execute(f'''select concat(firstName , " ", LastName) from agent where matrr like "{self.matrr.text()}"''')
+            if agent:=cur.fetchone()[0]:
+                notif(self, title="Agent Allready exists", msg=f"This Matriculation alreaddy exists on the database for Agent : {agent}")
+                return
+
             cur.execute(f'select id from grps where name like "{self.grps.currentText()}"')
             grp = int(cur.fetchone()[0])
             zone = ''
@@ -2151,18 +2197,20 @@ class AddAgent(QtWidgets.QWidget):
 
             if self.action == 'save':
                 cur.execute(
-                    f'select count(id) from agents where FirstName like "{self.Fname.text()}" and LastName like "{self.Lname.text()}"')
-                if cur.fetchone()[0]:
+                    f'select concat(firstName , " ", LastName) from agents where matrr like "{self.matrr.text()}" ')
+                if a := cur.fetchone()[0]:
                     #print('thsi Agent alredy exists ')
                     self.Fname.setStyleSheet('border : 2px solid red')
                     self.Lname.setStyleSheet('border : 2px solid red')
-                    notif(self, title='Transport Planning ', msg='This Agent already exists in the Database ')
+                    notif(self, title='Agent Already exists', msg=f'This Matriculation already exists in the Database : - {a}')
                 else:
-                    cur.execute(f'insert into agents (firstName, LastName, CIN, address, grp, zone, street) value ("{self.Fname.text()}", "{self.Lname.text()}", "{self.CIN.text()}", "{self.ad.text()}", {grp}, "{zone}", "{self.strr.currentText()}");')
+                    cur.execute(f'insert into agents (matrr, firstName, LastName, CIN, address, grp, zone, street) value ("{self.matrr.text()}", "{self.Fname.text()}", "{self.Lname.text()}", "{self.CIN.text()}", "{self.ad.text()}", {grp}, "{zone}", "{self.strr.currentText()}");')
                     cnx.commit()
             elif self.action == 'edit':
+                    self.matrr.setEnabled(False)
                     query = f'''
-                            update agents set firstName = "{self.Fname.text()}",
+                            update agents set  
+                                            firstName = "{self.Fname.text()}",
                                             LastName = "{self.Lname.text()}",
                                             CIN = "{self.CIN.text()}",
                                             address = "{self.ad.text()}",

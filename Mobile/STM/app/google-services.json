@@ -1,63 +1,34 @@
 {
   "project_info": {
-    "project_number": "434763556628",
-    "firebase_url": "https://saccom-tm-default-rtdb.firebaseio.com",
-    "project_id": "saccom-tm",
-    "storage_bucket": "saccom-tm.appspot.com"
+    "project_number": "817733299864",
+    "firebase_url": "https://saccomxd-stm-yassine-baghdadi-default-rtdb.firebaseio.com",
+    "project_id": "saccomxd-stm-yassine-baghdadi",
+    "storage_bucket": "saccomxd-stm-yassine-baghdadi.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:434763556628:android:8fd94c4cc7a42fd89b4401",
+        "mobilesdk_app_id": "1:817733299864:android:282a78dd8addd24562aaed",
         "android_client_info": {
           "package_name": "com.saccomxd.baghdadi.yassine"
         }
       },
       "oauth_client": [
         {
-          "client_id": "434763556628-qe365iid90hibu58vmolhu6f9u8ncvkv.apps.googleusercontent.com",
+          "client_id": "817733299864-f554ej57qgi7h2ra6rbc4qurq7ksmkua.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBuZD3FhJRkUljWu6S0X2GzkOfwmJw7hdo"
+          "current_key": "AIzaSyDnY8VSJL_760Dq4fx6oCD_uWf3MTshFGI"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "434763556628-qe365iid90hibu58vmolhu6f9u8ncvkv.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:434763556628:android:3b6331a69e292bfb9b4401",
-        "android_client_info": {
-          "package_name": "com.saccomxd.yassine.baghdadi.mobile"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "434763556628-qe365iid90hibu58vmolhu6f9u8ncvkv.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBuZD3FhJRkUljWu6S0X2GzkOfwmJw7hdo"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "434763556628-qe365iid90hibu58vmolhu6f9u8ncvkv.apps.googleusercontent.com",
+              "client_id": "817733299864-f554ej57qgi7h2ra6rbc4qurq7ksmkua.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

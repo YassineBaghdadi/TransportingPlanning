@@ -3,17 +3,23 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/TransportingPlanning/Mobile/STM/app/src/main/res/drawable-v24/rouded_corner_blue.xml" value="0.2942708333333333" />
+        <entry key="..\:/TransportingPlanning/Mobile/STM/app/src/main/res/drawable-v24/rouded_corner_red.xml" value="0.2942708333333333" />
+        <entry key="..\:/TransportingPlanning/Mobile/STM/app/src/main/res/drawable/dialog_bg.xml" value="0.2942708333333333" />
         <entry key="..\:/TransportingPlanning/Mobile/STM/app/src/main/res/drawable/load_ic_background.xml" value="0.2942708333333333" />
+        <entry key="..\:/TransportingPlanning/Mobile/STM/app/src/main/res/drawable/rouded_corner.xml" value="0.2942708333333333" />
         <entry key="..\:/TransportingPlanning/Mobile/STM/app/src/main/res/layout/Trip_list.xml" value="0.278125" />
         <entry key="..\:/TransportingPlanning/Mobile/STM/app/src/main/res/layout/activity_log_in.xml" value="0.2640625" />
         <entry key="..\:/TransportingPlanning/Mobile/STM/app/src/main/res/layout/activity_login.xml" value="0.278125" />
         <entry key="..\:/TransportingPlanning/Mobile/STM/app/src/main/res/layout/activity_main.xml" value="0.278125" />
         <entry key="..\:/TransportingPlanning/Mobile/STM/app/src/main/res/layout/agent.xml" value="0.25" />
         <entry key="..\:/TransportingPlanning/Mobile/STM/app/src/main/res/layout/agent_list_layout.xml" value="0.14583333333333334" />
+        <entry key="..\:/TransportingPlanning/Mobile/STM/app/src/main/res/layout/custom_dialog.xml" value="0.25" />
         <entry key="..\:/TransportingPlanning/Mobile/STM/app/src/main/res/layout/main.xml" value="0.278125" />
         <entry key="..\:/TransportingPlanning/Mobile/STM/app/src/main/res/layout/test.xml" value="0.278125" />
         <entry key="..\:/TransportingPlanning/Mobile/STM/app/src/main/res/layout/trip.xml" value="0.278125" />
         <entry key="..\:/TransportingPlanning/Mobile/STM/app/src/main/res/layout/trip_list_layout.xml" value="0.15670289855072464" />
+        <entry key="..\:/TransportingPlanning/Mobile/STM/app/src/main/res/layout/trip_msg.xml" value="0.278125" />
         <entry key="..\:/TransportingPlanning/Mobile/STM/app/src/main/res/mipmap-anydpi-v26/load_ic.xml" value="0.16197916666666667" />
         <entry key="..\:/TransportingPlanning/Mobile/STM/app/src/main/res/mipmap-anydpi-v26/load_ic_round.xml" value="0.16197916666666667" />
       </map>
