@@ -47,7 +47,7 @@ def preparingDB():
     cur.execute('''create table if not exists drivers(id  INT AUTO_INCREMENT, firstName Varchar(50), LastName varchar(50), username Varchar(45), pass Varchar(45), PRIMARY KEY (id))''')
     cnx.commit()
 
-    cur.execute('create table if not exists trips(id  INT AUTO_INCREMENT, van int, driver int, datetime Varchar(50), ttype Varchar(5), foreign key(van) references vans(id), foreign key(driver) references drivers(id) , PRIMARY KEY (id))')
+    cur.execute('create table if not exists trips(id  INT AUTO_INCREMENT, van int, driver int, datetime Varchar(50), ttype Varchar(5), starttime varchar(45), startloc varchar(45), stoptime varchar(45), stoploc varchar(45), counterkm varchar(45), foreign key(van) references vans(id), foreign key(driver) references drivers(id) , PRIMARY KEY (id))')
 
     cnx.commit()
     cur.execute('''create table if not exists trips_history(id  INT AUTO_INCREMENT,trip int, agent int, presence varchar(50), picktime varchar(50), pickloc varchar(50), droptime varchar(50), droploc varchar(50), foreign key(trip) references trips(id), foreign key(agent) references agents(id), PRIMARY KEY (id))''')
@@ -340,6 +340,8 @@ def syncFirebase():
     for d in users:
         if not drvrs.child(f'{d[0]}').get():
             drvrs.child(f'{d[0]}').set({'pass': d[1],})
+        else:
+            drvrs.child(d[0]).child("pass").set(d[1])
 
 
 
@@ -385,6 +387,15 @@ def syncFirebase():
             print(f"tripID = {tripID}")
             print(tt.child("agents").get())
             agents = tt.child("agents").get()
+            cur.execute(f'''update trips set 
+                            starttime = "{tt.child("starttime").get()}",
+                            startloc = "{tt.child("startloc").get()}",
+                            stoptime = "{tt.child("stoptime").get()}",
+                            stoploc = "{tt.child("stoploc").get()}",
+                            counterkm = "{int(str(tt.child("stopcounter").get())) - int(str(tt.child("startcounter").get())) if tt.child("stopcounter").get() and  tt.child("startcounter").get() else 0} " 
+                            where id = {tripID}
+                            ''')
+            cnx.commit()
 
             print(agents)
             if agents:
@@ -792,15 +803,15 @@ class Main(QtWidgets.QWidget):
         cnx = con()
         cur = cnx.cursor()
 
-        cur.execute(f'''select t.matrr, v.matr, CONCAT(d.firstName, ' ', d.LastName) as driverName , t.datetime, (select count(id) from trips_history where trip = t.id) as Agent_numbers, t.ttype
-                    from trips t inner join vans v on t.van = v.id inner join drivers d on t.driver = d.matrr where date(t.datetime) >= "{today} 00:00:00" order by t.datetime;''')
+        cur.execute(f'''select t.id,  v.matr, CONCAT(d.firstName, ' ', d.LastName) as driverName , t.datetime, (select count(id) from trips_history where trip = t.id) as Agent_numbers, t.ttype
+                    from trips t inner join vans v on t.van = v.id inner join drivers d on t.driver = d.id where date(t.datetime) >= "{today} 00:00:00" order by t.datetime;''')
         data = cur.fetchall()
         ind = 0
         data = [[c for c in r] for r in data]
         for i in data:
             # i.append('IN' if str(i[3]).split(' ')[1].split(':')[0] in "08 09 13 14".split() else "Out")
             item = QtWidgets.QTreeWidgetItem([str(u) for u in i])
-            cur.execute(f'''select a.matrr, CONCAT(a.firstName, " ", a.LastName) as agentName, th.pick_time, th.presence, g.name  from trips t inner join trips_history th on th.trip = t.id inner join agents a on th.agent = a.id inner join grps g on a.grp = g.id where t.matrr = {i[0]};''')
+            cur.execute(f'''select a.matrr, CONCAT(a.firstName, " ", a.LastName) as agentName, th.picktime, th.presence, g.name  from trips t inner join trips_history th on th.trip = t.id inner join agents a on th.agent = a.id inner join grps g on a.grp = g.id where t.id = {i[0]};''')
             agentsForTrip = [i for i in cur.fetchall()]
             if agentsForTrip:
                 ch1 = QtWidgets.QTreeWidgetItem([f'All The Agents  : {len(agentsForTrip)}'])

@@ -1,0 +1,55 @@
+self.cls.setPixmap(QtGui.QPixmap('src/img/cls.png'))
+self.cls.setScaledContents(True)
+self.cls.installEventFilter(self)
+self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+self.offset = None
+
+##################################
+
+    def mousePressEvent(self, event):
+            if event.button() == QtCore.Qt.LeftButton:
+                self.offset = event.pos()
+            else:
+                super().mousePressEvent(event)
+
+    def mouseMoveEvent(self, event):
+            if self.offset is not None and event.buttons() == QtCore.Qt.LeftButton:
+                self.move(self.pos() + event.pos() - self.offset)
+            else:
+                super().mouseMoveEvent(event)
+
+    def mouseReleaseEvent(self, event):
+            self.offset = None
+            super().mouseReleaseEvent(event)
+
+
+###########################
+
+        if s is self.cls:
+            if e.type() == QtCore.QEvent.Enter:
+                self.cls.setStyleSheet("border: 1px solid black; border-radius: 25px;")
+                print('mouse in ')
+            elif e.type() == QtCore.QEvent.Leave:
+                self.cls.setStyleSheet('border-color: 0px ;')
+                print('mouse out')
+            elif e.type() == QtCore.QEvent.MouseButtonPress:
+                os._exit(0)
+
+#########################################################################
+
+self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+
+##########################
+
+    def paintEvent(self, event):
+        # get current window size
+        opt = QtWidgets.QStyleOption()
+        opt.initFrom(self)
+        rect = opt.rect
+
+        p = QPainter(self)
+        p.setRenderHint(QPainter.Antialiasing, True)
+        p.setBrush(opt.palette.brush(QPalette.Window))
+        p.setPen(QtCore.Qt.NoPen)
+        p.drawRoundedRect(rect, 40, 40)
+        p.end()
