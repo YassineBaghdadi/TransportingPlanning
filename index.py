@@ -8,10 +8,10 @@ from PyQt5.QtWidgets import QHeaderView, QGraphicsDropShadowEffect
 from openpyxl.styles import Border, Side
 from plyer import notification
 from openpyxl import load_workbook
-# import firebase_admin
-# from firebase_admin import credentials
-# from firebase_admin import db
-import pyrebase
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import db
+# import pyrebase
 
 radius = 40.0
 
@@ -295,23 +295,23 @@ def create_trip(date, type, driver, van):
 
     cnx.close()
 
-firebaseConfig = {"apiKey": "AIzaSyAIV0qDv7WI3kU_krALZEc-PlTCkBRMp9g",
-                  "authDomain": "saccomxd-stm-yassine-baghdadi.firebaseapp.com",
-                  "databaseURL": "https://saccomxd-stm-yassine-baghdadi-default-rtdb.firebaseio.com",
-                  "projectId": "saccomxd-stm-yassine-baghdadi",
-                  "storageBucket": "saccomxd-stm-yassine-baghdadi.appspot.com",
-                  "messagingSenderId": "817733299864",
-                  "appId": "1:817733299864:web:517bd7f4b0a11e5b62aaed",
-                  "measurementId": "G-B5NV6TETGS",
-                  "databaseURL" :"https://saccomxd-stm-yassine-baghdadi-default-rtdb.firebaseio.com/" }
-#
-firebase = pyrebase.initialize_app(firebaseConfig)
-database = firebase.database()
-# cred = credentials.Certificate("src/key.json")
-# firebase_admin.initialize_app(cred, {
-#         'databaseURL': 'https://saccomxd-stm-yassine-baghdadi-default-rtdb.firebaseio.com/',
-#
-#     })
+# firebaseConfig = {"apiKey": "AIzaSyAIV0qDv7WI3kU_krALZEc-PlTCkBRMp9g",
+#                   "authDomain": "saccomxd-stm-yassine-baghdadi.firebaseapp.com",
+#                   "databaseURL": "https://saccomxd-stm-yassine-baghdadi-default-rtdb.firebaseio.com",
+#                   "projectId": "saccomxd-stm-yassine-baghdadi",
+#                   "storageBucket": "saccomxd-stm-yassine-baghdadi.appspot.com",
+#                   "messagingSenderId": "817733299864",
+#                   "appId": "1:817733299864:web:517bd7f4b0a11e5b62aaed",
+#                   "measurementId": "G-B5NV6TETGS",
+#                   "databaseURL" :"https://saccomxd-stm-yassine-baghdadi-default-rtdb.firebaseio.com/" }
+# #
+# firebase = pyrebase.initialize_app(firebaseConfig)
+# database = firebase.database()
+cred = credentials.Certificate("src/key.json")
+firebase_admin.initialize_app(cred, {
+        'databaseURL': 'https://saccomxd-stm-yassine-baghdadi-default-rtdb.firebaseio.com/',
+
+    })
 def syncFirebase():
     print('synchronizing with Firebase ...')
     # Fetch the service account key JSON file contents
@@ -334,47 +334,21 @@ def syncFirebase():
     #         }
     #         )
 
-    drvrs = database.child('drivers')
-    # cur.execute('select username, pass from drivers;')
-    # users = cur.fetchall()
-    # for d in users:
-    #     if not drvrs.child(f'{d[0]}').get():
-    #         drvrs.child(f'{d[0]}').set({'pass': d[1],})
+    drvrs = db.reference('drivers')
+    cur.execute('select username, pass from drivers;')
+    users = cur.fetchall()
+    for d in users:
+        if not drvrs.child(f'{d[0]}').get():
+            drvrs.child(f'{d[0]}').set({'pass': d[1],})
 
 
-
-    cur.execute(f'''select t.id, v.matr, d.username , t.datetime, (select count(id) from trips_history where trip = t.id) as Agent_numbers, t.ttype
-                        from trips t inner join vans v on t.van = v.id inner join drivers d on t.driver = d.id where date(t.datetime) < "{today} 00:00:00" order by t.datetime;''')
-
-    toDelete = cur.fetchall()
-
-    # for i in toDelete:
-    #     tt = drvrs.child(f'{i[2]}').child('trips').child(f'{i[3]}')
-    #     if tt.get().val():
-    #         tripID = tt.child("id").get()
-    #         print(f"tripID = {tripID}")
-    #         print(tt.child("agents").get())
-    #         agents = tt.child("agents").get().val()
-    #
-    #         print(agents)
-    #         if agents:
-    #             for ag in agents:
-    #                 try:
-    #                     print(ag)
-    #                     print(type(ag))
-    #                     cur.execute(
-    #                         f'''update trips_history set picktime = "{ag['picktime']}", pickloc = "{ag["pickloc"]}", droptime = "{ag["droptime"]}", droploc = "{ag["droploc"]}", presence = "{ag["presence"]}"
-    #                     where trip = {tripID} and agent = {str(ag["name"]).split(" ")[0]}''')
-    #                     cnx.commit()
-    #                 except Exception as e:
-    #                     # cur.execute(f"insert into logs(user, query, status, desc)value("", "", "", "")")
-    #                     # cnx.commit()
-    #                     print(e)
-    #     tt.remove()
 
 
     cur.execute(f'''select t.id, v.matr, d.username , t.datetime, (select count(id) from trips_history where trip = t.id) as Agent_numbers, t.ttype
                         from trips t inner join vans v on t.van = v.id inner join drivers d on t.driver = d.id where date(t.datetime) >= "{today} 00:00:00" order by t.datetime;''')
+
+    # cur.execute(f'''select t.id, v.matr, d.username , t.datetime, (select count(id) from trips_history where trip = t.id) as Agent_numbers, t.ttype
+    #                     from trips t inner join vans v on t.van = v.id inner join drivers d on t.driver = d.id order by t.datetime;''')
 
     trips = cur.fetchall()
 
@@ -387,18 +361,59 @@ def syncFirebase():
         agents = [{"name" : f"{i[0]} - {i[1]}", "phone" : "0630504606", "pic" : i[3], "grp" : i[2], "droptime":"", "droploc":"", "picktime":"", "pickloc":"", "presence":""} for i in cur.fetchall()]
 
 
-        if not trp.get().val():
-            trp.push({
+        if not trp.get():
+            trp.set({
                             'id' : trip[0],
                             'agents' : agents,
 
                         })
             print(f'Agents : {agents}')
+        else:
+            print(f'{trip[0]} alredy added')
+
+
+
+    cur.execute(f'''select t.id, v.matr, d.username , t.datetime, (select count(id) from trips_history where trip = t.id) as Agent_numbers, t.ttype
+                        from trips t inner join vans v on t.van = v.id inner join drivers d on t.driver = d.id where date(t.datetime) < "{today} 00:00:00" order by t.datetime;''')
+
+    toDelete = cur.fetchall()
+
+    for i in toDelete:
+        tt = drvrs.child(f'{i[2]}').child('trips').child(f'{i[3]}')
+        if tt.get():
+            tripID = tt.child("id").get()
+            print(f"tripID = {tripID}")
+            print(tt.child("agents").get())
+            agents = tt.child("agents").get()
+
+            print(agents)
+            if agents:
+                for ag in agents:
+                    try:
+                        print(ag)
+                        print(type(ag))
+                        cur.execute(
+                            f'''update trips_history set picktime = "{ag['picktime']}", pickloc = "{ag["pickloc"]}", droptime = "{ag["droptime"]}", droploc = "{ag["droploc"]}", presence = "{ag["presence"]}"
+                        where trip = {tripID} and agent = {str(ag["name"]).split(" ")[0]}''')
+                        cnx.commit()
+                    except Exception as e:
+                        # cur.execute(f"insert into logs(user, query, status, desc)value("", "", "", "")")
+                        # cnx.commit()
+                        print(e)
+        tt.delete()
+
+
 
 
 
     print(trips)
     print('trips synchronized with FireBase successfully.')
+    notification.notify(
+        title="STM",
+        message='trips synchronized with FireBase successfully.',
+        app_icon=os.path.join(os.getcwd(), 'src/img/it.ico'),
+        timeout=5,
+    )
 
     cnx.close()
 

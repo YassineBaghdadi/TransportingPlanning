@@ -28,10 +28,11 @@ public class dialog_trips {
     FirebaseDatabase fDb;
     DatabaseReference db;
     private String type;
-    boolean started;
+    boolean started, finiched;
+    int startedCounterKM;
 
-    public void showdialog(Context activity ) {
-        final Dialog dialog = new Dialog(activity);
+    public void showdialog(Context activity) {
+        final Dialog dialog = new Dialog(activity, R.style.DialogAnimation);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
         dialog.setContentView(R.layout.custom_dialog);
@@ -47,14 +48,28 @@ public class dialog_trips {
         db.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.hasChild("startcounter")) {
-                    action.setText("STOP");
-                    action.setBackgroundResource(R.drawable.rouded_corner_red);
+
+                if (snapshot.hasChild("startcounter") && snapshot.hasChild("stopcounter")) {
+                    action.setText("Finiched");
+                    action.setBackgroundResource(R.drawable.rouded_corner_gray);
                     started = true;
-                } else {
+                    finiched = true;
+                    action.setEnabled(false);
+                    counter.setEnabled(false);
+                }
+
+                if (!snapshot.hasChild("stopcounter") && !snapshot.hasChild("startcounter")) {
                     action.setText("START");
                     action.setBackgroundResource(R.drawable.rouded_corner_green);
                     started = false;
+                    finiched = false;
+                }
+                if (snapshot.hasChild("startcounter") && !snapshot.hasChild("stopcounter")) {
+                    startedCounterKM = Integer.parseInt(snapshot.child("startcounter").getValue().toString());
+                    action.setText("STOP");
+                    action.setBackgroundResource(R.drawable.rouded_corner_red);
+                    started = true;
+                    finiched = false;
 
                 }
             }
@@ -77,23 +92,29 @@ public class dialog_trips {
         action.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (counter.getText().toString().matches("")){
+                if (counter.getText().toString().matches("")) {
                     Toast.makeText(activity, "Put counter KM ...", Toast.LENGTH_SHORT).show();
-                }else {
-                    if (started){
-                        db.child("stopcounter").setValue(counter.getText().toString());
-                    }else {
-                        db.child("startcounter").setValue(counter.getText().toString());
-                    }
-                    activity.startActivity(new Intent(activity, AgentsList.class));
-                    dialog.dismiss();
-                }
+                } else {
 
+                    if (started) {
+                        if (Integer.parseInt(counter.getText().toString()) > startedCounterKM){
+                            db.child("stopcounter").setValue(counter.getText().toString());
+                            activity.startActivity(new Intent(activity, AgentsList.class));
+                            dialog.dismiss();
+                        }else {
+                            Toast.makeText(activity, "The Stop Counter has to be Greater than The Start one ", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        db.child("startcounter").setValue(counter.getText().toString());
+                        activity.startActivity(new Intent(activity, AgentsList.class));
+                        dialog.dismiss();
+                    }
+
+                }
 
 
             }
         });
-
 
 
         dialog.show();
