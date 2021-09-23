@@ -1,3 +1,4 @@
+import webbrowser
 from time import gmtime, strftime
 
 from PyQt5 import QtWidgets, uic, QtGui, QtCore
@@ -645,10 +646,13 @@ class Main(QtWidgets.QWidget):
         self.emps_icon.setScaledContents(True)
         self.planning.installEventFilter(self)
         head = ['Trip ID','Van Matricule','Driver name ','Trip time','Agents numbers', 'Trip Type']
-        self.trips.setHeaderLabels(head)
+        # self.trips.setHeaderLabels(head)
+
+        self.tripsList = {}
+        self.tripsDetails = {}
         self.getCurrentPlanning()
-        self.trips.itemSelectionChanged.connect(lambda : print(f'Select ==> {self.trips.selectedItems()[0].text(0)}'))
-        self.trips.itemDoubleClicked.connect(self.trip_View)
+        # self.trips.itemSelectionChanged.connect(lambda : print(f'Select ==> {self.trips.selectedItems()[0].text(0)}'))
+        # self.trips.itemDoubleClicked.connect(self.trip_View)
         # self.trips.itemDoubleClicked.connect(lambda : [print(ind.data()) for ind in self.trips.selectedItems()])
         self.comps.installEventFilter(self)
         self.vans.installEventFilter(self)
@@ -661,14 +665,23 @@ class Main(QtWidgets.QWidget):
                 background: transparent;
             }
             '''
-        self.trips.setStyleSheet(STYLESHEET)
+        # self.trips.setStyleSheet(STYLESHEET)
 
         self.cls.setPixmap(QtGui.QPixmap('src/img/cls.png'))
         self.cls.setScaledContents(True)
+        self.noContentIcon.setPixmap(QtGui.QPixmap('src/img/noContent.png'))
+        self.noContentIcon.setScaledContents(True)
         self.cls.installEventFilter(self)
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
         self.offset = None
         self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+
+        # print(self.tripsInfos)
+        self.trips_list.itemSelectionChanged.connect(self.trips_selectionChanged)
+        self.trips_selectionChanged()
+        self.view_btn.clicked.connect(self.trip_View)
+
+
 
 
     def paintEvent(self, event):
@@ -756,27 +769,29 @@ class Main(QtWidgets.QWidget):
 
     def trip_View(self):
 
-        data = [i.text(0) for i in self.trips.selectedItems()]
-        ##print(f'data ==> {data}')
-        cnx = con()
-        cur = cnx.cursor()
-        cur.execute(f'select datetime from trips where id = {int(data[0])} ;')
-        dd = cur.fetchone()[0]
-        ##print(f'thr date : {dd}')
-        trDate = datetime.datetime.strptime(f"{str(dd).split(' ')[0]} {str(dd).split(' ')[1].split(':')[0]}", '%Y-%m-%d %H')
-        now = datetime.datetime.strptime(datetime.datetime.today().strftime('%Y-%m-%d %H'), '%Y-%m-%d %H')
+        r =  [self.trips_list.currentIndex().siblingAtColumn(i).data() for i in range(self.trips_list.columnCount())]
+        tripID = int(r[0]) if r else None
+        if tripID:
+            ##print(f'data ==> {data}')
+            cnx = con()
+            cur = cnx.cursor()
+            cur.execute(f'select datetime from trips where id = {tripID} ;')
+            dd = cur.fetchone()[0]
+            ##print(f'thr date : {dd}')
+            trDate = datetime.datetime.strptime(f"{str(dd).split(' ')[0]} {str(dd).split(' ')[1].split(':')[0]}", '%Y-%m-%d %H')
+            now = datetime.datetime.strptime(datetime.datetime.today().strftime('%Y-%m-%d %H'), '%Y-%m-%d %H')
 
-        # ##print(f'{"*"*100}\nnow ({now}) > trDate ({trDate}) = {now > trDate}\n{"*"*100}')
+            # ##print(f'{"*"*100}\nnow ({now}) > trDate ({trDate}) = {now > trDate}\n{"*"*100}')
 
-        # if int(strftime("%H", gmtime())) >= int(str(dd).split(' ')[1].split(':')[0]) and int(str(dd).split(' ')[0].split('-')[2]) < int(strftime("%d", gmtime())) and int(str(dd).split(' ')[0].split('-')[1]) <= int(strftime("%m", gmtime())) :
-        if now > trDate:
-            ##print('the combo should desibled ')
-            self.TV = Trip_View(role=self.role, id=data, desibleedit=True)
-            notif(self, title="Error", msg='You can\'t Modify this Trip .')
-        else:
-            self.TV = Trip_View(role=self.role, id=data)
-        self.TV.show()
-        self.close()
+            # if int(strftime("%H", gmtime())) >= int(str(dd).split(' ')[1].split(':')[0]) and int(str(dd).split(' ')[0].split('-')[2]) < int(strftime("%d", gmtime())) and int(str(dd).split(' ')[0].split('-')[1]) <= int(strftime("%m", gmtime())) :
+            if now > trDate:
+                ##print('the combo should desibled ')
+                self.TV = Trip_View(role=self.role, id=tripID, desibleedit=True)
+                notif(self, title="Error", msg='You can\'t Modify this Trip .')
+            else:
+                self.TV = Trip_View(role=self.role, id=tripID)
+            self.TV.show()
+            self.close()
 
 
 
@@ -792,10 +807,53 @@ class Main(QtWidgets.QWidget):
         self.close()
 
 
+    def trips_selectionChanged(self):
+        self.trip_info.setHorizontalHeaderLabels(
+            [i for i in "Matriculation.Full Name.Group.Address.Zone.Shift ".split('.')])
+        print(self.tripsDetails)
+        selectedRow = [self.trips_list.currentIndex().siblingAtColumn(i).data() for i in range(self.trips_list.columnCount())]
+        tripID = selectedRow[0]
+        print(f"selected id ==> {tripID}")
+        if not tripID:
+            self.noContentFrame.setFixedHeight(393)
+            self.trip_info.setFixedHeight(0)
+            self.view_btn.setEnabled(False)
+        else:
+
+            self.noContentFrame.setFixedHeight(0)
+            self.trip_info.setFixedHeight(393)
+            self.view_btn.setEnabled(True)
+            self.trip_info.clear()
+
+            # self.trip_info.setColumnCount(len(self.tripsList[tripID]))
+            print(self.tripsDetails[int(tripID)])
+            agents = self.tripsDetails[int(tripID)]
+            self.trip_info.setRowCount(len(agents))
+            self.trip_info.setColumnCount(len(agents[0]))
+            self.trip_info.setHorizontalHeaderLabels(
+                [i for i in "Matriculation.Full Name.Group.Address.Zone.Shift ".split('.')])
+            for i in range(self.trip_info.columnCount()):
+                if i == 3:
+                    self.trip_info.horizontalHeader().setSectionResizeMode(i, QHeaderView.ResizeToContents)
+                else:
+                    self.trip_info.horizontalHeader().setSectionResizeMode(i, QHeaderView.Stretch)
+                # self.trips_list.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch)
+
+
+            for idx, agent in enumerate(agents):
+                for cidx, v in enumerate(agent):
+                    self.trip_info.setItem(idx, cidx, QtWidgets.QTableWidgetItem(str(v)))
+
+
+
+
+
+
     def getCurrentPlanning(self):
         tread = threading.Thread(target=syncFirebase)
         tread.start()
-        self.trips.clear()
+        # self.trips_list.setRowCount(0)
+        # self.trips.clear()
         currentHour = strftime("%H", gmtime())
         currentMinute = strftime("%M", gmtime())
         ##print(f'Current Minute : {currentMinute}')
@@ -803,27 +861,50 @@ class Main(QtWidgets.QWidget):
         cnx = con()
         cur = cnx.cursor()
 
-        cur.execute(f'''select t.id,  v.matr, CONCAT(d.firstName, ' ', d.LastName) as driverName , t.datetime, (select count(id) from trips_history where trip = t.id) as Agent_numbers, t.ttype
-                    from trips t inner join vans v on t.van = v.id inner join drivers d on t.driver = d.id where date(t.datetime) >= "{today} 00:00:00" order by t.datetime;''')
+        cur.execute(f'''select id, datetime
+                    from trips where date(datetime) >= "{today} 00:00:00" order by datetime;''')
         data = cur.fetchall()
+
+
         ind = 0
         data = [[c for c in r] for r in data]
-        for i in data:
-            # i.append('IN' if str(i[3]).split(' ')[1].split(':')[0] in "08 09 13 14".split() else "Out")
-            item = QtWidgets.QTreeWidgetItem([str(u) for u in i])
-            cur.execute(f'''select a.matrr, CONCAT(a.firstName, " ", a.LastName) as agentName, th.picktime, th.presence, g.name  from trips t inner join trips_history th on th.trip = t.id inner join agents a on th.agent = a.id inner join grps g on a.grp = g.id where t.id = {i[0]};''')
-            agentsForTrip = [i for i in cur.fetchall()]
-            if agentsForTrip:
-                ch1 = QtWidgets.QTreeWidgetItem([f'All The Agents  : {len(agentsForTrip)}'])
-                for agent in agentsForTrip:
-                    rr = QtWidgets.QTreeWidgetItem([str(i) for i in agent])
-                    ch1.addChild(rr)
-                item.addChild(ch1)
-            # if f'{datetime.date.today()}' in  i[3] :
-            #     ##print(self.trips.topLevelItem(ind))
+        for trip in data:
+            self.tripsList[trip[0]] = trip[1]
+            cur.execute(f'''select a.matrr,  concat(a.firstName, " ", a.LastName), g.name, concat(a.address, " ", a.street), a.zone, g.shift
+                                from trips_history th inner join agents a on th.agent = a.id
+                                inner join grps g on a.grp = g.id where th.trip = {trip[0]}''')
+            self.tripsDetails[trip[0]] = [[i for i in agent] for agent in cur.fetchall()]
 
-            self.trips.addTopLevelItem(item)
-            ind += 1
+
+
+        self.trips_list.setColumnCount(2)
+
+        for i in  self.tripsList.keys():
+            rowPosition = self.trips_list.rowCount()
+            self.trips_list.insertRow(rowPosition)
+            self.trips_list.setItem(rowPosition, 0, QtWidgets.QTableWidgetItem(f"{i}"))
+            self.trips_list.setItem(rowPosition, 1, QtWidgets.QTableWidgetItem(f"{self.tripsList[i]}"))
+
+
+        self.trips_list.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeToContents)
+        self.trips_list.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch)
+
+        # for i in data:
+        #     # i.append('IN' if str(i[3]).split(' ')[1].split(':')[0] in "08 09 13 14".split() else "Out")
+        #     item = QtWidgets.QTreeWidgetItem([str(u) for u in i])
+        #     cur.execute(f'''select a.matrr, CONCAT(a.firstName, " ", a.LastName) as agentName, th.picktime, th.presence, g.name  from trips t inner join trips_history th on th.trip = t.id inner join agents a on th.agent = a.id inner join grps g on a.grp = g.id where t.id = {i[0]};''')
+        #     agentsForTrip = [i for i in cur.fetchall()]
+        #     if agentsForTrip:
+        #         ch1 = QtWidgets.QTreeWidgetItem([f'All The Agents  : {len(agentsForTrip)}'])
+        #         for agent in agentsForTrip:
+        #             rr = QtWidgets.QTreeWidgetItem([str(i) for i in agent])
+        #             ch1.addChild(rr)
+        #         item.addChild(ch1)
+        #     # if f'{datetime.date.today()}' in  i[3] :
+        #     #     ##print(self.trips.topLevelItem(ind))
+        #
+        #     self.trips.addTopLevelItem(item)
+        #     ind += 1
         cnx.close()
 
 
@@ -836,11 +917,12 @@ class Trip_View(QtWidgets.QWidget):
         if self.role == 0:
             print('The Admin')
         # ##print(data)
-        self.id_ = id[0]
+        self.id_ = id
         self.p = p
         cnx = con()
         cur = cnx.cursor()
-        cur.execute(f'''select v.matr, t.datetime, concat(d.firstName, " ", d.LastName) as driverName from vans v inner join trips t on t.van = v.id inner join drivers d on t.driver = d.id where t.id = {int(self.id_)}''')
+        cur.execute(f'''select v.matr, t.datetime, concat(d.firstName, " ", d.LastName) as driverName, t.starttime, t.startloc, t.stoptime, t.stoploc from
+                        vans v inner join trips t on t.van = v.id inner join drivers d on t.driver = d.id where t.id = {int(self.id_)}''')
         self.setWindowTitle('View The Trip\'s Details')
         self.trip_id.setText(str(self.id_))
 
@@ -848,6 +930,12 @@ class Trip_View(QtWidgets.QWidget):
         self.van_matr.setText(dt[0])
         self.trip_time.setText(dt[1])
         self.driver_name.setText(dt[2])
+
+        self.start_time.setText(dt[3])
+        self.start_loc.setText(dt[4])
+        self.stop_time.setText(dt[5])
+        self.stop_loc.setText(dt[6])
+
         self.rmv.clicked.connect(self.removeAgent)
 
         self.tableWidget.itemSelectionChanged.connect(self.rowSelected)
@@ -863,6 +951,8 @@ class Trip_View(QtWidgets.QWidget):
         self.prnt.clicked.connect(self.printTrip)
 
 
+
+
         self.refreshTable()
         self.back_icon.setPixmap(QtGui.QPixmap('src/img/back.png'))
         self.back_icon.setScaledContents(True)
@@ -874,6 +964,13 @@ class Trip_View(QtWidgets.QWidget):
         self.offset = None
 
         self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+        self.start_loc.installEventFilter(self)
+        self.stop_loc.installEventFilter(self)
+
+    def openMap(self, latLot):
+        if latLot and len(latLot.split(",")) == 2:
+            lat, lot = [i for i in str(latLot).split(',')]
+            webbrowser.open(f'''http://maps.google.com/maps?z=12&t=m&q=loc:{lat}+{lot}''')
 
     def paintEvent(self, event):
         # get current window size
@@ -923,6 +1020,10 @@ class Trip_View(QtWidgets.QWidget):
                 ##print('mouse out')
             elif e.type() == QtCore.QEvent.MouseButtonPress:
                 os._exit(0)
+
+        if s is self.start_loc or s is self.stop_loc:
+            if e.type() == QtCore.QEvent.MouseButtonPress:
+                self.openMap(s.text())
 
         return super(Trip_View, self).eventFilter(s, e)
 
@@ -1414,10 +1515,10 @@ class Trips(QtWidgets.QWidget):
 
         # if int(strftime("%H", gmtime())) >= int(str(dd).split(' ')[1].split(':')[0]) and int(str(dd).split(' ')[0].split('-')[2]) < int(strftime("%d", gmtime())) and int(str(dd).split(' ')[0].split('-')[1]) <= int(strftime("%m", gmtime())) :
         if now > trDate:
-            self.TV = Trip_View(role=self.role, id=data, desibleedit=True, p=True)
+            self.TV = Trip_View(role=self.role, id=data[0], desibleedit=True, p=True)
             notif(self, title="Error", msg='You can\'t Modify this Trip .')
         else:
-            self.TV = Trip_View(role=self.role, id=data, p=True)
+            self.TV = Trip_View(role=self.role, id=data[0], p=True)
         self.TV.show()
         self.close()
 
@@ -2263,6 +2364,8 @@ class AddAgent(QtWidgets.QWidget):
 
         else:
             notif(self, title="Error ", msg='you have to write all the infos')
+
+
 
 if __name__ == '__main__' :
     app = QtWidgets.QApplication(sys.argv)
