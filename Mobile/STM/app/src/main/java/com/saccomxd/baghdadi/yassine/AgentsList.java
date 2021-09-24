@@ -18,6 +18,7 @@ import android.location.LocationManager;
 import android.location.LocationRequest;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
@@ -50,6 +51,7 @@ import com.google.firebase.database.ValueEventListener;
 import org.w3c.dom.Comment;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -89,6 +91,13 @@ public class AgentsList extends AppCompatActivity {
     double latitude;
     String userCountry, userAddress;
 
+
+    Handler handler = new Handler();
+    Runnable runnable;
+    int delay = 500;
+
+    String active_trip;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,9 +116,55 @@ public class AgentsList extends AppCompatActivity {
         editor = pref.edit();
         userName = pref.getString("user", null);
         tripName = pref.getString("trip", null);
-
+        db = FirebaseDatabase.getInstance();
+        dbref = db.getReference("drivers");
+//        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         refresh();
         Toast.makeText(getApplicationContext(), "You have " + agentsNames.size() + " Agents in this trip .", Toast.LENGTH_SHORT).show();
+
+//        active_trip = pref.getString("activetrip", null);
+
+        dbref.child(userName).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.hasChild("activetrip")){
+                    active_trip = String.valueOf(snapshot.child("activetrip").getValue());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+
+
+        handler.postDelayed(runnable = new Runnable() {
+            public void run() {
+
+                handler.postDelayed(runnable, delay);
+                if (!active_trip.equals("0")) {
+
+//                    if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+//                            && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+//                            && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_NETWORK_STATE) != PackageManager.PERMISSION_GRANTED) {
+//
+//                        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_NETWORK_STATE, Manifest.permission.CALL_PHONE}, 1);
+//                    }
+
+
+
+                    variables v = new variables();
+                    @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                    Date date = new Date();
+                    String datetime = formatter.format(date);
+                    dbref.child(userName).child("trips").child(active_trip).child("tracking").child(datetime.split("\\s+")[1]).setValue(v.getLocation(getApplicationContext()));
+                }
+            }
+        }, delay);
+//        handler.removeCallbacks(runnable);
 
 //
 //        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -167,13 +222,13 @@ public class AgentsList extends AppCompatActivity {
 
 
     }
+
     private void refresh() {
 
         db = FirebaseDatabase.getInstance();
-        dbref = db.getReference("drivers");
         agents = dbref.child(userName).child("trips").child(tripName).child("agents");
 //        agentsNames.clear();
-        agents.addValueEventListener(new ValueEventListener() {
+        agents.addListenerForSingleValueEvent(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -197,10 +252,9 @@ public class AgentsList extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getApplicationContext(), "Loading Data Error : "+error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Loading Data Error : " + error, Toast.LENGTH_SHORT).show();
             }
         });
-
 
 
 //        agents.addChildEventListener(new ChildEventListener() {
@@ -232,7 +286,6 @@ public class AgentsList extends AppCompatActivity {
     }
 
 
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -250,13 +303,13 @@ public class AgentsList extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setMessage("GPS is disabled in your device. Would you like to enable it?")
                     .setCancelable(false)
                     .setPositiveButton("Goto Settings Page To Enable GPS",
-                            new DialogInterface.OnClickListener(){
-                                public void onClick(DialogInterface dialog, int id){
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
                                     Intent callGPSSettingIntent = new Intent(
                                             android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                                     startActivity(callGPSSettingIntent);

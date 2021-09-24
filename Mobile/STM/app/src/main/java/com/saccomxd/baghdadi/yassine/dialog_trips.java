@@ -13,6 +13,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -47,7 +48,13 @@ public class dialog_trips {
     Location final_loc;
     double longitude;
     double latitude;
-    String userCountry, userAddress;
+    String userCountry, userAddress, active_trip;
+
+
+    Handler handler = new Handler();
+    Runnable runnable;
+    int delay = 1000;
+
     public void showdialog(Context activity) {
 //        final Dialog dialog = new Dialog(activity, R.style.DialogAnimation);
         final Dialog dialog = new Dialog(activity);
@@ -59,7 +66,7 @@ public class dialog_trips {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         TextView action = (TextView) dialog.findViewById(R.id.action);
         EditText counter = (EditText) dialog.findViewById(R.id.counter);
-
+        active_trip = "0";
         TextView viewbtn = (TextView) dialog.findViewById(R.id.view);
         fDb = FirebaseDatabase.getInstance();
         db = fDb.getReference("drivers").child(sharedPreferences.getString("user", null)).child("trips").child(sharedPreferences.getString("trip", null));
@@ -74,6 +81,7 @@ public class dialog_trips {
                     finiched = true;
                     action.setEnabled(false);
                     counter.setEnabled(false);
+                    viewbtn.setEnabled(false);
                 }
 
                 if (!snapshot.hasChild("stopcounter") && !snapshot.hasChild("startcounter")) {
@@ -97,6 +105,8 @@ public class dialog_trips {
 
             }
         });
+
+
 
         viewbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,17 +132,28 @@ public class dialog_trips {
                             db.child("stopcounter").setValue(counter.getText().toString());
                             db.child("stoptime").setValue(datetime.split("\\s+")[1]);
                             db.child("stoploc").setValue(getLocation(activity));
-                            activity.startActivity(new Intent(activity, AgentsList.class));
+                            editor.putString("activetrip", "0");
+                            fDb.getReference("drivers").child(sharedPreferences.getString("user", null)).child("activetrip").setValue("0");
+
+                            editor.apply();
+                            activity.startActivity(new Intent(activity, TripsList.class));
                             dialog.dismiss();
+
                         }else {
                             Toast.makeText(activity, "The Stop Counter has to be Greater than The Start one ", Toast.LENGTH_SHORT).show();
                         }
                     } else {
+                        editor.putString("activetrip", sharedPreferences.getString("trip", null));
+                        fDb.getReference("drivers").child(sharedPreferences.getString("user", null)).child("activetrip").setValue(sharedPreferences.getString("trip", null));
+                        editor.apply();
                         db.child("startcounter").setValue(counter.getText().toString());
                         db.child("starttime").setValue(datetime.split("\\s+")[1]);
                         db.child("startloc").setValue(getLocation(activity));
+
                         activity.startActivity(new Intent(activity, AgentsList.class));
                         dialog.dismiss();
+
+
                     }
 
                 }

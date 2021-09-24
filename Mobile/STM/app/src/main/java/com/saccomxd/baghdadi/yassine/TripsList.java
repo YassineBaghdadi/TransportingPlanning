@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -37,6 +38,11 @@ public class TripsList extends AppCompatActivity {
     SharedPreferences pref;
     SharedPreferences.Editor editor;
     private LocationManager locationManager;
+
+    Handler handler = new Handler();
+    Runnable runnable;
+    int delay = 10000;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +67,19 @@ public class TripsList extends AppCompatActivity {
         System.out.println(userName);
         trips = dbref.child(userName).child("trips");
 
-        trips.addValueEventListener(new ValueEventListener() {
+        handler.postDelayed(runnable = new Runnable() {
+            public void run() {
+
+                handler.postDelayed(runnable, delay);
+                variables v = new variables();
+                dbref.child(userName).child("currentloc").setValue(v.getLocation(getApplicationContext()));
+            }
+        }, delay);
+
+//        handler.removeCallbacks(runnable);
+
+//        trips.
+        trips.addListenerForSingleValueEvent(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

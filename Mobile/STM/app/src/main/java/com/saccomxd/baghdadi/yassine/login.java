@@ -14,6 +14,7 @@ import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.EditText;
@@ -38,6 +39,9 @@ public class login extends AppCompatActivity {
     boolean connected;
     private LocationManager locationManager;
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +50,7 @@ public class login extends AppCompatActivity {
         passwrd = (EditText) findViewById(R.id.password);
         db = FirebaseDatabase.getInstance();
         dbref = db.getReference("drivers");
+
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_NETWORK_STATE, Manifest.permission.CALL_PHONE}, 1);
         ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo nInfo = cm.getActiveNetworkInfo();
@@ -53,6 +58,10 @@ public class login extends AppCompatActivity {
 
         pref = getApplicationContext().getSharedPreferences("var", Context.MODE_PRIVATE);
         editor = pref.edit();
+        editor.putString("activetrip","0");
+        editor.apply();
+
+
 
 
 
@@ -70,7 +79,7 @@ public class login extends AppCompatActivity {
             dlgAlert.setCancelable(false);
             dlgAlert.create().show();
         } else {
-            dbref.addValueEventListener(new ValueEventListener() {
+            dbref.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     //Toast.makeText(getApplicationContext(), snapshot.child(userName.getText().toString()).child("pass").getValue().toString(), Toast.LENGTH_SHORT).show();
@@ -126,5 +135,13 @@ public class login extends AppCompatActivity {
             alert.show();
 
         }
+
+
+
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+
     }
 }
