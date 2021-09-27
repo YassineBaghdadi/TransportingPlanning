@@ -9,6 +9,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -26,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -39,8 +42,11 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.SettingsClient;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -62,6 +68,7 @@ public class AgentAdapter extends RecyclerView.Adapter<AgentAdapter.ViewHolder> 
 
     // location last updated time
     private String mLastUpdateTime;
+    private static String active_trip;
 
     // bunch of location related apis
     private FusedLocationProviderClient mFusedLocationClient;
@@ -95,6 +102,8 @@ public class AgentAdapter extends RecyclerView.Adapter<AgentAdapter.ViewHolder> 
 
 // setting data to our views in Recycler view items.
         modal = dataModalArrayList.get(position);
+
+
         holder.agentName.setText(modal.getName());
         holder.agentPhone.setText(modal.getPhone());
         holder.agentGrp.setText(modal.getGrp());
@@ -120,6 +129,7 @@ public class AgentAdapter extends RecyclerView.Adapter<AgentAdapter.ViewHolder> 
                 holder.myRef.child(holder.user).child("trips").child(holder.currentTrip).child("agents").child(String.valueOf(position)).child("presence").setValue(0);
 //                    Toast.makeText(itemView.getContext(), "Abssent BTN clicked", Toast.LENGTH_SHORT).show();
                 holder.swipRevealLayout.close(true);
+                holder.itemView.getContext().startActivity(new Intent(holder.itemView.getContext(), AgentsList.class));
 
             }
         });
@@ -137,6 +147,7 @@ public class AgentAdapter extends RecyclerView.Adapter<AgentAdapter.ViewHolder> 
                 holder.myRef.child(holder.user).child("trips").child(holder.currentTrip).child("agents").child(String.valueOf(position)).child("pickloc").setValue(getLocation(holder.itemView.getContext()));
 
                 holder.swipRevealLayout.close(true);
+                holder.itemView.getContext().startActivity(new Intent(holder.itemView.getContext(), AgentsList.class));
 
 
             }
@@ -153,6 +164,7 @@ public class AgentAdapter extends RecyclerView.Adapter<AgentAdapter.ViewHolder> 
                 holder.myRef.child(holder.user).child("trips").child(holder.currentTrip).child("agents").child(String.valueOf(position)).child("droploc").setValue(getLocation(holder.itemView.getContext()));
                 Toast.makeText(holder.itemView.getContext(), "Leave BTN clicked", Toast.LENGTH_SHORT).show();
                 holder.swipRevealLayout.close(true);
+                holder.itemView.getContext().startActivity(new Intent(holder.itemView.getContext(), AgentsList.class));
             }
         });
 
@@ -169,9 +181,9 @@ public class AgentAdapter extends RecyclerView.Adapter<AgentAdapter.ViewHolder> 
                         Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                     return;
                 }
-                Intent intent = new Intent(Intent.ACTION_CALL);
+                Intent intent = new Intent(Intent.ACTION_DIAL);
                 intent.setData(Uri.parse("tel:"+modal.getPhone()));
-                startActivity(holder.itemView.getContext(), intent, null);
+                startActivity(context, intent, null);
             }
 
 ////                Intent intent = new Intent(Intent.ACTION_DIAL);
@@ -264,7 +276,8 @@ public class AgentAdapter extends RecyclerView.Adapter<AgentAdapter.ViewHolder> 
         private final SwipeRevealLayout swipRevealLayout;
         private final RelativeLayout rr;
         private final ImageView enter, leave, abssent, call;
-        String user, currentTrip;
+        String user, currentTrip, tripName;
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -272,11 +285,11 @@ public class AgentAdapter extends RecyclerView.Adapter<AgentAdapter.ViewHolder> 
             agentPhone = itemView.findViewById(R.id.phone);
             agentGrp = itemView.findViewById(R.id.agrntGrp);
             agentPic = itemView.findViewById(R.id.agent_pic);
-
             database = FirebaseDatabase.getInstance();
             myRef = database.getReference("drivers");
             pref = itemView.getContext().getSharedPreferences("var", Context.MODE_PRIVATE);
             editor = pref.edit();
+
             swipRevealLayout = itemView.findViewById(R.id.swipRevealLayout);
             rr = itemView.findViewById(R.id.agentcontainer);
             currentTrip = pref.getString("trip", null);
@@ -286,6 +299,33 @@ public class AgentAdapter extends RecyclerView.Adapter<AgentAdapter.ViewHolder> 
             abssent = itemView.findViewById(R.id.absent);
             call = itemView.findViewById(R.id.call);
 
+
+            myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                    System.out.println("Debagging "+ );
+                    if (snapshot.child(user).hasChild("activetrip") && !String.valueOf(snapshot.child(user).child("activetrip").getValue()).equals(currentTrip)){
+//                        swipRevealLayout.setLockDrag(true);
+//                        rr.setEnabled(false);
+                        enter.setEnabled(false);
+                        leave.setEnabled(false);
+                        abssent.setEnabled(false);
+                        enter.setBackgroundResource(R.drawable.rouded_corner_gray);
+                        leave.setBackgroundResource(R.drawable.rouded_corner_gray);
+                        abssent.setBackgroundResource(R.drawable.rouded_corner_gray);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+            System.out.println(active_trip+" And "+currentTrip);
+//            if (!active_trip.equals(currentTrip)){
+//                swipRevealLayout.setLockDrag(true);
+//            }
             rr.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

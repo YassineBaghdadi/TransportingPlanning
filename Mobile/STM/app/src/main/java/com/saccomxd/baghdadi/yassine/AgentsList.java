@@ -33,6 +33,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -120,6 +121,16 @@ public class AgentsList extends AppCompatActivity {
         dbref = db.getReference("drivers");
 //        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         refresh();
+        SwipeRefreshLayout srl = findViewById(R.id.srl);
+        srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refresh();
+                srl.setRefreshing(false);
+            }
+        });
+
+
         Toast.makeText(getApplicationContext(), "You have " + agentsNames.size() + " Agents in this trip .", Toast.LENGTH_SHORT).show();
 
 //        active_trip = pref.getString("activetrip", null);
@@ -238,6 +249,7 @@ public class AgentsList extends AppCompatActivity {
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
 //                    agent agent = dataSnapshot.getValue(agent.class);
+//                    System.out.println(snapshot.getValue());
                     agentsNames.add(dataSnapshot.getValue(agent.class));
 //                        myAdapter = new AgentAdapter(agentsNames, getApplicationContext());
 //                        recyclerView.setAdapter(myAdapter);

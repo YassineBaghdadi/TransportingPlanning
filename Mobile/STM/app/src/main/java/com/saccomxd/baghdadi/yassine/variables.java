@@ -76,7 +76,7 @@ public class variables {
             if (addresses != null && addresses.size() > 0) {
                 userCountry = addresses.get(0).getCountryName();
                 userAddress = addresses.get(0).getAddressLine(0);
-                Toast.makeText(context, "Latitude : "+addresses.get(0).getLatitude()+" - Longitude : "+addresses.get(0).getLongitude(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(context, "Latitude : "+addresses.get(0).getLatitude()+" - Longitude : "+addresses.get(0).getLongitude(), Toast.LENGTH_SHORT).show();
 //                editor.putString("loc", addresses.get(0).getLatitude()+","+addresses.get(0).getLongitude());
                 return addresses.get(0).getLatitude()+","+addresses.get(0).getLongitude();
 

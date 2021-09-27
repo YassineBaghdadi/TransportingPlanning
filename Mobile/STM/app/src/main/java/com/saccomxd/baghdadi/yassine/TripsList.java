@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -75,10 +76,25 @@ public class TripsList extends AppCompatActivity {
                 dbref.child(userName).child("currentloc").setValue(v.getLocation(getApplicationContext()));
             }
         }, delay);
-
+        refresh();
+        SwipeRefreshLayout srl = findViewById(R.id.swipeRefresh);
+        srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refresh();
+                srl.setRefreshing(false);
+            }
+        });
 //        handler.removeCallbacks(runnable);
 
 //        trips.
+
+//        Toast.makeText(getApplicationContext(), "You have " + list.size() + " trips .", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getApplicationContext(), "welcome back Mr "+userName+" you have ", Toast.LENGTH_SHORT).show();
+
+
+    }
+    private void refresh(){
         trips.addListenerForSingleValueEvent(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
@@ -101,10 +117,6 @@ public class TripsList extends AppCompatActivity {
 
             }
         });
-//        Toast.makeText(getApplicationContext(), "You have " + list.size() + " trips .", Toast.LENGTH_SHORT).show();
-//        Toast.makeText(getApplicationContext(), "welcome back Mr "+userName+" you have ", Toast.LENGTH_SHORT).show();
-
-
     }
 //
     @Override

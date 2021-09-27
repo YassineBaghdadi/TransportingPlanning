@@ -81,7 +81,7 @@ public class dialog_trips {
                     finiched = true;
                     action.setEnabled(false);
                     counter.setEnabled(false);
-                    viewbtn.setEnabled(false);
+//                    viewbtn.setEnabled(false);
                 }
 
                 if (!snapshot.hasChild("stopcounter") && !snapshot.hasChild("startcounter")) {

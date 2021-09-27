@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:id="@+id/main"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    android:id="@+id/srl"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -16,4 +16,4 @@
         android:layout_height="match_parent">
 
     </androidx.recyclerview.widget.RecyclerView>
-</RelativeLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

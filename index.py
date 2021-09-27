@@ -48,7 +48,7 @@ def preparingDB():
     cur.execute('''create table if not exists drivers(id  INT AUTO_INCREMENT, firstName Varchar(50), LastName varchar(50), username Varchar(45), pass Varchar(45), PRIMARY KEY (id))''')
     cnx.commit()
 
-    cur.execute('create table if not exists trips(id  INT AUTO_INCREMENT, van int, driver int, datetime Varchar(50), ttype Varchar(5), starttime varchar(45), startloc varchar(45), stoptime varchar(45), stoploc varchar(45), counterkm varchar(45), foreign key(van) references vans(id), foreign key(driver) references drivers(id) , PRIMARY KEY (id))')
+    cur.execute('create table if not exists trips(id  INT AUTO_INCREMENT, van int, driver int, datetime Varchar(50), ttype Varchar(5), starttime varchar(45), startloc varchar(45), stoptime varchar(45), stoploc varchar(45), counterkm varchar(45), tracking LONGTEXT, foreign key(van) references vans(id), foreign key(driver) references drivers(id) , PRIMARY KEY (id))')
 
     cnx.commit()
     cur.execute('''create table if not exists trips_history(id  INT AUTO_INCREMENT,trip int, agent int, presence varchar(50), picktime varchar(50), pickloc varchar(50), droptime varchar(50), droploc varchar(50), foreign key(trip) references trips(id), foreign key(agent) references agents(id), PRIMARY KEY (id))''')
@@ -347,11 +347,11 @@ def syncFirebase():
 
 
 
-    cur.execute(f'''select t.id, v.matr, d.username , t.datetime, (select count(id) from trips_history where trip = t.id) as Agent_numbers, t.ttype
-                        from trips t inner join vans v on t.van = v.id inner join drivers d on t.driver = d.id where date(t.datetime) >= "{today} 00:00:00" order by t.datetime;''')
-
     # cur.execute(f'''select t.id, v.matr, d.username , t.datetime, (select count(id) from trips_history where trip = t.id) as Agent_numbers, t.ttype
-    #                     from trips t inner join vans v on t.van = v.id inner join drivers d on t.driver = d.id order by t.datetime;''')
+    #                     from trips t inner join vans v on t.van = v.id inner join drivers d on t.driver = d.id where date(t.datetime) >= "{today} 00:00:00" order by t.datetime;''')
+
+    cur.execute(f'''select t.id, v.matr, d.username , t.datetime, (select count(id) from trips_history where trip = t.id) as Agent_numbers, t.ttype
+                        from trips t inner join vans v on t.van = v.id inner join drivers d on t.driver = d.id order by t.datetime;''')
 
     trips = cur.fetchall()
 
@@ -383,17 +383,20 @@ def syncFirebase():
 
     for i in toDelete:
         tt = drvrs.child(f'{i[2]}').child('trips').child(f'{i[3]}')
+
         if tt.get():
+            trajet = ""
+            print(f"tracking : {tt.child('tracking').get()}")
             tripID = tt.child("id").get()
             print(f"tripID = {tripID}")
             print(tt.child("agents").get())
             agents = tt.child("agents").get()
-            cur.execute(f'''update trips set 
+            cur.execute(f'''update trips set
                             starttime = "{tt.child("starttime").get()}",
                             startloc = "{tt.child("startloc").get()}",
                             stoptime = "{tt.child("stoptime").get()}",
                             stoploc = "{tt.child("stoploc").get()}",
-                            counterkm = "{int(str(tt.child("stopcounter").get())) - int(str(tt.child("startcounter").get())) if tt.child("stopcounter").get() and  tt.child("startcounter").get() else 0} " 
+                            counterkm = "{int(str(tt.child("stopcounter").get())) - int(str(tt.child("startcounter").get())) if tt.child("stopcounter").get() and  tt.child("startcounter").get() else 0} "
                             where id = {tripID}
                             ''')
             cnx.commit()

@@ -2,6 +2,10 @@ package com.saccomxd.baghdadi.yassine;
 
 public class agent {
     private String phone;
+    private String name;
+    private String pic;
+    private String grp;
+
 
     public agent() {
 
@@ -15,7 +19,6 @@ public class agent {
         this.grp = grp;
     }
 
-    private String grp;
 
     public String getPhone() {
         return phone;
@@ -41,6 +44,4 @@ public class agent {
         this.pic = pic;
     }
 
-    private String name;
-    private String pic;
 }
