@@ -604,25 +604,28 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
      <property name="horizontalSpacing">
       <number>131</number>
      </property>
-     <item row="3" column="0">
-      <widget class="QGroupBox" name="groupBox_6">
+     <item row="2" column="1">
+      <widget class="QGroupBox" name="groupBox_7">
        <property name="title">
-        <string>Start Location : </string>
+        <string>End Time and Location: </string>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout_9">
+       <layout class="QVBoxLayout" name="verticalLayout_10">
         <item>
-         <widget class="QLabel" name="start_loc">
+         <widget class="QLabel" name="stop_time">
           <property name="font">
            <font>
             <family>Segoe Print</family>
             <pointsize>11</pointsize>
             <weight>75</weight>
             <bold>true</bold>
-            <underline>true</underline>
+            <underline>false</underline>
            </font>
           </property>
           <property name="cursor">
            <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Click to view Started location&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="styleSheet">
            <string notr="true">color: rgb(70, 150, 255);</string>
@@ -665,14 +668,14 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
        </layout>
       </widget>
      </item>
-     <item row="1" column="0">
-      <widget class="QGroupBox" name="groupBox_2">
+     <item row="0" column="1">
+      <widget class="QGroupBox" name="groupBox_4">
        <property name="title">
-        <string>Trip Time : </string>
+        <string>Van's Matrecul : </string>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout_4">
+       <layout class="QVBoxLayout" name="verticalLayout_5">
         <item>
-         <widget class="QLabel" name="trip_time">
+         <widget class="QLabel" name="van_matr">
           <property name="font">
            <font>
             <family>Segoe Print</family>
@@ -692,14 +695,14 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
        </layout>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QGroupBox" name="groupBox_4">
+     <item row="1" column="0">
+      <widget class="QGroupBox" name="groupBox_2">
        <property name="title">
-        <string>Van's Matrecul : </string>
+        <string>Trip Time : </string>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout_5">
+       <layout class="QVBoxLayout" name="verticalLayout_4">
         <item>
-         <widget class="QLabel" name="van_matr">
+         <widget class="QLabel" name="trip_time">
           <property name="font">
            <font>
             <family>Segoe Print</family>
@@ -749,7 +752,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
      <item row="2" column="0">
       <widget class="QGroupBox" name="groupBox_5">
        <property name="title">
-        <string>Started Time : </string>
+        <string>Started Time and location : </string>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_8">
         <item>
@@ -764,75 +767,10 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
            </font>
           </property>
           <property name="cursor">
-           <cursorShape>ArrowCursor</cursorShape>
-          </property>
-          <property name="styleSheet">
-           <string notr="true"/>
-          </property>
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QGroupBox" name="groupBox_7">
-       <property name="title">
-        <string>End Time : </string>
-       </property>
-       <layout class="QVBoxLayout" name="verticalLayout_10">
-        <item>
-         <widget class="QLabel" name="stop_time">
-          <property name="font">
-           <font>
-            <family>Segoe Print</family>
-            <pointsize>11</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-            <underline>false</underline>
-           </font>
-          </property>
-          <property name="cursor">
-           <cursorShape>ArrowCursor</cursorShape>
-          </property>
-          <property name="styleSheet">
-           <string notr="true"/>
-          </property>
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="QGroupBox" name="groupBox_8">
-       <property name="title">
-        <string>End Location :</string>
-       </property>
-       <layout class="QVBoxLayout" name="verticalLayout_11">
-        <item>
-         <widget class="QLabel" name="stop_loc">
-          <property name="font">
-           <font>
-            <family>Segoe Print</family>
-            <pointsize>11</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-            <underline>true</underline>
-           </font>
-          </property>
-          <property name="cursor">
            <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Click to view Started location&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="styleSheet">
            <string notr="true">color: rgb(70, 150, 255);</string>
@@ -849,6 +787,40 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
       </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_6">
+     <property name="title">
+      <string>Tracking : </string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_9">
+      <item>
+       <widget class="QLabel" name="trck">
+        <property name="font">
+         <font>
+          <family>Segoe Print</family>
+          <pointsize>11</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+          <underline>true</underline>
+         </font>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(70, 150, 255);</string>
+        </property>
+        <property name="text">
+         <string>View</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </item>
    <item>
     <widget class="Line" name="line">

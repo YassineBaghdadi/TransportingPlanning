@@ -1,6 +1,9 @@
+import json
+import ntpath
 import webbrowser
 from time import gmtime, strftime
 
+import requests
 from PyQt5 import QtWidgets, uic, QtGui, QtCore
 import os, sys, datetime, pymysql, threading, pandas as pd
 
@@ -13,6 +16,7 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
 # import pyrebase
+from pyrebase import pyrebase
 
 radius = 40.0
 
@@ -296,18 +300,26 @@ def create_trip(date, type, driver, van):
 
     cnx.close()
 
-# firebaseConfig = {"apiKey": "AIzaSyAIV0qDv7WI3kU_krALZEc-PlTCkBRMp9g",
-#                   "authDomain": "saccomxd-stm-yassine-baghdadi.firebaseapp.com",
-#                   "databaseURL": "https://saccomxd-stm-yassine-baghdadi-default-rtdb.firebaseio.com",
-#                   "projectId": "saccomxd-stm-yassine-baghdadi",
-#                   "storageBucket": "saccomxd-stm-yassine-baghdadi.appspot.com",
-#                   "messagingSenderId": "817733299864",
-#                   "appId": "1:817733299864:web:517bd7f4b0a11e5b62aaed",
-#                   "measurementId": "G-B5NV6TETGS",
-#                   "databaseURL" :"https://saccomxd-stm-yassine-baghdadi-default-rtdb.firebaseio.com/" }
-# #
-# firebase = pyrebase.initialize_app(firebaseConfig)
-# database = firebase.database()
+
+config = {
+"apiKey": "AIzaSyAIV0qDv7WI3kU_krALZEc-PlTCkBRMp9g",
+"authDomain": "saccomxd-stm-yassine-baghdadi.firebaseapp.com",
+"databaseURL": "https://saccomxd-stm-yassine-baghdadi-default-rtdb.firebaseio.com",
+"projectId": "saccomxd-stm-yassine-baghdadi",
+"storageBucket": "saccomxd-stm-yassine-baghdadi.appspot.com",
+"serviceAccount": os.path.join(os.getcwd(), "src", "key.json")
+}
+token = "e230e05d-8b62-4d8b-8b17-56d929d19d54"
+
+def uploadPicToFireBase(img : str) -> str:
+    if os.path.isfile(img):
+        print(f"Local path ==> {img}")
+        firebase_storage = pyrebase.initialize_app(config)
+        storage = firebase_storage.storage()
+        storage.child(ntpath.basename(img)).put(img)
+        return storage.child(ntpath.basename(img)).get_url(token)
+
+
 cred = credentials.Certificate("src/key.json")
 firebase_admin.initialize_app(cred, {
         'databaseURL': 'https://saccomxd-stm-yassine-baghdadi-default-rtdb.firebaseio.com/',
@@ -347,11 +359,11 @@ def syncFirebase():
 
 
 
-    # cur.execute(f'''select t.id, v.matr, d.username , t.datetime, (select count(id) from trips_history where trip = t.id) as Agent_numbers, t.ttype
-    #                     from trips t inner join vans v on t.van = v.id inner join drivers d on t.driver = d.id where date(t.datetime) >= "{today} 00:00:00" order by t.datetime;''')
-
     cur.execute(f'''select t.id, v.matr, d.username , t.datetime, (select count(id) from trips_history where trip = t.id) as Agent_numbers, t.ttype
-                        from trips t inner join vans v on t.van = v.id inner join drivers d on t.driver = d.id order by t.datetime;''')
+                        from trips t inner join vans v on t.van = v.id inner join drivers d on t.driver = d.id where date(t.datetime) >= "{today} 00:00:00" order by t.datetime;''')
+
+    # cur.execute(f'''select t.id, v.matr, d.username , t.datetime, (select count(id) from trips_history where trip = t.id) as Agent_numbers, t.ttype
+    #                     from trips t inner join vans v on t.van = v.id inner join drivers d on t.driver = d.id order by t.datetime;''')
 
     trips = cur.fetchall()
 
@@ -376,46 +388,57 @@ def syncFirebase():
 
 
 
-    cur.execute(f'''select t.id, v.matr, d.username , t.datetime, (select count(id) from trips_history where trip = t.id) as Agent_numbers, t.ttype
-                        from trips t inner join vans v on t.van = v.id inner join drivers d on t.driver = d.id where date(t.datetime) < "{today} 00:00:00" order by t.datetime;''')
+    # cur.execute(f'''select t.id, v.matr, d.username , t.datetime, (select count(id) from trips_history where trip = t.id) as Agent_numbers, t.ttype
+    #                     from trips t inner join vans v on t.van = v.id inner join drivers d on t.driver = d.id where date(t.datetime) < "{today} 00:00:00" order by t.datetime;''')
+    cur.execute(f'''select datetime 
+                        from trips where date(datetime) < "{today} 00:00:00" order by datetime;''')
 
-    toDelete = cur.fetchall()
+    toDelete = [i[0] for i in cur.fetchall()]
 
-    for i in toDelete:
-        tt = drvrs.child(f'{i[2]}').child('trips').child(f'{i[3]}')
+    drivers = [k for k, v in dict(drvrs.get()).items()]
+    for dr in drivers:
+        if drvrs.child(dr).child('trips').get() :
+            for tt in dict(drvrs.child(dr).child('trips').get()).keys():
+                if tt in toDelete:
+                    tr = drvrs.child(dr).child('trips').child(tt)
+                    tripID = tr.child("id").get()
+                    print(f"tripID = {tripID}")
 
-        if tt.get():
-            trajet = ""
-            print(f"tracking : {tt.child('tracking').get()}")
-            tripID = tt.child("id").get()
-            print(f"tripID = {tripID}")
-            print(tt.child("agents").get())
-            agents = tt.child("agents").get()
-            cur.execute(f'''update trips set
-                            starttime = "{tt.child("starttime").get()}",
-                            startloc = "{tt.child("startloc").get()}",
-                            stoptime = "{tt.child("stoptime").get()}",
-                            stoploc = "{tt.child("stoploc").get()}",
-                            counterkm = "{int(str(tt.child("stopcounter").get())) - int(str(tt.child("startcounter").get())) if tt.child("stopcounter").get() and  tt.child("startcounter").get() else 0} "
-                            where id = {tripID}
-                            ''')
-            cnx.commit()
 
-            print(agents)
-            if agents:
-                for ag in agents:
-                    try:
-                        print(ag)
-                        print(type(ag))
-                        cur.execute(
-                            f'''update trips_history set picktime = "{ag['picktime']}", pickloc = "{ag["pickloc"]}", droptime = "{ag["droptime"]}", droploc = "{ag["droploc"]}", presence = "{ag["presence"]}"
-                        where trip = {tripID} and agent = {str(ag["name"]).split(" ")[0]}''')
-                        cnx.commit()
-                    except Exception as e:
-                        # cur.execute(f"insert into logs(user, query, status, desc)value("", "", "", "")")
-                        # cnx.commit()
-                        print(e)
-        tt.delete()
+                    trck = tr.child("tracking").get()
+
+                    trajet = {}
+                    if trck:
+                        for key, value in trck.items():
+                            if value not in trajet.values() and value != '0':
+                                trajet[key] = value
+
+
+                    cur.execute(f'''update trips set
+                                    starttime = "{tr.child("starttime").get()}",
+                                    startloc = "{tr.child("startloc").get()}",
+                                    stoptime = "{tr.child("stoptime").get()}",
+                                    stoploc = "{tr.child("stoploc").get()}",
+                                    counterkm = "{int(str(tr.child("stopcounter").get())) - int(str(tr.child("startcounter").get())) if tr.child("stopcounter").get() and  tr.child("startcounter").get() else 0} ",
+                                    tracking = "{trajet}"
+                                    where id = {tripID}
+                                    ''')
+                    cnx.commit()
+                    print(tr.child("agents").get())
+                    old_agents = list(tr.child("agents").get())
+                    if old_agents:
+                        for ag in old_agents:
+                            try:
+                                agent_id = int(str(ag["name"]).split(' - ')[0])
+                                cur.execute(
+                                    f'''update trips_history set picktime = "{ag['picktime']}", pickloc = "{ag["pickloc"]}", droptime = "{ag["droptime"]}", droploc = "{ag["droploc"]}", presence = "{ag["presence"]}"
+                                where trip = {tripID} and agent = {agent_id}''')
+                                cnx.commit()
+                            except Exception as e:
+                                # cur.execute(f"insert into logs(user, query, status, desc)value("", "", "", "")")
+                                # cnx.commit()
+                                print(e)
+                    tr.delete()
 
 
 
@@ -642,11 +665,11 @@ class Main(QtWidgets.QWidget):
 
         self.plan_icon.installEventFilter(self)
         self.plan_icon.setPixmap(QtGui.QPixmap('src/img/planning.png'))
+        self.emps_icon.setScaledContents(True)
         ##print(self.plan_icon.width(), self.plan_icon.height())
         # self.emps.setFixedSize()
 
 
-        self.emps_icon.setScaledContents(True)
         self.planning.installEventFilter(self)
         head = ['Trip ID','Van Matricule','Driver name ','Trip time','Agents numbers', 'Trip Type']
         # self.trips.setHeaderLabels(head)
@@ -924,20 +947,39 @@ class Trip_View(QtWidgets.QWidget):
         self.p = p
         cnx = con()
         cur = cnx.cursor()
-        cur.execute(f'''select v.matr, t.datetime, concat(d.firstName, " ", d.LastName) as driverName, t.starttime, t.startloc, t.stoptime, t.stoploc from
+        cur.execute(f'''select v.matr, t.datetime, concat(d.firstName, " ", d.LastName) as driverName, t.starttime, t.startloc, t.stoptime, t.stoploc, t.tracking from
                         vans v inner join trips t on t.van = v.id inner join drivers d on t.driver = d.id where t.id = {int(self.id_)}''')
         self.setWindowTitle('View The Trip\'s Details')
         self.trip_id.setText(str(self.id_))
 
         dt = cur.fetchone()
+
         self.van_matr.setText(dt[0])
         self.trip_time.setText(dt[1])
         self.driver_name.setText(dt[2])
 
         self.start_time.setText(dt[3])
-        self.start_loc.setText(dt[4])
+
+        self.start_time.setToolTip(f"Click to View Start location on Google maps {dt[4]}")
+
+        self.start_loc = dt[4]
         self.stop_time.setText(dt[5])
-        self.stop_loc.setText(dt[6])
+
+        self.stop_time.setToolTip(f"Click to View Stop location on Google maps {dt[6]}")
+        self.trck.setToolTip(f"Click to View the tracking points for this trip .")
+
+        self.stop_loc = dt[6]
+        self.trajet = ""
+        if dt[7]:
+            print(dt[7])
+            litlot = json.loads(dt[7].replace("'", '"'))
+            print("#"*100)
+            print(type(litlot),litlot)
+            for i in litlot.values():
+                print(i)
+                self.trajet += f'/{i}'
+
+
 
         self.rmv.clicked.connect(self.removeAgent)
 
@@ -967,8 +1009,9 @@ class Trip_View(QtWidgets.QWidget):
         self.offset = None
 
         self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
-        self.start_loc.installEventFilter(self)
-        self.stop_loc.installEventFilter(self)
+        self.start_time.installEventFilter(self)
+        self.stop_time.installEventFilter(self)
+        self.trck.installEventFilter(self)
 
     def openMap(self, latLot):
         if latLot and len(latLot.split(",")) == 2:
@@ -1024,9 +1067,14 @@ class Trip_View(QtWidgets.QWidget):
             elif e.type() == QtCore.QEvent.MouseButtonPress:
                 os._exit(0)
 
-        if s is self.start_loc or s is self.stop_loc:
-            if e.type() == QtCore.QEvent.MouseButtonPress:
-                self.openMap(s.text())
+        if s is self.start_time and e.type() == QtCore.QEvent.MouseButtonPress:
+                self.openMap(self.start_loc)
+
+        if s is self.stop_time and e.type() == QtCore.QEvent.MouseButtonPress:
+                self.openMap(self.stop_loc)
+
+        if s is self.trck and e.type() == QtCore.QEvent.MouseButtonPress:
+                webbrowser.open(f"https://www.google.com/maps/dir{self.trajet}")
 
         return super(Trip_View, self).eventFilter(s, e)
 
@@ -1716,7 +1764,7 @@ class Agents(QtWidgets.QWidget):
         dt = [i.text() for i in self.tableWidget.selectedItems()]
         cnx = con()
         cur = cnx.cursor()
-        cur.execute(f'select street from agents where id = {int(dt[0])}')
+        cur.execute(f'select street from agents where matrr = "{dt[0]}"')
         dt.append(cur.fetchone()[0])
         print(f'Data ==> {dt}')
         self.eA = AddAgent(self.role, do='edit', data=dt)
@@ -2231,10 +2279,20 @@ class AddAgent(QtWidgets.QWidget):
         cur = cnx.cursor()
         cur.execute('select name from grps')
         grps_names = [i[0] for i in cur.fetchall()]
+
+
+
         #print(grps_names)
         self.grps.addItems(grps_names)
         self.data = data
-
+        self.agent_pic_path = ""
+        if self.action == "edit":
+            print(f'data[0] ==> {data[0]}')
+            cur.execute(f"select pic from agents where matrr like '{data[0]}'")
+            self.agent_pic_path = cur.fetchone()[0]
+            self.matrr.setReadOnly(True)
+        else:
+            self.agent_pic_path = 'https://firebasestorage.googleapis.com/v0/b/saccomxd-stm-yassine-baghdadi.appspot.com/o/profile.png?alt=media&token=30aaedee-2f7d-4b96-ad58-4649ae578ca4'
 
         self.ONSM = ['HAY ALMANAR RTE AHFIR', 'HAY JARF LAKHDAR', 'HAY AMAL 1 et 2', 'LOTS SALAMA', 'HAY ANGADI',
                 'hay ALOUAHDA RTE TAZA', 'HAY ENNAHDA ( ex amr alboulissi)', 'hay khaloufi , hay alouafae',
@@ -2261,6 +2319,7 @@ class AddAgent(QtWidgets.QWidget):
         self.strr.addItems(self.allhoods)
         # print(self.allhoods[self.allhoods.index(self.data[7]) + 1])
         if self.data:
+            self.matrr.setText(data[0])
             self.Fname.setText(str(self.data[1]).split(' ')[0])
             self.Lname.setText(str(self.data[1]).split(' ')[1])
             self.CIN.setText(self.data[2])
@@ -2278,6 +2337,14 @@ class AddAgent(QtWidgets.QWidget):
         #print('+' *100)
         #print(self.allhoods)
         cnx.close()
+        self.pic.installEventFilter(self)
+        self.refreshPic()
+
+    def refreshPic(self):
+        image = QtGui.QImage()
+        image.loadFromData(requests.get(self.agent_pic_path).content)
+        self.pic.setPixmap(QtGui.QPixmap(image))
+        self.pic.setScaledContents(True)
 
     def eventFilter(self, s, e):
         if s is self.back_icon:
@@ -2289,7 +2356,17 @@ class AddAgent(QtWidgets.QWidget):
             elif e.type() == QtCore.QEvent.Leave:
                 self.back_icon.setStyleSheet('border-color: 0px;')
                 #print('mouse out')
-
+        if e.type() == QtCore.QEvent.MouseButtonPress and s is self.pic:
+            filename, _ = QtWidgets.QFileDialog.getOpenFileName(self, "Open Picture", "~", "Sound Files (*.png *.jpg *.jpeg )")
+            if ntpath.isfile(filename):
+                self.agent_pic_path = uploadPicToFireBase(filename)
+                self.refreshPic()
+                # if self.action == "edit":
+                #     cnx = con()
+                #     cur = cnx.cursor()
+                #
+                #
+                #     cnx.close()
 
 
         return super(AddAgent, self).eventFilter(s, e)
@@ -2302,13 +2379,14 @@ class AddAgent(QtWidgets.QWidget):
 
 
     def save(self):
+
         if len(self.Fname.text()) > 3 and len(self.Lname.text()) > 2 and len(self.CIN.text()) > 3 and len(self.ad.text()) > 2 and self.strr.currentIndex() != 0 and len(self.matrr.text()) > 1:
             cnx = con()
             cur = cnx.cursor()
-            cur.execute(f'''select concat(firstName , " ", LastName) from agent where matrr like "{self.matrr.text()}"''')
-            if agent:=cur.fetchone()[0]:
-                notif(self, title="Agent Allready exists", msg=f"This Matriculation alreaddy exists on the database for Agent : {agent}")
-                return
+            # cur.execute(f'''select concat(firstName , " ", LastName) from agents where matrr like "{self.matrr.text()}"''')
+            # if agent:=cur.fetchone()[0]:
+            #     notif(self, title="Agent Allready exists", msg=f"This Matriculation alreaddy exists on the database for Agent : {agent}")
+            #     return
 
             cur.execute(f'select id from grps where name like "{self.grps.currentText()}"')
             grp = int(cur.fetchone()[0])
@@ -2328,13 +2406,17 @@ class AddAgent(QtWidgets.QWidget):
             if self.action == 'save':
                 cur.execute(
                     f'select concat(firstName , " ", LastName) from agents where matrr like "{self.matrr.text()}" ')
-                if a := cur.fetchone()[0]:
+                a = cur.fetchone()
+                print(a)
+                print(f'type of a : {type(a)}')
+                if  a is not None:
                     #print('thsi Agent alredy exists ')
                     self.Fname.setStyleSheet('border : 2px solid red')
                     self.Lname.setStyleSheet('border : 2px solid red')
                     notif(self, title='Agent Already exists', msg=f'This Matriculation already exists in the Database : - {a}')
+                    return
                 else:
-                    cur.execute(f'insert into agents (matrr, firstName, LastName, CIN, address, grp, zone, street) value ("{self.matrr.text()}", "{self.Fname.text()}", "{self.Lname.text()}", "{self.CIN.text()}", "{self.ad.text()}", {grp}, "{zone}", "{self.strr.currentText()}");')
+                    cur.execute(f'insert into agents (matrr, firstName, LastName, CIN, address, grp, zone, street, pic) value ("{self.matrr.text()}", "{self.Fname.text()}", "{self.Lname.text()}", "{self.CIN.text()}", "{self.ad.text()}", {grp}, "{zone}", "{self.strr.currentText()}", "{self.agent_pic_path}");')
                     cnx.commit()
             elif self.action == 'edit':
                     self.matrr.setEnabled(False)
@@ -2346,8 +2428,9 @@ class AddAgent(QtWidgets.QWidget):
                                             address = "{self.ad.text()}",
                                             grp = {grp},
                                             zone = "{zone}",
-                                            street = "{self.strr.currentText()}"
-                                            where id = {int(self.data[0])}
+                                            street = "{self.strr.currentText()}",
+                                            pic = "{self.agent_pic_path}"
+                                            where matrr = "{self.data[0]}"
                         '''
                     print(query)
                     cur.execute(query=query)
@@ -2361,6 +2444,8 @@ class AddAgent(QtWidgets.QWidget):
             self.ad.clear()
             self.grps.setCurrentIndex(0)
             self.strr.setCurrentIndex(0)
+            self.agent_pic_path = 'https://firebasestorage.googleapis.com/v0/b/saccomxd-stm-yassine-baghdadi.appspot.com/o/profile.png?alt=media&token=30aaedee-2f7d-4b96-ad58-4649ae578ca4'
+            self.refreshPic()
 
 
             cnx.close()
