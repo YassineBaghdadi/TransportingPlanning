@@ -1019,6 +1019,31 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_7">
      <item>
+      <widget class="QLabel" name="about">
+       <property name="minimumSize">
+        <size>
+         <width>40</width>
+         <height>40</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>40</width>
+         <height>40</height>
+        </size>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;STM (SACCOM TRANSPORT MANAGEMENT)&lt;/p&gt;&lt;p&gt;Version : 0.1&lt;/p&gt;&lt;p&gt;Creator : &lt;a href=&quot;https://yassinebaghdadi.github.io/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;YASSINE BAGHDADI&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Helped by : Anass Kada&lt;/p&gt;&lt;p&gt;Big Thanks to Saccom IT Team.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>

@@ -666,6 +666,12 @@ class Main(QtWidgets.QWidget):
         self.plan_icon.installEventFilter(self)
         self.plan_icon.setPixmap(QtGui.QPixmap('src/img/planning.png'))
         self.emps_icon.setScaledContents(True)
+
+        self.about.installEventFilter(self)
+        self.about.setPixmap(QtGui.QPixmap('src/img/about.png'))
+        # tip = '''STM 0.1 SACCOM TRANSPORT MANAGEMENT\nCreated by Yassine Baghdadi\nwith help from Anass Kada\nbig thanks to Saccom IT team'''
+        # self.about.setToolTip(tip)
+        self.about.setScaledContents(True)
         ##print(self.plan_icon.width(), self.plan_icon.height())
         # self.emps.setFixedSize()
 
@@ -752,6 +758,10 @@ class Main(QtWidgets.QWidget):
 
             if s is self.planning:
                 self.openTrips()
+
+            if s is self.about:
+                webbrowser.open("https://yassinebaghdadi.github.io/")
+
 
         # if e.type() == QtCore.QEvent.Enter:
         #     if s  in (self.emps, self.vans, self.comps, self.planning):

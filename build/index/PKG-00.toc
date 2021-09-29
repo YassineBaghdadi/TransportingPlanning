@@ -30,6 +30,18 @@
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth_multiprocessing.py',
    'PYSOURCE'),
+  ('pyi_rth_pkgres',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth_pkgres.py',
+   'PYSOURCE'),
+  ('pyi_rth_win32api',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth_win32api.py',
+   'PYSOURCE'),
+  ('pyi_rth_win32comgenpy',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth_win32comgenpy.py',
+   'PYSOURCE'),
   ('pyi_rth_certifi',
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\_pyinstaller_hooks_contrib\\hooks\\rthooks\\pyi_rth_certifi.py',
@@ -38,21 +50,9 @@
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\_pyinstaller_hooks_contrib\\hooks\\rthooks\\pyi_rth_traitlets.py',
    'PYSOURCE'),
-  ('pyi_rth_win32api',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth_win32api.py',
-   'PYSOURCE'),
   ('pyi_rth__tkinter',
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth__tkinter.py',
-   'PYSOURCE'),
-  ('pyi_rth_pkgres',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth_pkgres.py',
-   'PYSOURCE'),
-  ('pyi_rth_win32comgenpy',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth_win32comgenpy.py',
    'PYSOURCE'),
   ('pyi_rth_mplconfig',
    'C:\\Users\\Yassine '
