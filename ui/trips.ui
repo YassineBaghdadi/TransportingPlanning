@@ -14,15 +14,31 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">/*
-Aqua Style Sheet for QT Applications
-Author: Jaime A. Quiroga P.
-Company: GTRONICK
-Last updated: 22/01/2019, 07:55.
-Available at: https://github.com/GTRONICK/QSS/blob/master/Aqua.qss
-*/
-QMainWindow {
-	background-color:#ececec;
+   <string notr="true">
+
+QFrame#comps:hover{
+	border-radius: 5px;
+background-color: #d85c00;
+}
+QFrame#emps:hover{
+	border-radius: 5px;
+background-color: #d85c00;
+}
+
+QFrame#planning:hover{
+	border-radius: 5px;
+background-color: #d85c00;
+}
+
+QFrame#vans:hover{
+	border-radius: 5px;
+background-color: #d85c00;
+}
+
+
+QWidget {
+	/*background-color:#ececec;*/
+	background-color:#e4debc;
 }
 QTextEdit {
 	border-width: 1px;
@@ -36,27 +52,14 @@ QPlainTextEdit {
 }
 QToolButton {
 	border-style: solid;
-	border-top-color: qlineargradient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgb(215, 215, 215), stop:1 rgb(222, 222, 222));
-	border-right-color: qlineargradient(spread:pad, x1:0, y1:0.5, x2:1, y2:0.5, stop:0 rgb(217, 217, 217), stop:1 rgb(227, 227, 227));
-	border-left-color: qlineargradient(spread:pad, x1:0, y1:0.5, x2:1, y2:0.5, stop:0 rgb(227, 227, 227), stop:1 rgb(217, 217, 217));
-	border-bottom-color: qlineargradient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgb(215, 215, 215), stop:1 rgb(222, 222, 222));
-	border-width: 1px;
-	border-radius: 5px;
+	
 	color: rgb(0,0,0);
-	padding: 2px;
-	background-color: rgb(255,255,255);
+	background-color:#3172c4;
 }
 QToolButton:hover{
 	border-style: solid;
-	border-top-color: qlineargradient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgb(195, 195, 195), stop:1 rgb(222, 222, 222));
-	border-right-color: qlineargradient(spread:pad, x1:0, y1:0.5, x2:1, y2:0.5, stop:0 rgb(197, 197, 197), stop:1 rgb(227, 227, 227));
-	border-left-color: qlineargradient(spread:pad, x1:0, y1:0.5, x2:1, y2:0.5, stop:0 rgb(227, 227, 227), stop:1 rgb(197, 197, 197));
-	border-bottom-color: qlineargradient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgb(195, 195, 195), stop:1 rgb(222, 222, 222));
-	border-width: 1px;
-	border-radius: 5px;
-	color: rgb(0,0,0);
-	padding: 2px;
-	background-color: rgb(255,255,255);
+	
+	background-color: #d85c00;
 }
 QToolButton:pressed{
 	border-style: solid;
@@ -72,15 +75,12 @@ QToolButton:pressed{
 }
 QPushButton{
 	border-style: solid;
-	border-top-color: qlineargradient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgb(215, 215, 215), stop:1 rgb(222, 222, 222));
-	border-right-color: qlineargradient(spread:pad, x1:0, y1:0.5, x2:1, y2:0.5, stop:0 rgb(217, 217, 217), stop:1 rgb(227, 227, 227));
-	border-left-color: qlineargradient(spread:pad, x1:0, y1:0.5, x2:1, y2:0.5, stop:0 rgb(227, 227, 227), stop:1 rgb(217, 217, 217));
-	border-bottom-color: qlineargradient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgb(215, 215, 215), stop:1 rgb(222, 222, 222));
+	
 	border-width: 1px;
 	border-radius: 5px;
 	color: rgb(0,0,0);
 	padding: 2px;
-	background-color: rgb(255,255,255);
+	background-color: #77a3d9;
 }
 QPushButton::default{
 	border-style: solid;
@@ -96,15 +96,8 @@ QPushButton::default{
 }
 QPushButton:hover{
 	border-style: solid;
-	border-top-color: qlineargradient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgb(195, 195, 195), stop:1 rgb(222, 222, 222));
-	border-right-color: qlineargradient(spread:pad, x1:0, y1:0.5, x2:1, y2:0.5, stop:0 rgb(197, 197, 197), stop:1 rgb(227, 227, 227));
-	border-left-color: qlineargradient(spread:pad, x1:0, y1:0.5, x2:1, y2:0.5, stop:0 rgb(227, 227, 227), stop:1 rgb(197, 197, 197));
-	border-bottom-color: qlineargradient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgb(195, 195, 195), stop:1 rgb(222, 222, 222));
-	border-width: 1px;
-	border-radius: 5px;
-	color: rgb(0,0,0);
-	padding: 2px;
-	background-color: rgb(255,255,255);
+
+	background-color: #d85c00;
 }
 QPushButton:pressed{
 	border-style: solid;

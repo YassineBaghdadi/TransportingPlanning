@@ -681,6 +681,26 @@
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pkg_resources\\__init__.py',
    'PYMODULE'),
+  ('packaging.utils',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\packaging\\utils.py',
+   'PYMODULE'),
+  ('packaging._manylinux',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\packaging\\_manylinux.py',
+   'PYMODULE'),
+  ('packaging.tags',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\packaging\\tags.py',
+   'PYMODULE'),
+  ('packaging.__about__',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\packaging\\__about__.py',
+   'PYMODULE'),
+  ('packaging.specifiers',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\packaging\\specifiers.py',
+   'PYMODULE'),
   ('packaging._musllinux',
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\packaging\\_musllinux.py',
@@ -694,34 +714,6 @@
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pyparsing.py',
    'PYMODULE'),
   ('uuid', 'c:\\program files\\python39\\lib\\uuid.py', 'PYMODULE'),
-  ('packaging.version',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\packaging\\version.py',
-   'PYMODULE'),
-  ('packaging.requirements',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\packaging\\requirements.py',
-   'PYMODULE'),
-  ('packaging.__about__',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\packaging\\__about__.py',
-   'PYMODULE'),
-  ('packaging.tags',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\packaging\\tags.py',
-   'PYMODULE'),
-  ('packaging._manylinux',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\packaging\\_manylinux.py',
-   'PYMODULE'),
-  ('packaging.specifiers',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\packaging\\specifiers.py',
-   'PYMODULE'),
-  ('packaging.utils',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\packaging\\utils.py',
-   'PYMODULE'),
   ('packaging._structures',
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\packaging\\_structures.py',
@@ -729,6 +721,38 @@
   ('packaging',
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\packaging\\__init__.py',
+   'PYMODULE'),
+  ('packaging.requirements',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\packaging\\requirements.py',
+   'PYMODULE'),
+  ('packaging.version',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\packaging\\version.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.packaging._typing',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pkg_resources\\_vendor\\packaging\\_typing.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.pyparsing',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pkg_resources\\_vendor\\pyparsing.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.packaging.markers',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pkg_resources\\_vendor\\packaging\\markers.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.packaging',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pkg_resources\\_vendor\\packaging\\__init__.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.packaging._structures',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pkg_resources\\_vendor\\packaging\\_structures.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.packaging.utils',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pkg_resources\\_vendor\\packaging\\utils.py',
    'PYMODULE'),
   ('pkg_resources._vendor.appdirs',
    'C:\\Users\\Yassine '
@@ -742,68 +766,44 @@
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\win32comext\\shell\\__init__.py',
    'PYMODULE'),
-  ('pkg_resources._vendor.packaging.utils',
+  ('pkg_resources._vendor.packaging.requirements',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pkg_resources\\_vendor\\packaging\\utils.py',
-   'PYMODULE'),
-  ('pkg_resources._vendor.packaging.__about__',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pkg_resources\\_vendor\\packaging\\__about__.py',
-   'PYMODULE'),
-  ('pkg_resources._vendor.packaging',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pkg_resources\\_vendor\\packaging\\__init__.py',
-   'PYMODULE'),
-  ('pkg_resources._vendor.packaging._compat',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pkg_resources\\_vendor\\packaging\\_compat.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pkg_resources\\_vendor\\packaging\\requirements.py',
    'PYMODULE'),
   ('pkg_resources._vendor.packaging.tags',
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pkg_resources\\_vendor\\packaging\\tags.py',
    'PYMODULE'),
-  ('pkg_resources._vendor.packaging.specifiers',
+  ('pkg_resources._vendor.packaging.version',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pkg_resources\\_vendor\\packaging\\specifiers.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pkg_resources\\_vendor\\packaging\\version.py',
    'PYMODULE'),
-  ('pkg_resources._vendor.packaging.markers',
+  ('pkg_resources._vendor.packaging._compat',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pkg_resources\\_vendor\\packaging\\markers.py',
-   'PYMODULE'),
-  ('pkg_resources._vendor.packaging.requirements',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pkg_resources\\_vendor\\packaging\\requirements.py',
-   'PYMODULE'),
-  ('pkg_resources._vendor.packaging._structures',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pkg_resources\\_vendor\\packaging\\_structures.py',
-   'PYMODULE'),
-  ('pkg_resources._vendor.pyparsing',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pkg_resources\\_vendor\\pyparsing.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pkg_resources\\_vendor\\packaging\\_compat.py',
    'PYMODULE'),
   ('pkg_resources._vendor',
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pkg_resources\\_vendor\\__init__.py',
    'PYMODULE'),
-  ('pkg_resources._vendor.packaging._typing',
+  ('pkg_resources._vendor.packaging.specifiers',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pkg_resources\\_vendor\\packaging\\_typing.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pkg_resources\\_vendor\\packaging\\specifiers.py',
    'PYMODULE'),
-  ('pkg_resources._vendor.packaging.version',
+  ('pkg_resources._vendor.packaging.__about__',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pkg_resources\\_vendor\\packaging\\version.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pkg_resources\\_vendor\\packaging\\__about__.py',
    'PYMODULE'),
   ('pkg_resources.extern',
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pkg_resources\\extern\\__init__.py',
    'PYMODULE'),
   ('imp', 'c:\\program files\\python39\\lib\\imp.py', 'PYMODULE'),
+  ('stringprep', 'c:\\program files\\python39\\lib\\stringprep.py', 'PYMODULE'),
   ('_py_abc', 'c:\\program files\\python39\\lib\\_py_abc.py', 'PYMODULE'),
   ('tracemalloc',
    'c:\\program files\\python39\\lib\\tracemalloc.py',
    'PYMODULE'),
-  ('stringprep', 'c:\\program files\\python39\\lib\\stringprep.py', 'PYMODULE'),
   ('pyrebase.pyrebase',
    'c:\\program files\\python39\\lib\\site-packages\\pyrebase\\pyrebase.py',
    'PYMODULE'),
@@ -959,22 +959,6 @@
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\setuptools\\__init__.py',
    'PYMODULE'),
-  ('setuptools._vendor.packaging.tags',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\setuptools\\_vendor\\packaging\\tags.py',
-   'PYMODULE'),
-  ('setuptools._vendor.more_itertools',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\setuptools\\_vendor\\more_itertools\\__init__.py',
-   'PYMODULE'),
-  ('setuptools._vendor.more_itertools.recipes',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\setuptools\\_vendor\\more_itertools\\recipes.py',
-   'PYMODULE'),
-  ('setuptools._vendor.packaging.specifiers',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\setuptools\\_vendor\\packaging\\specifiers.py',
-   'PYMODULE'),
   ('setuptools._vendor.packaging._typing',
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\setuptools\\_vendor\\packaging\\_typing.py',
@@ -983,49 +967,65 @@
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\setuptools\\_vendor\\more_itertools\\more.py',
    'PYMODULE'),
-  ('setuptools._vendor.packaging',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\setuptools\\_vendor\\packaging\\__init__.py',
-   'PYMODULE'),
-  ('setuptools._vendor.packaging.version',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\setuptools\\_vendor\\packaging\\version.py',
-   'PYMODULE'),
-  ('setuptools._vendor.pyparsing',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\setuptools\\_vendor\\pyparsing.py',
-   'PYMODULE'),
-  ('setuptools._vendor.packaging.requirements',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\setuptools\\_vendor\\packaging\\requirements.py',
-   'PYMODULE'),
-  ('setuptools._vendor.packaging.__about__',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\setuptools\\_vendor\\packaging\\__about__.py',
-   'PYMODULE'),
-  ('setuptools._vendor.packaging._compat',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\setuptools\\_vendor\\packaging\\_compat.py',
-   'PYMODULE'),
-  ('setuptools._vendor.packaging.markers',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\setuptools\\_vendor\\packaging\\markers.py',
-   'PYMODULE'),
   ('setuptools._vendor.packaging.utils',
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\setuptools\\_vendor\\packaging\\utils.py',
+   'PYMODULE'),
+  ('setuptools._vendor.packaging.specifiers',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\setuptools\\_vendor\\packaging\\specifiers.py',
    'PYMODULE'),
   ('setuptools._vendor.packaging._structures',
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\setuptools\\_vendor\\packaging\\_structures.py',
    'PYMODULE'),
+  ('setuptools._vendor.packaging._compat',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\setuptools\\_vendor\\packaging\\_compat.py',
+   'PYMODULE'),
+  ('setuptools._vendor.packaging.__about__',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\setuptools\\_vendor\\packaging\\__about__.py',
+   'PYMODULE'),
+  ('setuptools._vendor.packaging',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\setuptools\\_vendor\\packaging\\__init__.py',
+   'PYMODULE'),
   ('setuptools._vendor.ordered_set',
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\setuptools\\_vendor\\ordered_set.py',
    'PYMODULE'),
+  ('setuptools._vendor.more_itertools.recipes',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\setuptools\\_vendor\\more_itertools\\recipes.py',
+   'PYMODULE'),
+  ('setuptools._vendor.pyparsing',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\setuptools\\_vendor\\pyparsing.py',
+   'PYMODULE'),
+  ('setuptools._vendor.packaging.version',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\setuptools\\_vendor\\packaging\\version.py',
+   'PYMODULE'),
   ('setuptools._vendor',
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\setuptools\\_vendor\\__init__.py',
+   'PYMODULE'),
+  ('setuptools._vendor.packaging.tags',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\setuptools\\_vendor\\packaging\\tags.py',
+   'PYMODULE'),
+  ('setuptools._vendor.packaging.requirements',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\setuptools\\_vendor\\packaging\\requirements.py',
+   'PYMODULE'),
+  ('setuptools._vendor.packaging.markers',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\setuptools\\_vendor\\packaging\\markers.py',
+   'PYMODULE'),
+  ('setuptools._vendor.more_itertools',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\setuptools\\_vendor\\more_itertools\\__init__.py',
    'PYMODULE'),
   ('setuptools.msvc',
    'C:\\Users\\Yassine '
@@ -3338,77 +3338,73 @@
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\Image.py',
    'PYMODULE'),
-  ('PIL.BufrStubImagePlugin',
+  ('PIL.FliImagePlugin',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\BufrStubImagePlugin.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\FliImagePlugin.py',
    'PYMODULE'),
   ('PIL.ImageFile',
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\ImageFile.py',
    'PYMODULE'),
-  ('PIL.BlpImagePlugin',
+  ('PIL.PalmImagePlugin',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\BlpImagePlugin.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\PalmImagePlugin.py',
    'PYMODULE'),
-  ('PIL.WebPImagePlugin',
+  ('PIL.ImtImagePlugin',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\WebPImagePlugin.py',
-   'PYMODULE'),
-  ('PIL.SgiImagePlugin',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\SgiImagePlugin.py',
-   'PYMODULE'),
-  ('PIL.FtexImagePlugin',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\FtexImagePlugin.py',
-   'PYMODULE'),
-  ('PIL.FitsStubImagePlugin',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\FitsStubImagePlugin.py',
-   'PYMODULE'),
-  ('PIL.CurImagePlugin',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\CurImagePlugin.py',
-   'PYMODULE'),
-  ('PIL.MspImagePlugin',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\MspImagePlugin.py',
-   'PYMODULE'),
-  ('PIL.PixarImagePlugin',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\PixarImagePlugin.py',
-   'PYMODULE'),
-  ('PIL.TgaImagePlugin',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\TgaImagePlugin.py',
-   'PYMODULE'),
-  ('PIL.XVThumbImagePlugin',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\XVThumbImagePlugin.py',
-   'PYMODULE'),
-  ('PIL.MicImagePlugin',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\MicImagePlugin.py',
-   'PYMODULE'),
-  ('PIL.GribStubImagePlugin',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\GribStubImagePlugin.py',
-   'PYMODULE'),
-  ('PIL.McIdasImagePlugin',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\McIdasImagePlugin.py',
-   'PYMODULE'),
-  ('PIL.Hdf5StubImagePlugin',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\Hdf5StubImagePlugin.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\ImtImagePlugin.py',
    'PYMODULE'),
   ('PIL.DcxImagePlugin',
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\DcxImagePlugin.py',
    'PYMODULE'),
-  ('PIL.IptcImagePlugin',
+  ('PIL.BlpImagePlugin',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\IptcImagePlugin.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\BlpImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.IcnsImagePlugin',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\IcnsImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.features',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\features.py',
+   'PYMODULE'),
+  ('PIL.FtexImagePlugin',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\FtexImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.XVThumbImagePlugin',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\XVThumbImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.FpxImagePlugin',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\FpxImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.Hdf5StubImagePlugin',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\Hdf5StubImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.GbrImagePlugin',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\GbrImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.EpsImagePlugin',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\EpsImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.SpiderImagePlugin',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\SpiderImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.ImageTk',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\ImageTk.py',
+   'PYMODULE'),
+  ('PIL.SgiImagePlugin',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\SgiImagePlugin.py',
    'PYMODULE'),
   ('PIL.PdfImagePlugin',
    'C:\\Users\\Yassine '
@@ -3422,97 +3418,101 @@
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\ImageSequence.py',
    'PYMODULE'),
-  ('PIL.GbrImagePlugin',
+  ('PIL.WmfImagePlugin',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\GbrImagePlugin.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\WmfImagePlugin.py',
    'PYMODULE'),
-  ('PIL.XbmImagePlugin',
+  ('PIL.IptcImagePlugin',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\XbmImagePlugin.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\IptcImagePlugin.py',
    'PYMODULE'),
-  ('PIL.FliImagePlugin',
+  ('PIL.PixarImagePlugin',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\FliImagePlugin.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\PixarImagePlugin.py',
    'PYMODULE'),
-  ('PIL.ImImagePlugin',
+  ('PIL.MspImagePlugin',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\ImImagePlugin.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\MspImagePlugin.py',
    'PYMODULE'),
-  ('PIL.PcdImagePlugin',
+  ('PIL.FitsStubImagePlugin',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\PcdImagePlugin.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\FitsStubImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.CurImagePlugin',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\CurImagePlugin.py',
    'PYMODULE'),
   ('PIL.XpmImagePlugin',
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\XpmImagePlugin.py',
    'PYMODULE'),
-  ('PIL.SpiderImagePlugin',
+  ('PIL.XbmImagePlugin',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\SpiderImagePlugin.py',
-   'PYMODULE'),
-  ('PIL.ImageTk',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\ImageTk.py',
-   'PYMODULE'),
-  ('PIL.IcoImagePlugin',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\IcoImagePlugin.py',
-   'PYMODULE'),
-  ('PIL.MpegImagePlugin',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\MpegImagePlugin.py',
-   'PYMODULE'),
-  ('PIL.ImtImagePlugin',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\ImtImagePlugin.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\XbmImagePlugin.py',
    'PYMODULE'),
   ('PIL.PsdImagePlugin',
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\PsdImagePlugin.py',
    'PYMODULE'),
-  ('PIL.FpxImagePlugin',
+  ('PIL.PcxImagePlugin',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\FpxImagePlugin.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\PcxImagePlugin.py',
    'PYMODULE'),
-  ('PIL.IcnsImagePlugin',
+  ('PIL.McIdasImagePlugin',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\IcnsImagePlugin.py',
-   'PYMODULE'),
-  ('PIL.features',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\features.py',
-   'PYMODULE'),
-  ('PIL.DdsImagePlugin',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\DdsImagePlugin.py',
-   'PYMODULE'),
-  ('PIL.WmfImagePlugin',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\WmfImagePlugin.py',
-   'PYMODULE'),
-  ('PIL.SunImagePlugin',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\SunImagePlugin.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\McIdasImagePlugin.py',
    'PYMODULE'),
   ('PIL.MpoImagePlugin',
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\MpoImagePlugin.py',
    'PYMODULE'),
-  ('PIL.EpsImagePlugin',
+  ('PIL.WebPImagePlugin',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\EpsImagePlugin.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\WebPImagePlugin.py',
    'PYMODULE'),
-  ('PIL.PcxImagePlugin',
+  ('PIL.IcoImagePlugin',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\PcxImagePlugin.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\IcoImagePlugin.py',
    'PYMODULE'),
-  ('PIL.PalmImagePlugin',
+  ('PIL.ImImagePlugin',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\PalmImagePlugin.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\ImImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.DdsImagePlugin',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\DdsImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.BufrStubImagePlugin',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\BufrStubImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.SunImagePlugin',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\SunImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.TgaImagePlugin',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\TgaImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.MicImagePlugin',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\MicImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.MpegImagePlugin',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\MpegImagePlugin.py',
    'PYMODULE'),
   ('PIL.Jpeg2KImagePlugin',
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\Jpeg2KImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.PcdImagePlugin',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\PcdImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.GribStubImagePlugin',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\GribStubImagePlugin.py',
    'PYMODULE'),
   ('PIL.TiffImagePlugin',
    'C:\\Users\\Yassine '
@@ -4107,10 +4107,6 @@
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\__init__.py',
    'PYMODULE'),
-  ('pygments.lexers._mql_builtins',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\_mql_builtins.py',
-   'PYMODULE'),
   ('pygments.lexers._vbscript_builtins',
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\_vbscript_builtins.py',
@@ -4119,9 +4115,9 @@
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\_stan_builtins.py',
    'PYMODULE'),
-  ('pygments.lexers._scilab_builtins',
+  ('pygments.lexers._tsql_builtins',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\_scilab_builtins.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\_tsql_builtins.py',
    'PYMODULE'),
   ('pygments.modeline',
    'C:\\Users\\Yassine '
@@ -4135,9 +4131,9 @@
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\__init__.py',
    'PYMODULE'),
-  ('pygments.styles.emacs',
+  ('pygments.styles.inkpot',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\emacs.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\inkpot.py',
    'PYMODULE'),
   ('pygments.token',
    'C:\\Users\\Yassine '
@@ -4147,105 +4143,77 @@
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\style.py',
    'PYMODULE'),
-  ('pygments.styles.rrt',
+  ('pygments.styles.rainbow_dash',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\rrt.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\rainbow_dash.py',
+   'PYMODULE'),
+  ('pygments.styles.murphy',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\murphy.py',
    'PYMODULE'),
   ('pygments.styles.manni',
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\manni.py',
    'PYMODULE'),
+  ('pygments.styles.arduino',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\arduino.py',
+   'PYMODULE'),
+  ('pygments.styles.gruvbox',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\gruvbox.py',
+   'PYMODULE'),
   ('pygments.styles.perldoc',
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\perldoc.py',
-   'PYMODULE'),
-  ('pygments.styles.algol_nu',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\algol_nu.py',
-   'PYMODULE'),
-  ('pygments.styles.tango',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\tango.py',
-   'PYMODULE'),
-  ('pygments.styles.solarized',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\solarized.py',
-   'PYMODULE'),
-  ('pygments.styles.lovelace',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\lovelace.py',
-   'PYMODULE'),
-  ('pygments.styles.paraiso_dark',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\paraiso_dark.py',
-   'PYMODULE'),
-  ('pygments.styles.friendly',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\friendly.py',
-   'PYMODULE'),
-  ('pygments.styles.rainbow_dash',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\rainbow_dash.py',
-   'PYMODULE'),
-  ('pygments.styles.fruity',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\fruity.py',
-   'PYMODULE'),
-  ('pygments.styles.pastie',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\pastie.py',
-   'PYMODULE'),
-  ('pygments.styles.zenburn',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\zenburn.py',
-   'PYMODULE'),
-  ('pygments.styles.stata_dark',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\stata_dark.py',
-   'PYMODULE'),
-  ('pygments.styles.xcode',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\xcode.py',
-   'PYMODULE'),
-  ('pygments.styles.abap',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\abap.py',
-   'PYMODULE'),
-  ('pygments.styles.algol',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\algol.py',
    'PYMODULE'),
   ('pygments.styles.bw',
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\bw.py',
    'PYMODULE'),
-  ('pygments.styles.native',
+  ('pygments.styles',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\native.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\__init__.py',
    'PYMODULE'),
-  ('pygments.styles.vim',
+  ('pygments.styles.rrt',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\vim.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\rrt.py',
    'PYMODULE'),
-  ('pygments.styles.monokai',
+  ('pygments.styles.stata_light',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\monokai.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\stata_light.py',
    'PYMODULE'),
-  ('pygments.styles.autumn',
+  ('pygments.styles.lovelace',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\autumn.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\lovelace.py',
+   'PYMODULE'),
+  ('pygments.styles.pastie',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\pastie.py',
+   'PYMODULE'),
+  ('pygments.styles.colorful',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\colorful.py',
    'PYMODULE'),
   ('pygments.styles.trac',
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\trac.py',
    'PYMODULE'),
-  ('pygments.styles.arduino',
+  ('pygments.styles.autumn',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\arduino.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\autumn.py',
    'PYMODULE'),
-  ('pygments.styles.sas',
+  ('pygments.styles.xcode',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\sas.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\xcode.py',
+   'PYMODULE'),
+  ('pygments.styles.zenburn',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\zenburn.py',
+   'PYMODULE'),
+  ('pygments.styles.native',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\native.py',
    'PYMODULE'),
   ('pygments.styles.igor',
    'C:\\Users\\Yassine '
@@ -4255,49 +4223,77 @@
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\default.py',
    'PYMODULE'),
-  ('pygments.styles.gruvbox',
+  ('pygments.styles.paraiso_dark',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\gruvbox.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\paraiso_dark.py',
    'PYMODULE'),
-  ('pygments.styles',
+  ('pygments.styles.monokai',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\__init__.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\monokai.py',
    'PYMODULE'),
-  ('pygments.styles.paraiso_light',
+  ('pygments.styles.emacs',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\paraiso_light.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\emacs.py',
+   'PYMODULE'),
+  ('pygments.styles.vim',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\vim.py',
+   'PYMODULE'),
+  ('pygments.styles.sas',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\sas.py',
+   'PYMODULE'),
+  ('pygments.styles.stata_dark',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\stata_dark.py',
+   'PYMODULE'),
+  ('pygments.styles.solarized',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\solarized.py',
+   'PYMODULE'),
+  ('pygments.styles.abap',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\abap.py',
+   'PYMODULE'),
+  ('pygments.styles.algol',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\algol.py',
    'PYMODULE'),
   ('pygments.styles.borland',
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\borland.py',
    'PYMODULE'),
-  ('pygments.styles.vs',
+  ('pygments.styles.tango',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\vs.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\tango.py',
    'PYMODULE'),
   ('pygments.styles.material',
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\material.py',
    'PYMODULE'),
-  ('pygments.styles.stata_light',
+  ('pygments.styles.vs',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\stata_light.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\vs.py',
    'PYMODULE'),
-  ('pygments.styles.colorful',
+  ('pygments.styles.paraiso_light',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\colorful.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\paraiso_light.py',
    'PYMODULE'),
-  ('pygments.styles.inkpot',
+  ('pygments.styles.fruity',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\inkpot.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\fruity.py',
    'PYMODULE'),
-  ('pygments.styles.murphy',
+  ('pygments.styles.algol_nu',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\murphy.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\algol_nu.py',
    'PYMODULE'),
-  ('pygments.lexers.freefem',
+  ('pygments.styles.friendly',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\freefem.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\styles\\friendly.py',
+   'PYMODULE'),
+  ('pygments.lexers.dsls',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\dsls.py',
    'PYMODULE'),
   ('pygments.lexer',
    'C:\\Users\\Yassine '
@@ -4315,309 +4311,717 @@
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\filter.py',
    'PYMODULE'),
-  ('pygments.lexers.pony',
+  ('pygments.lexers.freefem',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\pony.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\freefem.py',
    'PYMODULE'),
-  ('pygments.lexers.configs',
+  ('pygments.lexers.ride',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\configs.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\ride.py',
    'PYMODULE'),
-  ('pygments.lexers.bibtex',
+  ('pygments.lexers.monte',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\bibtex.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\monte.py',
    'PYMODULE'),
-  ('pygments.lexers.webidl',
+  ('pygments.lexers.gdscript',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\webidl.py',
-   'PYMODULE'),
-  ('pygments.lexers.ml',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\ml.py',
-   'PYMODULE'),
-  ('pygments.lexers.erlang',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\erlang.py',
-   'PYMODULE'),
-  ('pygments.lexers.tcl',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\tcl.py',
-   'PYMODULE'),
-  ('pygments.lexers.shell',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\shell.py',
-   'PYMODULE'),
-  ('pygments.lexers.modeling',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\modeling.py',
-   'PYMODULE'),
-  ('pygments.lexers.julia',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\julia.py',
-   'PYMODULE'),
-  ('pygments.lexers.c_like',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\c_like.py',
-   'PYMODULE'),
-  ('pygments.lexers.sql',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\sql.py',
-   'PYMODULE'),
-  ('pygments.lexers.eiffel',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\eiffel.py',
-   'PYMODULE'),
-  ('pygments.lexers.html',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\html.py',
-   'PYMODULE'),
-  ('pygments.lexers.python',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\python.py',
-   'PYMODULE'),
-  ('pygments.lexers.qvt',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\qvt.py',
-   'PYMODULE'),
-  ('pygments.lexers.theorem',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\theorem.py',
-   'PYMODULE'),
-  ('pygments.lexers.asc',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\asc.py',
-   'PYMODULE'),
-  ('pygments.lexers.haxe',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\haxe.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\gdscript.py',
    'PYMODULE'),
   ('pygments.lexers.stata',
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\stata.py',
    'PYMODULE'),
-  ('pygments.lexers.php',
+  ('pygments.lexers.slash',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\php.py',
-   'PYMODULE'),
-  ('pygments.lexers.templates',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\templates.py',
-   'PYMODULE'),
-  ('pygments.lexers.felix',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\felix.py',
-   'PYMODULE'),
-  ('pygments.lexers.special',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\special.py',
-   'PYMODULE'),
-  ('pygments.lexers._lasso_builtins',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\_lasso_builtins.py',
-   'PYMODULE'),
-  ('pygments.lexers.console',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\console.py',
-   'PYMODULE'),
-  ('pygments.lexers.textedit',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\textedit.py',
-   'PYMODULE'),
-  ('pygments.lexers.hdl',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\hdl.py',
-   'PYMODULE'),
-  ('pygments.lexers.other',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\other.py',
-   'PYMODULE'),
-  ('pygments.lexers.snobol',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\snobol.py',
-   'PYMODULE'),
-  ('pygments.lexers.meson',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\meson.py',
-   'PYMODULE'),
-  ('pygments.lexers._cocoa_builtins',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\_cocoa_builtins.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\slash.py',
    'PYMODULE'),
   ('pygments.lexers.resource',
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\resource.py',
    'PYMODULE'),
-  ('pygments.lexers.modula2',
+  ('pygments.lexers.boa',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\modula2.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\boa.py',
    'PYMODULE'),
-  ('pygments.lexers.graphviz',
+  ('pygments.lexers.perl',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\graphviz.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\perl.py',
    'PYMODULE'),
-  ('pygments.lexers.kuin',
+  ('pygments.lexers.ambient',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\kuin.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\ambient.py',
    'PYMODULE'),
-  ('pygments.lexers.j',
+  ('pygments.lexers.textfmts',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\j.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\textfmts.py',
    'PYMODULE'),
-  ('pygments.lexers.dsls',
+  ('pygments.lexers.thingsdb',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\dsls.py',
-   'PYMODULE'),
-  ('pygments.lexers._tsql_builtins',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\_tsql_builtins.py',
-   'PYMODULE'),
-  ('pygments.lexers.fantom',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\fantom.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\thingsdb.py',
    'PYMODULE'),
   ('pygments.lexers.jvm',
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\jvm.py',
    'PYMODULE'),
-  ('pygments.lexers.cddl',
+  ('pygments.unistring',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\cddl.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\unistring.py',
    'PYMODULE'),
-  ('pygments.lexers.elm',
+  ('pygments.lexers.rdf',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\elm.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\rdf.py',
    'PYMODULE'),
-  ('pygments.lexers.tnt',
+  ('pygments.lexers._lua_builtins',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\tnt.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\_lua_builtins.py',
    'PYMODULE'),
-  ('pygments.lexers.apdlexer',
+  ('pygments.lexers.chapel',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\apdlexer.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\chapel.py',
    'PYMODULE'),
-  ('pygments.lexers.oberon',
+  ('pygments.lexers.futhark',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\oberon.py',
-   'PYMODULE'),
-  ('pygments.lexers.factor',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\factor.py',
-   'PYMODULE'),
-  ('pygments.lexers.pointless',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\pointless.py',
-   'PYMODULE'),
-  ('pygments.lexers.ncl',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\ncl.py',
-   'PYMODULE'),
-  ('pygments.lexers.haskell',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\haskell.py',
-   'PYMODULE'),
-  ('pygments.lexers.automation',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\automation.py',
-   'PYMODULE'),
-  ('pygments.lexers.fortran',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\fortran.py',
-   'PYMODULE'),
-  ('pygments.lexers.smithy',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\smithy.py',
-   'PYMODULE'),
-  ('pygments.lexers.robotframework',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\robotframework.py',
-   'PYMODULE'),
-  ('pygments.lexers.mosel',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\mosel.py',
-   'PYMODULE'),
-  ('pygments.lexers.rust',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\rust.py',
-   'PYMODULE'),
-  ('pygments.lexers.slash',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\slash.py',
-   'PYMODULE'),
-  ('pygments.lexers._vim_builtins',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\_vim_builtins.py',
-   'PYMODULE'),
-  ('pygments.lexers.css',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\css.py',
-   'PYMODULE'),
-  ('pygments.lexers.devicetree',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\devicetree.py',
-   'PYMODULE'),
-  ('pygments.lexers.teal',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\teal.py',
-   'PYMODULE'),
-  ('pygments.lexers.forth',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\forth.py',
-   'PYMODULE'),
-  ('pygments.lexers.nix',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\nix.py',
-   'PYMODULE'),
-  ('pygments.lexers.javascript',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\javascript.py',
-   'PYMODULE'),
-  ('pygments.lexers.verification',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\verification.py',
-   'PYMODULE'),
-  ('pygments.lexers.iolang',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\iolang.py',
-   'PYMODULE'),
-  ('pygments.lexers.c_cpp',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\c_cpp.py',
-   'PYMODULE'),
-  ('pygments.lexers.asm',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\asm.py',
-   'PYMODULE'),
-  ('pygments.lexers.ruby',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\ruby.py',
-   'PYMODULE'),
-  ('pygments.lexers.jslt',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\jslt.py',
-   'PYMODULE'),
-  ('pygments.lexers._cl_builtins',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\_cl_builtins.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\futhark.py',
    'PYMODULE'),
   ('pygments.lexers.igor',
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\igor.py',
    'PYMODULE'),
-  ('pygments.lexers.zig',
+  ('pygments.lexers.parsers',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\zig.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\parsers.py',
    'PYMODULE'),
-  ('pygments.lexers.grammar_notation',
+  ('pygments.lexers.dalvik',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\grammar_notation.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\dalvik.py',
+   'PYMODULE'),
+  ('pygments.lexers.jslt',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\jslt.py',
+   'PYMODULE'),
+  ('pygments.lexers.theorem',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\theorem.py',
+   'PYMODULE'),
+  ('pygments.lexers._mysql_builtins',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\_mysql_builtins.py',
    'PYMODULE'),
   ('pygments.lexers.web',
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\web.py',
    'PYMODULE'),
+  ('pygments.lexers.gcodelexer',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\gcodelexer.py',
+   'PYMODULE'),
+  ('pygments.lexers.functional',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\functional.py',
+   'PYMODULE'),
+  ('pygments.lexers.c_like',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\c_like.py',
+   'PYMODULE'),
+  ('pygments.lexers.elm',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\elm.py',
+   'PYMODULE'),
+  ('pygments.lexers.agile',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\agile.py',
+   'PYMODULE'),
+  ('pygments.lexers.webidl',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\webidl.py',
+   'PYMODULE'),
+  ('pygments.lexers.apl',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\apl.py',
+   'PYMODULE'),
+  ('pygments.lexers.gsql',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\gsql.py',
+   'PYMODULE'),
+  ('pygments.lexers.hexdump',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\hexdump.py',
+   'PYMODULE'),
+  ('pygments.lexers.whiley',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\whiley.py',
+   'PYMODULE'),
+  ('pygments.lexers.python',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\python.py',
+   'PYMODULE'),
+  ('pygments.lexers.fortran',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\fortran.py',
+   'PYMODULE'),
+  ('pygments.lexers._usd_builtins',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\_usd_builtins.py',
+   'PYMODULE'),
+  ('pygments.lexers.snobol',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\snobol.py',
+   'PYMODULE'),
+  ('pygments.lexers.arrow',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\arrow.py',
+   'PYMODULE'),
+  ('pygments.lexers.d',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\d.py',
+   'PYMODULE'),
+  ('pygments.lexers.pawn',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\pawn.py',
+   'PYMODULE'),
+  ('pygments.lexers.sas',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\sas.py',
+   'PYMODULE'),
+  ('pygments.lexers.objective',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\objective.py',
+   'PYMODULE'),
+  ('pygments.lexers.pony',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\pony.py',
+   'PYMODULE'),
+  ('pygments.lexers._csound_builtins',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\_csound_builtins.py',
+   'PYMODULE'),
+  ('pygments.lexers.fantom',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\fantom.py',
+   'PYMODULE'),
+  ('pygments.lexers.varnish',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\varnish.py',
+   'PYMODULE'),
+  ('pygments.lexers.graphics',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\graphics.py',
+   'PYMODULE'),
+  ('pygments.lexers.devicetree',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\devicetree.py',
+   'PYMODULE'),
+  ('pygments.lexers.nimrod',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\nimrod.py',
+   'PYMODULE'),
+  ('pygments.lexers.business',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\business.py',
+   'PYMODULE'),
+  ('pygments.lexers.compiled',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\compiled.py',
+   'PYMODULE'),
+  ('pygments.lexers.modula2',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\modula2.py',
+   'PYMODULE'),
+  ('pygments.lexers.teal',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\teal.py',
+   'PYMODULE'),
+  ('pygments.lexers.kuin',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\kuin.py',
+   'PYMODULE'),
+  ('pygments.lexers.smithy',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\smithy.py',
+   'PYMODULE'),
+  ('pygments.lexers.basic',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\basic.py',
+   'PYMODULE'),
+  ('pygments.lexers.math',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\math.py',
+   'PYMODULE'),
+  ('pygments.lexers.ecl',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\ecl.py',
+   'PYMODULE'),
+  ('pygments.lexers.matlab',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\matlab.py',
+   'PYMODULE'),
+  ('pygments.lexers.ampl',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\ampl.py',
+   'PYMODULE'),
+  ('pygments.lexers.supercollider',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\supercollider.py',
+   'PYMODULE'),
+  ('pygments.lexers.installers',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\installers.py',
+   'PYMODULE'),
+  ('pygments.lexers._openedge_builtins',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\_openedge_builtins.py',
+   'PYMODULE'),
+  ('pygments.lexers.lisp',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\lisp.py',
+   'PYMODULE'),
+  ('pygments.lexers.verification',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\verification.py',
+   'PYMODULE'),
+  ('pygments.lexers.automation',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\automation.py',
+   'PYMODULE'),
+  ('pygments.lexers.factor',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\factor.py',
+   'PYMODULE'),
+  ('pygments.lexers.apdlexer',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\apdlexer.py',
+   'PYMODULE'),
+  ('pygments.lexers.configs',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\configs.py',
+   'PYMODULE'),
+  ('pygments.lexers.markup',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\markup.py',
+   'PYMODULE'),
+  ('pygments.lexers.inferno',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\inferno.py',
+   'PYMODULE'),
+  ('pygments.lexers.bibtex',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\bibtex.py',
+   'PYMODULE'),
+  ('pygments.lexers.templates',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\templates.py',
+   'PYMODULE'),
+  ('pygments.lexers.ruby',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\ruby.py',
+   'PYMODULE'),
+  ('pygments.lexers.algebra',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\algebra.py',
+   'PYMODULE'),
+  ('pygments.lexers.yang',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\yang.py',
+   'PYMODULE'),
+  ('pygments.lexers.modeling',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\modeling.py',
+   'PYMODULE'),
+  ('pygments.lexers._cocoa_builtins',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\_cocoa_builtins.py',
+   'PYMODULE'),
+  ('pygments.lexers.rebol',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\rebol.py',
+   'PYMODULE'),
+  ('pygments.lexers.j',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\j.py',
+   'PYMODULE'),
+  ('pygments.lexers.foxpro',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\foxpro.py',
+   'PYMODULE'),
+  ('pygments.lexers.tnt',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\tnt.py',
+   'PYMODULE'),
+  ('pygments.lexers.erlang',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\erlang.py',
+   'PYMODULE'),
+  ('pygments.lexers.php',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\php.py',
+   'PYMODULE'),
+  ('pygments.lexers.testing',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\testing.py',
+   'PYMODULE'),
+  ('pygments.lexers.smalltalk',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\smalltalk.py',
+   'PYMODULE'),
+  ('pygments.lexers.meson',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\meson.py',
+   'PYMODULE'),
+  ('pygments.lexers.xorg',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\xorg.py',
+   'PYMODULE'),
+  ('pygments.lexers.special',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\special.py',
+   'PYMODULE'),
+  ('pygments.lexers.haxe',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\haxe.py',
+   'PYMODULE'),
+  ('pygments.lexers.nit',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\nit.py',
+   'PYMODULE'),
+  ('pygments.lexers.promql',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\promql.py',
+   'PYMODULE'),
+  ('pygments.lexers.hdl',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\hdl.py',
+   'PYMODULE'),
+  ('pygments.lexers.solidity',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\solidity.py',
+   'PYMODULE'),
+  ('pygments.lexers.make',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\make.py',
+   'PYMODULE'),
+  ('pygments.lexers.praat',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\praat.py',
+   'PYMODULE'),
+  ('pygments.lexers.crystal',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\crystal.py',
+   'PYMODULE'),
+  ('pygments.lexers.procfile',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\procfile.py',
+   'PYMODULE'),
   ('pygments.lexers.csound',
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\csound.py',
+   'PYMODULE'),
+  ('pygments.lexers.ncl',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\ncl.py',
+   'PYMODULE'),
+  ('pygments.lexers.grammar_notation',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\grammar_notation.py',
+   'PYMODULE'),
+  ('pygments.lexers.robotframework',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\robotframework.py',
+   'PYMODULE'),
+  ('pygments.lexers.shell',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\shell.py',
+   'PYMODULE'),
+  ('pygments.lexers.r',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\r.py',
+   'PYMODULE'),
+  ('pygments.lexers.actionscript',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\actionscript.py',
+   'PYMODULE'),
+  ('pygments.lexers.felix',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\felix.py',
+   'PYMODULE'),
+  ('pygments.lexers.int_fiction',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\int_fiction.py',
+   'PYMODULE'),
+  ('pygments.lexers._php_builtins',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\_php_builtins.py',
+   'PYMODULE'),
+  ('pygments.lexers.amdgpu',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\amdgpu.py',
+   'PYMODULE'),
+  ('pygments.lexers.clean',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\clean.py',
+   'PYMODULE'),
+  ('pygments.lexers.usd',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\usd.py',
+   'PYMODULE'),
+  ('pygments.lexers.dylan',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\dylan.py',
+   'PYMODULE'),
+  ('pygments.lexers.sieve',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\sieve.py',
+   'PYMODULE'),
+  ('pygments.lexers.unicon',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\unicon.py',
+   'PYMODULE'),
+  ('pygments.lexers.scdoc',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\scdoc.py',
+   'PYMODULE'),
+  ('pygments.lexers.nix',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\nix.py',
+   'PYMODULE'),
+  ('pygments.lexers.pointless',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\pointless.py',
+   'PYMODULE'),
+  ('pygments.lexers.javascript',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\javascript.py',
+   'PYMODULE'),
+  ('pygments.lexers.urbi',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\urbi.py',
+   'PYMODULE'),
+  ('pygments.lexers.scripting',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\scripting.py',
+   'PYMODULE'),
+  ('pygments.lexers.bare',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\bare.py',
+   'PYMODULE'),
+  ('pygments.lexers.go',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\go.py',
+   'PYMODULE'),
+  ('pygments.lexers.asc',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\asc.py',
+   'PYMODULE'),
+  ('pygments.lexers.text',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\text.py',
+   'PYMODULE'),
+  ('pygments.lexers._stata_builtins',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\_stata_builtins.py',
+   'PYMODULE'),
+  ('pygments.lexers.dotnet',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\dotnet.py',
+   'PYMODULE'),
+  ('pygments.lexers.mime',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\mime.py',
+   'PYMODULE'),
+  ('pygments.lexers.c_cpp',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\c_cpp.py',
+   'PYMODULE'),
+  ('pygments.lexers._asy_builtins',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\_asy_builtins.py',
+   'PYMODULE'),
+  ('pygments.lexers.roboconf',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\roboconf.py',
+   'PYMODULE'),
+  ('pygments.lexers.rnc',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\rnc.py',
+   'PYMODULE'),
+  ('pygments.lexers.prolog',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\prolog.py',
+   'PYMODULE'),
+  ('pygments.lexers.qvt',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\qvt.py',
+   'PYMODULE'),
+  ('pygments.lexers._vim_builtins',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\_vim_builtins.py',
+   'PYMODULE'),
+  ('pygments.lexers.sql',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\sql.py',
+   'PYMODULE'),
+  ('pygments.lexers.floscript',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\floscript.py',
+   'PYMODULE'),
+  ('pygments.lexers.cddl',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\cddl.py',
+   'PYMODULE'),
+  ('pygments.lexers.julia',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\julia.py',
+   'PYMODULE'),
+  ('pygments.lexers._sourcemod_builtins',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\_sourcemod_builtins.py',
+   'PYMODULE'),
+  ('pygments.lexers._mql_builtins',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\_mql_builtins.py',
+   'PYMODULE'),
+  ('pygments.lexers.console',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\console.py',
+   'PYMODULE'),
+  ('pygments.lexers.sgf',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\sgf.py',
+   'PYMODULE'),
+  ('pygments.lexers.email',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\email.py',
+   'PYMODULE'),
+  ('pygments.lexers._scilab_builtins',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\_scilab_builtins.py',
+   'PYMODULE'),
+  ('pygments.lexers.trafficscript',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\trafficscript.py',
+   'PYMODULE'),
+  ('pygments.lexers.rust',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\rust.py',
+   'PYMODULE'),
+  ('pygments.lexers.data',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\data.py',
+   'PYMODULE'),
+  ('pygments.lexers.ooc',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\ooc.py',
+   'PYMODULE'),
+  ('pygments.lexers.tcl',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\tcl.py',
+   'PYMODULE'),
+  ('pygments.lexers.esoteric',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\esoteric.py',
+   'PYMODULE'),
+  ('pygments.lexers.zig',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\zig.py',
+   'PYMODULE'),
+  ('pygments.lexers.css',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\css.py',
+   'PYMODULE'),
+  ('pygments.lexers.webassembly',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\webassembly.py',
+   'PYMODULE'),
+  ('pygments.lexers.textedit',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\textedit.py',
+   'PYMODULE'),
+  ('pygments.lexers.graphviz',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\graphviz.py',
+   'PYMODULE'),
+  ('pygments.lexers.teraterm',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\teraterm.py',
+   'PYMODULE'),
+  ('pygments.lexers.parasail',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\parasail.py',
+   'PYMODULE'),
+  ('pygments.lexers.ml',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\ml.py',
+   'PYMODULE'),
+  ('pygments.lexers.ezhil',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\ezhil.py',
+   'PYMODULE'),
+  ('pygments.lexers._lasso_builtins',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\_lasso_builtins.py',
+   'PYMODULE'),
+  ('pygments.lexers.capnproto',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\capnproto.py',
+   'PYMODULE'),
+  ('pygments.lexers.oberon',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\oberon.py',
+   'PYMODULE'),
+  ('pygments.lexers.typoscript',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\typoscript.py',
+   'PYMODULE'),
+  ('pygments.lexers.mosel',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\mosel.py',
+   'PYMODULE'),
+  ('pygments.lexers.eiffel',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\eiffel.py',
+   'PYMODULE'),
+  ('pygments.lexers.archetype',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\archetype.py',
+   'PYMODULE'),
+  ('pygments.lexers._postgres_builtins',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\_postgres_builtins.py',
+   'PYMODULE'),
+  ('pygments.lexers.smv',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\smv.py',
+   'PYMODULE'),
+  ('pygments.lexers._cl_builtins',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\_cl_builtins.py',
+   'PYMODULE'),
+  ('pygments.lexers.diff',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\diff.py',
+   'PYMODULE'),
+  ('pygments.lexers.html',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\html.py',
+   'PYMODULE'),
+  ('pygments.lexers.graph',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\graph.py',
+   'PYMODULE'),
+  ('pygments.lexers.asm',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\asm.py',
+   'PYMODULE'),
+  ('pygments.lexers.webmisc',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\webmisc.py',
+   'PYMODULE'),
+  ('pygments.lexers.haskell',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\haskell.py',
+   'PYMODULE'),
+  ('pygments.lexers.forth',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\forth.py',
    'PYMODULE'),
   ('pygments.lexers.pascal',
    'C:\\Users\\Yassine '
@@ -4627,429 +5031,25 @@
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\scanner.py',
    'PYMODULE'),
-  ('pygments.lexers.d',
+  ('pygments.lexers.iolang',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\d.py',
-   'PYMODULE'),
-  ('pygments.lexers.dalvik',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\dalvik.py',
-   'PYMODULE'),
-  ('pygments.lexers.archetype',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\archetype.py',
-   'PYMODULE'),
-  ('pygments.lexers.ride',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\ride.py',
-   'PYMODULE'),
-  ('pygments.lexers.diff',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\diff.py',
-   'PYMODULE'),
-  ('pygments.lexers.capnproto',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\capnproto.py',
-   'PYMODULE'),
-  ('pygments.lexers._csound_builtins',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\_csound_builtins.py',
-   'PYMODULE'),
-  ('pygments.lexers.make',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\make.py',
-   'PYMODULE'),
-  ('pygments.lexers.graphics',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\graphics.py',
-   'PYMODULE'),
-  ('pygments.lexers.promql',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\promql.py',
-   'PYMODULE'),
-  ('pygments.lexers.dotnet',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\dotnet.py',
-   'PYMODULE'),
-  ('pygments.lexers.scripting',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\scripting.py',
-   'PYMODULE'),
-  ('pygments.lexers.futhark',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\futhark.py',
-   'PYMODULE'),
-  ('pygments.lexers.email',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\email.py',
-   'PYMODULE'),
-  ('pygments.lexers.floscript',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\floscript.py',
-   'PYMODULE'),
-  ('pygments.lexers.whiley',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\whiley.py',
-   'PYMODULE'),
-  ('pygments.lexers.monte',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\monte.py',
-   'PYMODULE'),
-  ('pygments.lexers.amdgpu',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\amdgpu.py',
-   'PYMODULE'),
-  ('pygments.lexers.unicon',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\unicon.py',
-   'PYMODULE'),
-  ('pygments.lexers._julia_builtins',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\_julia_builtins.py',
-   'PYMODULE'),
-  ('pygments.lexers.objective',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\objective.py',
-   'PYMODULE'),
-  ('pygments.lexers.algebra',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\algebra.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\iolang.py',
    'PYMODULE'),
   ('pygments.lexers.idl',
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\idl.py',
    'PYMODULE'),
-  ('pygments.lexers._postgres_builtins',
+  ('pygments.lexers.other',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\_postgres_builtins.py',
-   'PYMODULE'),
-  ('pygments.lexers.textfmts',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\textfmts.py',
-   'PYMODULE'),
-  ('pygments.lexers.actionscript',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\actionscript.py',
-   'PYMODULE'),
-  ('pygments.lexers.lisp',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\lisp.py',
-   'PYMODULE'),
-  ('pygments.lexers.business',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\business.py',
-   'PYMODULE'),
-  ('pygments.lexers.procfile',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\procfile.py',
-   'PYMODULE'),
-  ('pygments.lexers.webmisc',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\webmisc.py',
-   'PYMODULE'),
-  ('pygments.lexers.arrow',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\arrow.py',
-   'PYMODULE'),
-  ('pygments.lexers.teraterm',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\teraterm.py',
-   'PYMODULE'),
-  ('pygments.lexers.smv',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\smv.py',
-   'PYMODULE'),
-  ('pygments.lexers.supercollider',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\supercollider.py',
-   'PYMODULE'),
-  ('pygments.lexers.parsers',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\parsers.py',
-   'PYMODULE'),
-  ('pygments.lexers.data',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\data.py',
-   'PYMODULE'),
-  ('pygments.lexers.crystal',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\crystal.py',
-   'PYMODULE'),
-  ('pygments.lexers.foxpro',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\foxpro.py',
-   'PYMODULE'),
-  ('pygments.lexers.testing',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\testing.py',
-   'PYMODULE'),
-  ('pygments.lexers.inferno',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\inferno.py',
-   'PYMODULE'),
-  ('pygments.lexers.trafficscript',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\trafficscript.py',
-   'PYMODULE'),
-  ('pygments.lexers._php_builtins',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\_php_builtins.py',
-   'PYMODULE'),
-  ('pygments.lexers.nit',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\nit.py',
-   'PYMODULE'),
-  ('pygments.lexers.ampl',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\ampl.py',
-   'PYMODULE'),
-  ('pygments.lexers.clean',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\clean.py',
-   'PYMODULE'),
-  ('pygments.lexers._mysql_builtins',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\_mysql_builtins.py',
-   'PYMODULE'),
-  ('pygments.lexers.functional',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\functional.py',
-   'PYMODULE'),
-  ('pygments.lexers.gdscript',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\gdscript.py',
-   'PYMODULE'),
-  ('pygments.lexers.rnc',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\rnc.py',
-   'PYMODULE'),
-  ('pygments.lexers._asy_builtins',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\_asy_builtins.py',
-   'PYMODULE'),
-  ('pygments.lexers.chapel',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\chapel.py',
-   'PYMODULE'),
-  ('pygments.lexers.graph',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\graph.py',
-   'PYMODULE'),
-  ('pygments.lexers.xorg',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\xorg.py',
-   'PYMODULE'),
-  ('pygments.lexers.bare',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\bare.py',
-   'PYMODULE'),
-  ('pygments.lexers.markup',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\markup.py',
-   'PYMODULE'),
-  ('pygments.lexers._usd_builtins',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\_usd_builtins.py',
-   'PYMODULE'),
-  ('pygments.lexers._lua_builtins',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\_lua_builtins.py',
-   'PYMODULE'),
-  ('pygments.lexers.typoscript',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\typoscript.py',
-   'PYMODULE'),
-  ('pygments.lexers.varnish',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\varnish.py',
-   'PYMODULE'),
-  ('pygments.lexers.solidity',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\solidity.py',
-   'PYMODULE'),
-  ('pygments.lexers.sgf',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\sgf.py',
-   'PYMODULE'),
-  ('pygments.lexers.urbi',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\urbi.py',
-   'PYMODULE'),
-  ('pygments.lexers.gsql',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\gsql.py',
-   'PYMODULE'),
-  ('pygments.lexers.thingsdb',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\thingsdb.py',
-   'PYMODULE'),
-  ('pygments.lexers.rdf',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\rdf.py',
-   'PYMODULE'),
-  ('pygments.lexers.r',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\r.py',
-   'PYMODULE'),
-  ('pygments.lexers.perl',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\perl.py',
-   'PYMODULE'),
-  ('pygments.lexers.apl',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\apl.py',
-   'PYMODULE'),
-  ('pygments.lexers._sourcemod_builtins',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\_sourcemod_builtins.py',
-   'PYMODULE'),
-  ('pygments.lexers.esoteric',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\esoteric.py',
-   'PYMODULE'),
-  ('pygments.lexers.usd',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\usd.py',
-   'PYMODULE'),
-  ('pygments.lexers.int_fiction',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\int_fiction.py',
-   'PYMODULE'),
-  ('pygments.lexers.text',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\text.py',
-   'PYMODULE'),
-  ('pygments.lexers._openedge_builtins',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\_openedge_builtins.py',
-   'PYMODULE'),
-  ('pygments.lexers.sas',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\sas.py',
-   'PYMODULE'),
-  ('pygments.lexers.compiled',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\compiled.py',
-   'PYMODULE'),
-  ('pygments.lexers.sieve',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\sieve.py',
-   'PYMODULE'),
-  ('pygments.lexers.ooc',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\ooc.py',
-   'PYMODULE'),
-  ('pygments.lexers.ambient',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\ambient.py',
-   'PYMODULE'),
-  ('pygments.lexers.smalltalk',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\smalltalk.py',
-   'PYMODULE'),
-  ('pygments.lexers.matlab',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\matlab.py',
-   'PYMODULE'),
-  ('pygments.lexers.agile',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\agile.py',
-   'PYMODULE'),
-  ('pygments.lexers.praat',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\praat.py',
-   'PYMODULE'),
-  ('pygments.lexers.mime',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\mime.py',
-   'PYMODULE'),
-  ('pygments.lexers.roboconf',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\roboconf.py',
-   'PYMODULE'),
-  ('pygments.lexers.parasail',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\parasail.py',
-   'PYMODULE'),
-  ('pygments.lexers.hexdump',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\hexdump.py',
-   'PYMODULE'),
-  ('pygments.lexers.installers',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\installers.py',
-   'PYMODULE'),
-  ('pygments.lexers.gcodelexer',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\gcodelexer.py',
-   'PYMODULE'),
-  ('pygments.lexers.boa',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\boa.py',
-   'PYMODULE'),
-  ('pygments.lexers.basic',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\basic.py',
-   'PYMODULE'),
-  ('pygments.lexers.nimrod',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\nimrod.py',
-   'PYMODULE'),
-  ('pygments.lexers._stata_builtins',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\_stata_builtins.py',
-   'PYMODULE'),
-  ('pygments.lexers.ecl',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\ecl.py',
-   'PYMODULE'),
-  ('pygments.lexers.dylan',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\dylan.py',
-   'PYMODULE'),
-  ('pygments.lexers.pawn',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\pawn.py',
-   'PYMODULE'),
-  ('pygments.lexers.yang',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\yang.py',
-   'PYMODULE'),
-  ('pygments.lexers.prolog',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\prolog.py',
-   'PYMODULE'),
-  ('pygments.lexers.rebol',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\rebol.py',
-   'PYMODULE'),
-  ('pygments.lexers.webassembly',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\webassembly.py',
-   'PYMODULE'),
-  ('pygments.lexers.ezhil',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\ezhil.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\other.py',
    'PYMODULE'),
   ('pygments.lexers.x10',
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\x10.py',
    'PYMODULE'),
-  ('pygments.lexers.math',
+  ('pygments.lexers._julia_builtins',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\math.py',
-   'PYMODULE'),
-  ('pygments.unistring',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\unistring.py',
-   'PYMODULE'),
-  ('pygments.lexers.scdoc',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\scdoc.py',
-   'PYMODULE'),
-  ('pygments.lexers.go',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\go.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\lexers\\_julia_builtins.py',
    'PYMODULE'),
   ('pygments.formatters.svg',
    'C:\\Users\\Yassine '
@@ -5058,6 +5058,10 @@
   ('pygments.formatter',
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\formatter.py',
+   'PYMODULE'),
+  ('pygments.formatters.rtf',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\formatters\\rtf.py',
    'PYMODULE'),
   ('pygments.formatters.terminal',
    'C:\\Users\\Yassine '
@@ -5071,13 +5075,9 @@
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\formatters\\html.py',
    'PYMODULE'),
-  ('pygments.formatters.pangomarkup',
+  ('pygments.formatters.other',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\formatters\\pangomarkup.py',
-   'PYMODULE'),
-  ('pygments.formatters.terminal256',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\formatters\\terminal256.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\formatters\\other.py',
    'PYMODULE'),
   ('pygments.formatters.img',
    'C:\\Users\\Yassine '
@@ -5099,6 +5099,18 @@
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\PIL\\ImagePath.py',
    'PYMODULE'),
+  ('pygments.formatters.terminal256',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\formatters\\terminal256.py',
+   'PYMODULE'),
+  ('pygments.formatters.latex',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\formatters\\latex.py',
+   'PYMODULE'),
+  ('pygments.formatters.pangomarkup',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\formatters\\pangomarkup.py',
+   'PYMODULE'),
   ('pygments.formatters.irc',
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\formatters\\irc.py',
@@ -5106,18 +5118,6 @@
   ('pygments.formatters.bbcode',
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\formatters\\bbcode.py',
-   'PYMODULE'),
-  ('pygments.formatters.other',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\formatters\\other.py',
-   'PYMODULE'),
-  ('pygments.formatters.rtf',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\formatters\\rtf.py',
-   'PYMODULE'),
-  ('pygments.formatters.latex',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pygments\\formatters\\latex.py',
    'PYMODULE'),
   ('IPython.utils.colorable',
    'C:\\Users\\Yassine '
@@ -5628,85 +5628,73 @@
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\__init__.py',
    'PYMODULE'),
-  ('gevent.libev',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\libev\\__init__.py',
-   'PYMODULE'),
-  ('gevent.libuv',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\libuv\\__init__.py',
-   'PYMODULE'),
-  ('gevent._threading',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\_threading.py',
-   'PYMODULE'),
   ('gevent._ffi.watcher',
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\_ffi\\watcher.py',
-   'PYMODULE'),
-  ('gevent.libuv.watcher',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\libuv\\watcher.py',
-   'PYMODULE'),
-  ('gevent.libuv._corecffi_build',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\libuv\\_corecffi_build.py',
-   'PYMODULE'),
-  ('gevent._imap',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\_imap.py',
-   'PYMODULE'),
-  ('gevent.resolver.dnspython',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\resolver\\dnspython.py',
-   'PYMODULE'),
-  ('gevent._ffi.loop',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\_ffi\\loop.py',
    'PYMODULE'),
   ('gevent.resolver.blocking',
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\resolver\\blocking.py',
    'PYMODULE'),
-  ('gevent.resolver.ares',
+  ('gevent.pool',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\resolver\\ares.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\pool.py',
+   'PYMODULE'),
+  ('gevent._abstract_linkable',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\_abstract_linkable.py',
+   'PYMODULE'),
+  ('gevent.libev',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\libev\\__init__.py',
+   'PYMODULE'),
+  ('gevent.libuv.watcher',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\libuv\\watcher.py',
+   'PYMODULE'),
+  ('gevent.server',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\server.py',
    'PYMODULE'),
   ('gevent.ares',
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\ares.py',
    'PYMODULE'),
-  ('gevent.resolver._hostsfile',
+  ('gevent.libev.watcher',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\resolver\\_hostsfile.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\libev\\watcher.py',
    'PYMODULE'),
-  ('gevent._ffi.callback',
+  ('gevent._threading',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\_ffi\\callback.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\_threading.py',
+   'PYMODULE'),
+  ('gevent._ffi.loop',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\_ffi\\loop.py',
+   'PYMODULE'),
+  ('gevent.backdoor',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\backdoor.py',
+   'PYMODULE'),
+  ('gevent.libev.corecffi',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\libev\\corecffi.py',
+   'PYMODULE'),
+  ('gevent._interfaces',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\_interfaces.py',
+   'PYMODULE'),
+  ('gevent.resolver.ares',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\resolver\\ares.py',
    'PYMODULE'),
   ('gevent.resolver',
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\resolver\\__init__.py',
    'PYMODULE'),
-  ('gevent.pool',
+  ('gevent.libev._corecffi_build',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\pool.py',
-   'PYMODULE'),
-  ('gevent.resolver.thread',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\resolver\\thread.py',
-   'PYMODULE'),
-  ('gevent.signal',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\signal.py',
-   'PYMODULE'),
-  ('gevent.builtins',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\builtins.py',
-   'PYMODULE'),
-  ('gevent.libuv.loop',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\libuv\\loop.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\libev\\_corecffi_build.py',
    'PYMODULE'),
   ('gevent.time',
    'C:\\Users\\Yassine '
@@ -5716,53 +5704,65 @@
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\resolver\\_addresses.py',
    'PYMODULE'),
-  ('gevent.backdoor',
+  ('gevent.resolver.thread',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\backdoor.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\resolver\\thread.py',
    'PYMODULE'),
-  ('gevent.libev._corecffi_build',
+  ('gevent._imap',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\libev\\_corecffi_build.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\_imap.py',
    'PYMODULE'),
-  ('gevent._ffi',
+  ('gevent.libuv._corecffi_build',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\_ffi\\__init__.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\libuv\\_corecffi_build.py',
    'PYMODULE'),
-  ('gevent._abstract_linkable',
+  ('gevent.libuv.loop',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\_abstract_linkable.py',
-   'PYMODULE'),
-  ('gevent._patcher',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\_patcher.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\libuv\\loop.py',
    'PYMODULE'),
   ('gevent.baseserver',
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\baseserver.py',
    'PYMODULE'),
-  ('gevent.pywsgi',
+  ('gevent.resolver.dnspython',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\pywsgi.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\resolver\\dnspython.py',
+   'PYMODULE'),
+  ('gevent.builtins',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\builtins.py',
+   'PYMODULE'),
+  ('gevent._ffi.callback',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\_ffi\\callback.py',
+   'PYMODULE'),
+  ('gevent._patcher',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\_patcher.py',
+   'PYMODULE'),
+  ('gevent.libuv',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\libuv\\__init__.py',
    'PYMODULE'),
   ('gevent.selectors',
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\selectors.py',
    'PYMODULE'),
-  ('gevent.server',
+  ('gevent.signal',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\server.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\signal.py',
    'PYMODULE'),
-  ('gevent.libev.corecffi',
+  ('gevent.resolver._hostsfile',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\libev\\corecffi.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\resolver\\_hostsfile.py',
    'PYMODULE'),
-  ('gevent.libev.watcher',
+  ('gevent._ffi',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\libev\\watcher.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\_ffi\\__init__.py',
    'PYMODULE'),
-  ('gevent._interfaces',
+  ('gevent.pywsgi',
    'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\_interfaces.py',
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\gevent\\pywsgi.py',
    'PYMODULE'),
   ('gevent.subprocess',
    'C:\\Users\\Yassine '
@@ -9467,13 +9467,13 @@
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pandas\\__init__.py',
    'PYMODULE'),
-  ('pandas._libs.tslibs',
-   'C:\\Users\\Yassine '
-   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pandas\\_libs\\tslibs\\__init__.py',
-   'PYMODULE'),
   ('pandas._libs.window',
    'C:\\Users\\Yassine '
    'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pandas\\_libs\\window\\__init__.py',
+   'PYMODULE'),
+  ('pandas._libs.tslibs',
+   'C:\\Users\\Yassine '
+   'Baghdadi\\AppData\\Roaming\\Python\\Python39\\site-packages\\pandas\\_libs\\tslibs\\__init__.py',
    'PYMODULE'),
   ('pandas._version',
    'C:\\Users\\Yassine '

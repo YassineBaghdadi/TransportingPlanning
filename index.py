@@ -2468,8 +2468,6 @@ class AddAgent(QtWidgets.QWidget):
         else:
             notif(self, title="Error ", msg='you have to write all the infos')
 
-
-
 if __name__ == '__main__' :
     app = QtWidgets.QApplication(sys.argv)
     splash_wn = Splash()
