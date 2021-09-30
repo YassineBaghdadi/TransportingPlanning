@@ -187,7 +187,7 @@ print('test')
 #     notif(title="Saccom IT Departement : ", msg=f'{len(doneDates)} Plannings has been created : {doneDates} ')
 
 
-def create_trip(date, type, driver, van):
+def create_trip(self, date, type, driver, van):
     cnx = con()
     cur = cnx.cursor()
     cur.execute(f'''select id from vans where matr like "{van}"''')
@@ -277,7 +277,7 @@ def create_trip(date, type, driver, van):
                         cur.execute(
                             f'''select v.id from vans v inner join trips t on t.van = v.id  where v.id != (select van from trips where id = {trip_id})''')
                         van2 = cur.fetchone()[0]
-                        create_trip(date=date, driver=driver2, van=van2, type=trip_type)
+                        create_trip(self, date=date, driver=driver2, van=van2, type=trip_type)
                     else:
                         for a in agents:
                             # query = f'''insert into trips_history(trip, agent) values {[f"({trip_id}, {agent})" for agent in agents]}'''.replace('[', '').replace(']', '').replace("'", "")
@@ -285,7 +285,9 @@ def create_trip(date, type, driver, van):
                             print(query)
                             cur.execute(query)
                             cnx.commit()
-                        Trip_View(role=0, id=(trip_id,)).show()
+                        Trip_View(role=0, id=trip_id).show()
+                        # self.close()
+
 
 
 
@@ -844,13 +846,14 @@ class Main(QtWidgets.QWidget):
 
 
     def trips_selectionChanged(self):
+
         self.trip_info.setHorizontalHeaderLabels(
             [i for i in "Matriculation.Full Name.Group.Address.Zone.Shift ".split('.')])
         print(self.tripsDetails)
         selectedRow = [self.trips_list.currentIndex().siblingAtColumn(i).data() for i in range(self.trips_list.columnCount())]
         tripID = selectedRow[0]
         print(f"selected id ==> {tripID}")
-        if not tripID:
+        if not tripID or not self.tripsDetails[int(tripID)]:
             self.noContentFrame.setFixedHeight(393)
             self.trip_info.setFixedHeight(0)
             self.view_btn.setEnabled(False)
@@ -954,6 +957,7 @@ class Trip_View(QtWidgets.QWidget):
             print('The Admin')
         # ##print(data)
         self.id_ = id
+        print(f'the given id ==> {id}')
         self.p = p
         cnx = con()
         cur = cnx.cursor()
@@ -1325,12 +1329,13 @@ class AddTrip(QtWidgets.QWidget):
             # # #print(id)
             # self.tripView = Trip_View(id=id, role=self.role)
             # self.tripView.show()
-            # self.back = False
+            self.back = False
             # self.close()
             #
             #
             # cnx.close()
-            create_trip(date=f'{dt}:00:00', van=self.van_.currentText(), type="IN" if self.IN.isChecked() else "OUT", driver=self.drivers_.currentText())
+            create_trip(self, date=f'{dt}:00:00', van=self.van_.currentText(), type="IN" if self.IN.isChecked() else "OUT", driver=self.drivers_.currentText())
+            self.close()
         else:
             notif(title="ERORR", msg=f"Can't create a trip with this date : {dt}")
 
