@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>350</width>
-    <height>428</height>
+    <height>449</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -724,6 +724,41 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
        </property>
        <property name="placeholderText">
         <string>Last Name</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="phone">
+       <property name="font">
+        <font>
+         <family>Segoe Print</family>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="inputMethodHints">
+        <set>Qt::ImhNone</set>
+       </property>
+       <property name="inputMask">
+        <string/>
+       </property>
+       <property name="maxLength">
+        <number>10</number>
+       </property>
+       <property name="cursorPosition">
+        <number>0</number>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+       <property name="placeholderText">
+        <string>Phone Number</string>
+       </property>
+       <property name="cursorMoveStyle">
+        <enum>Qt::LogicalMoveStyle</enum>
+       </property>
+       <property name="clearButtonEnabled">
+        <bool>false</bool>
        </property>
       </widget>
      </item>

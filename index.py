@@ -17,6 +17,8 @@ from firebase_admin import credentials
 from firebase_admin import db
 # import pyrebase
 from pyrebase import pyrebase
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
 
 radius = 40.0
 
@@ -714,6 +716,7 @@ class Main(QtWidgets.QWidget):
         self.trips_list.itemSelectionChanged.connect(self.trips_selectionChanged)
         self.trips_selectionChanged()
         self.view_btn.clicked.connect(self.trip_View)
+        self.emps.installEventFilter(self)
 
 
 
@@ -763,6 +766,40 @@ class Main(QtWidgets.QWidget):
 
             if s is self.about:
                 webbrowser.open("https://yassinebaghdadi.github.io/")
+        if e.type() == QtCore.QEvent.Enter:
+            st = '''
+                    background-color: #d85c00;
+                '''
+            if s is self.emps:
+                self.emps_icon.setStyleSheet(st)
+                self.label.setStyleSheet(st)
+            if s is self.vans:
+                self.vans_icon.setStyleSheet(st)
+                self.label_2.setStyleSheet(st)
+            if s is self.comps:
+                self.comps_icon.setStyleSheet(st)
+                self.label_3.setStyleSheet(st)
+            if s is self.planning:
+                self.plan_icon.setStyleSheet(st)
+                self.label_4.setStyleSheet(st)
+
+        if e.type() == QtCore.QEvent.Leave:
+            st = '''
+                    background-color: transparent;
+                '''
+            if s is self.emps:
+                self.emps_icon.setStyleSheet(st)
+                self.label.setStyleSheet(st)
+            if s is self.vans:
+                self.vans_icon.setStyleSheet(st)
+                self.label_2.setStyleSheet(st)
+            if s is self.comps:
+                self.comps_icon.setStyleSheet(st)
+                self.label_3.setStyleSheet(st)
+            if s is self.planning:
+                self.plan_icon.setStyleSheet(st)
+                self.label_4.setStyleSheet(st)
+
 
 
         # if e.type() == QtCore.QEvent.Enter:
@@ -1088,7 +1125,15 @@ class Trip_View(QtWidgets.QWidget):
                 self.openMap(self.stop_loc)
 
         if s is self.trck and e.type() == QtCore.QEvent.MouseButtonPress:
-                webbrowser.open(f"https://www.google.com/maps/dir{self.trajet}")
+                # webbrowser.open(f"https://www.google.com/maps/dir{self.trajet}")
+
+
+                browser = webdriver.Chrome(ChromeDriverManager().install())
+
+                browser.get(f"https://www.google.com/maps/dir{self.trajet}")
+                browser.maximize_window()
+                browser.fullscreen_window()
+                browser.find_element_by_xpath('//*[@id="pane"]/div/div[3]/button/img').click()
 
         return super(Trip_View, self).eventFilter(s, e)
 
