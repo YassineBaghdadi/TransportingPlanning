@@ -371,7 +371,7 @@ def syncFirebase():
 
 
     cur.execute(f'''select t.id, v.matr, d.username , t.datetime, (select count(id) from trips_history where trip = t.id) as Agent_numbers, t.ttype
-                        from trips t inner join vans v on t.van = v.id inner join drivers d on t.driver = d.id where date(t.datetime) >= "{today} 00:00:00" order by t.datetime;''')
+                        from trips t inner join vans v on t.van = v.id inner join drivers d on t.driver = d.id where date(t.datetime) >= "{today} 00:00:00" order by t.datetime;''') #todo
 
     # cur.execute(f'''select t.id, v.matr, d.username , t.datetime, (select count(id) from trips_history where trip = t.id) as Agent_numbers, t.ttype
     #                     from trips t inner join vans v on t.van = v.id inner join drivers d on t.driver = d.id order by t.datetime;''')
@@ -1600,23 +1600,23 @@ class Trips(QtWidgets.QWidget):
             dt = cur.fetchall()
 
             data = []
+            if data:
+                for r in dt:
+                    data.append([r[0], r[1], f'{r[2]} {r[3]}', r[4], r[5]])
+                head = ['Trip-ID ', 'van Matrecule', 'Driver Name', 'Time', 'Agents Numbers']
 
-            for r in dt:
-                data.append([r[0], r[1], f'{r[2]} {r[3]}', r[4], r[5]])
-            head = ['Trip-ID ', 'van Matrecule', 'Driver Name', 'Time', 'Agents Numbers']
+                #print(data)
+                self.tableWidget.setColumnCount(len(data[0]))
+                self.tableWidget.setRowCount(len(data))
+                # self.tableWidget.horizontalHeader().setSectionResizeMode(head.index(head[-1]), QHeaderView.Stretch)
+                # self.tableWidget.resizeColumnsToContents()
+                for i in range(self.tableWidget.columnCount()):
+                    self.tableWidget.horizontalHeader().setSectionResizeMode(i, QHeaderView.Stretch)
 
-            #print(data)
-            self.tableWidget.setColumnCount(len(data[0]))
-            self.tableWidget.setRowCount(len(data))
-            # self.tableWidget.horizontalHeader().setSectionResizeMode(head.index(head[-1]), QHeaderView.Stretch)
-            # self.tableWidget.resizeColumnsToContents()
-            for i in range(self.tableWidget.columnCount()):
-                self.tableWidget.horizontalHeader().setSectionResizeMode(i, QHeaderView.Stretch)
-
-            self.tableWidget.setHorizontalHeaderLabels(head)
-            for r in range(len(data)):
-                for c in range(len(data[0])):
-                    self.tableWidget.setItem(r, c, QtWidgets.QTableWidgetItem(str(data[r][c])))
+                self.tableWidget.setHorizontalHeaderLabels(head)
+                for r in range(len(data)):
+                    for c in range(len(data[0])):
+                        self.tableWidget.setItem(r, c, QtWidgets.QTableWidgetItem(str(data[r][c])))
 
             cnx.close()
 

@@ -76,9 +76,13 @@ public class dialog_trips {
         String datetime = formatter.format(date);
 
 
-        Toast.makeText(activity, TheTrip.split(":")[0] + " And "+datetime.split(":")[0], Toast.LENGTH_SHORT).show();
+//        Toast.makeText(activity, TheTrip.split(":")[0] + " And "+datetime.split(":")[0], Toast.LENGTH_SHORT).show();
         //TODO : stoped here
-        if (TheTrip.split(":")[0].equals(datetime.split(":")[0].toString()) ){
+        String TheDate = datetime.split(" ")[0];
+        String TheHour = datetime.split(" ")[1].split(":")[0];
+        String tripHour = TheTrip.split(" ")[1].split(":")[0];
+
+        if ((TheTrip.split(" ")[0].equals(TheDate)) && (tripHour.equals(TheHour) || Integer.parseInt(tripHour) - 1 == Integer.parseInt(TheHour))){
 
 
             db = fDb.getReference("drivers").child(sharedPreferences.getString("user", null)).child("trips").child(sharedPreferences.getString("trip", null));
