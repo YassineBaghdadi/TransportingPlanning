@@ -54,6 +54,7 @@ public class dialog_trips {
     Handler handler = new Handler();
     Runnable runnable;
     int delay = 1000;
+    String TheTrip;
 
     public void showdialog(Context activity) {
 //        final Dialog dialog = new Dialog(activity, R.style.DialogAnimation);
@@ -69,42 +70,60 @@ public class dialog_trips {
         active_trip = "0";
         TextView viewbtn = (TextView) dialog.findViewById(R.id.view);
         fDb = FirebaseDatabase.getInstance();
-        db = fDb.getReference("drivers").child(sharedPreferences.getString("user", null)).child("trips").child(sharedPreferences.getString("trip", null));
-        db.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+        TheTrip = sharedPreferences.getString("trip", null);
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = new Date();
+        String datetime = formatter.format(date);
 
-                if (snapshot.hasChild("startcounter") && snapshot.hasChild("stopcounter")) {
-                    action.setText("DONE");
-                    action.setBackgroundResource(R.drawable.rouded_corner_gray);
-                    started = true;
-                    finiched = true;
-                    action.setEnabled(false);
-                    counter.setEnabled(false);
+
+        Toast.makeText(activity, TheTrip.split(":")[0] + " And "+datetime.split(":")[0], Toast.LENGTH_SHORT).show();
+        //TODO : stoped here
+        if (TheTrip.split(":")[0].equals(datetime.split(":")[0].toString()) ){
+
+
+            db = fDb.getReference("drivers").child(sharedPreferences.getString("user", null)).child("trips").child(sharedPreferences.getString("trip", null));
+            db.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                    if (snapshot.hasChild("startcounter") && snapshot.hasChild("stopcounter")) {
+                        action.setText("DONE");
+                        action.setBackgroundResource(R.drawable.rouded_corner_gray);
+                        started = true;
+                        finiched = true;
+                        action.setEnabled(false);
+                        counter.setEnabled(false);
 //                    viewbtn.setEnabled(false);
+                    }
+
+                    if (!snapshot.hasChild("stopcounter") && !snapshot.hasChild("startcounter")) {
+                        action.setText("START");
+                        action.setBackgroundResource(R.drawable.rouded_corner_green);
+                        started = false;
+                        finiched = false;
+                    }
+                    if (snapshot.hasChild("startcounter") && !snapshot.hasChild("stopcounter")) {
+                        startedCounterKM = Integer.parseInt(snapshot.child("startcounter").getValue().toString());
+                        action.setText("STOP");
+                        action.setBackgroundResource(R.drawable.rouded_corner_red);
+                        started = true;
+                        finiched = false;
+
+                    }
                 }
 
-                if (!snapshot.hasChild("stopcounter") && !snapshot.hasChild("startcounter")) {
-                    action.setText("START");
-                    action.setBackgroundResource(R.drawable.rouded_corner_green);
-                    started = false;
-                    finiched = false;
-                }
-                if (snapshot.hasChild("startcounter") && !snapshot.hasChild("stopcounter")) {
-                    startedCounterKM = Integer.parseInt(snapshot.child("startcounter").getValue().toString());
-                    action.setText("STOP");
-                    action.setBackgroundResource(R.drawable.rouded_corner_red);
-                    started = true;
-                    finiched = false;
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
                 }
-            }
+            });
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+        }
+        else {
+            action.setText("ERR");
+            action.setBackgroundResource(R.drawable.rouded_corner_gray);
+            action.setEnabled(false);
+        }
 
 
 

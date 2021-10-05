@@ -22,6 +22,13 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 radius = 40.0
 
+server = json.load(open(os.path.join(os.getcwd(), "server.json")))
+host = server["host"]
+user = server["user"]
+database = server["db"]
+psswrd = server["password"]
+port = server["port"]
+
 
 today = datetime.datetime.today().strftime('%Y-%m-%d')
 
@@ -39,7 +46,7 @@ def notif(self = None, title = '', msg = ''):
 
 
 def con():
-    return pymysql.connect(host='10.73.100.101', user='VP', database='vansplanning', password='1234@@it.', port=3306)
+    return pymysql.connect(host=host, user=user, database=database, password=psswrd, port=port)
 
 
 def preparingDB():
@@ -429,7 +436,11 @@ def syncFirebase():
                                     ''')
                     cnx.commit()
                     print(tr.child("agents").get())
-                    old_agents = list(tr.child("agents").get())
+                    old_agents = []
+                    try:
+                        old_agents = list(tr.child("agents").get())
+                    except Exception as e:
+                        print(e)
                     if old_agents:
                         for ag in old_agents:
                             try:
