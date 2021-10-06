@@ -860,6 +860,15 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
          <bold>true</bold>
         </font>
        </property>
+       <property name="frameShape">
+        <enum>QFrame::Box</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Sunken</enum>
+       </property>
+       <property name="lineWidth">
+        <number>1</number>
+       </property>
        <property name="editTriggers">
         <set>QAbstractItemView::NoEditTriggers</set>
        </property>
@@ -874,6 +883,9 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
        </property>
        <property name="selectionBehavior">
         <enum>QAbstractItemView::SelectRows</enum>
+       </property>
+       <property name="gridStyle">
+        <enum>Qt::DashDotLine</enum>
        </property>
        <attribute name="horizontalHeaderVisible">
         <bool>false</bool>
@@ -1013,6 +1025,13 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
       </layout>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="Line" name="line_2">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_7">

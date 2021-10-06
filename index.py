@@ -69,6 +69,16 @@ def preparingDB():
     cur.execute("CREATE TABLE if not exists logsfile (id INT AUTO_INCREMENT,user VARCHAR(45) ,query VARCHAR(500) ,status VARCHAR(50), descr VARCHAR(500) ,PRIMARY KEY (id))")
     cnx.commit()
     # cur.execute()
+    cur.execute("select id from trips")
+    for i in cur.fetchall():
+        cur.execute(f"""select count(id) from trips_history where trip = {i[0]}""")
+
+        if int(cur.fetchone()[0]) == 0:
+            cur.execute(f"delete from trips where id = {i[0]}")
+            cnx.commit()
+
+
+
     cnx.close()
     #print('tables created ')
 
@@ -371,7 +381,7 @@ def syncFirebase():
 
 
     cur.execute(f'''select t.id, v.matr, d.username , t.datetime, (select count(id) from trips_history where trip = t.id) as Agent_numbers, t.ttype
-                        from trips t inner join vans v on t.van = v.id inner join drivers d on t.driver = d.id where date(t.datetime) >= "{today} 00:00:00" order by t.datetime;''') #todo
+                        from trips t inner join vans v on t.van = v.id inner join drivers d on t.driver = d.id where date(t.datetime) >= "{datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S')}" order by t.datetime;''') #todo
 
     # cur.execute(f'''select t.id, v.matr, d.username , t.datetime, (select count(id) from trips_history where trip = t.id) as Agent_numbers, t.ttype
     #                     from trips t inner join vans v on t.van = v.id inner join drivers d on t.driver = d.id order by t.datetime;''')
@@ -1599,8 +1609,8 @@ class Trips(QtWidgets.QWidget):
                     from trips t inner join vans v on t.van = v.id inner join drivers d on t.driver = d.id order by t.datetime desc;''')
             dt = cur.fetchall()
 
-            data = []
-            if data:
+            if dt:
+                data = []
                 for r in dt:
                     data.append([r[0], r[1], f'{r[2]} {r[3]}', r[4], r[5]])
                 head = ['Trip-ID ', 'van Matrecule', 'Driver Name', 'Time', 'Agents Numbers']
