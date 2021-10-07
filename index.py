@@ -33,6 +33,9 @@ port = server["port"]
 today = datetime.datetime.today().strftime('%Y-%m-%d')
 
 
+
+
+
 def notif(self = None, title = '', msg = ''):
     try:
         notification.notify(
@@ -215,7 +218,7 @@ def create_trip(self, date, type, driver, van):
     driver = int(cur.fetchone()[0])
 
     tday, trips_time, trip_type = date.split(' ')[0], int(date.split(' ')[1].split(':')[0]), type
-    cur.execute(f'''select count(id) from trips where datetime like "{date}";''')
+    cur.execute(f'''select count(id) from trips where datetime like "{date}" and ;''')
     if not cur.fetchone()[0]:
         cur.execute(f'''select max_places from vans where id = {van}''')
         max_places = int(cur.fetchone()[0])
@@ -346,6 +349,7 @@ firebase_admin.initialize_app(cred, {
         'databaseURL': 'https://saccomxd-stm-yassine-baghdadi-default-rtdb.firebaseio.com/',
 
     })
+
 def syncFirebase():
     print('synchronizing with Firebase ...')
     # Fetch the service account key JSON file contents

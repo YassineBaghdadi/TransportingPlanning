@@ -19,8 +19,8 @@ port = server["port"]
 def con():
     return pymysql.connect(host=host, user=user, database=database, password=psswrd, port=port)
 
-
-os.popen(f"mysqldump -h 10.73.100.101 -P 3306 -u VP -p1234@@it. vansplanning > STM_backUp_{time.strftime('%Y-%m-%d %H:%M:%S')}.sql" )
+filename = f"STM_backUp_{time.strftime('%Y%m%d%H%M%S')}.sql"
+os.popen(f"mysqldump -h {host} -P {port} -u VP -p{psswrd} {database} > {filename}" )
 
 
 gauth = GoogleAuth()
@@ -29,10 +29,10 @@ gauth = GoogleAuth()
 gauth.LocalWebserverAuth()
 drive = GoogleDrive(gauth)
 
-
-
-
-
-f = drive.CreateFile({'title': "test"})
-f.SetContentFile(os.path.join(os.getcwd(), "saccomxd.png"))
+f = drive.CreateFile({'title': filename})
+f.SetContentFile(os.path.join(os.getcwd(), filename))
 f.Upload()
+time.sleep(2)
+os.remove(filename)
+# os.replace(filename, f"/home/yassinebaghdadi/Desktop/STM_backup/{filename}")
+
