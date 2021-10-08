@@ -15,8 +15,10 @@ file = pd.read_excel(sys.argv[1])
 cols = [i for i in file.columns[:6]]
 print(cols)
 agents = []
+
 for index, row in file.iterrows():
     agents.append([row['Matriculation'], row['Nom'], row['Prenom'], row['CIN'], row['Adress'], row['Group']])
+
 
 print(agents)
 for ag in agents:

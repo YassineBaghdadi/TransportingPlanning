@@ -4,6 +4,7 @@
 # now = datetime.now()
 # apikey = "AIzaSyDYpKJYTlRuA2aRAsfILNjxYJclDiTw9p4"
 # start, end = (34.6846361,-1.9424976),(34.6846361,-1.9424976)
+import json
 import webbrowser
 
 import firebase_admin
@@ -52,24 +53,42 @@ maps = [[34.7696791,-1.9393712], [34.6900348,-1.9197214], [34.6577664,-1.9171417
 # 
 # openTrajet(maps)
 
+#
+# import folium
+#
+# # Define the center of our map.
+# lat, lon = 34.6798096,-1.9062235
+#
+# oujda = folium.Map(location=[lat, lon], zoom_start=13.5)
+#
+# for i in maps:
+#     folium.Marker(
+#         i, popup="<i>Mt. Hood Meadows</i>", tooltip="yassine"
+#     ).add_to(oujda)
+#
+#
+# folium.PolyLine(maps,
+#                 color='red',
+#                 weight=2,
+#                 opacity=0.8).add_to(oujda)
+#
+#
+# oujda.save("mappppppp.html")
 
-import folium
+#
+# import requests
+# import urllib.parse
+#
+# address = 'route sidi yahya oujda'
+# url = 'https://nominatim.openstreetmap.org/search/' + urllib.parse.quote(address) +'?format=json'
+#
+# response = requests.get(url).json()
+# print(response)
+# print(f'{response[0]["lat"]},{response[0]["lon"]}')
 
-# Define the center of our map.
-lat, lon = 34.6798096,-1.9062235
+from ipregistry import IpregistryClient
 
-oujda = folium.Map(location=[lat, lon], zoom_start=13.5)
+client = IpregistryClient("tryout")
+ipInfo = json.loads(str(client.lookup()))['location']
 
-for i in maps:
-    folium.Marker(
-        i, popup="<i>Mt. Hood Meadows</i>", tooltip="yassine"
-    ).add_to(oujda)
-
-
-folium.PolyLine(maps,
-                color='red',
-                weight=2,
-                opacity=0.8).add_to(oujda)
-
-
-oujda.save("mappppppp.html")
+print(f"{ipInfo['latitude']},{ipInfo['longitude']}")

@@ -218,7 +218,7 @@ def create_trip(self, date, type, driver, van):
     driver = int(cur.fetchone()[0])
 
     tday, trips_time, trip_type = date.split(' ')[0], int(date.split(' ')[1].split(':')[0]), type
-    cur.execute(f'''select count(id) from trips where datetime like "{date}" and ;''')
+    cur.execute(f'''select count(id) from trips where datetime like "{date}" and driver = {driver};''')
     if not cur.fetchone()[0]:
         cur.execute(f'''select max_places from vans where id = {van}''')
         max_places = int(cur.fetchone()[0])

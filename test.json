@@ -1,0 +1,133 @@
+{
+    "ip": "102.53.12.205",
+    "type": "IPv4",
+    "hostname": null,
+    "carrier": {
+        "name": "IAM",
+        "mcc": "604",
+        "mnc": "1"
+    },
+    "connection": {
+        "asn": 6713,
+        "domain": "iam.ma",
+        "organization": "Maroc Telecom",
+        "route": "102.48.0.0/13",
+        "type": "isp"
+    },
+    "currency": {
+        "code": "MAD",
+        "name": "Moroccan Dirham",
+        "name_native": "\u062f\u0631\u0647\u0645 \u0645\u063a\u0631\u0628\u064a",
+        "plural": "Moroccan dirhams",
+        "plural_native": "\u062f\u0631\u0647\u0645 \u0645\u063a\u0631\u0628\u064a",
+        "symbol": "MAD",
+        "symbol_native": "\u062f.\u0645.\u200f",
+        "format": {
+            "negative": {
+                "prefix": "\u200e-\u062f.\u0645.\u200f\u00a0",
+                "suffix": ""
+            },
+            "positive": {
+                "prefix": "\u062f.\u0645.\u200f\u00a0",
+                "suffix": ""
+            }
+        }
+    },
+    "location": {
+        "continent": {
+            "code": "AF",
+            "name": "Africa"
+        },
+        "country": {
+            "area": 446550,
+            "borders": [
+                "DZ",
+                "EH",
+                "ES"
+            ],
+            "calling_code": "212",
+            "capital": "Rabat",
+            "code": "MA",
+            "name": "Morocco",
+            "population": 36910558,
+            "population_density": 82.66,
+            "flag": {
+                "emoji": "\ud83c\uddf2\ud83c\udde6",
+                "emoji_unicode": "U+1F1F2 U+1F1E6",
+                "emojitwo": "https://cdn.ipregistry.co/flags/emojitwo/ma.svg",
+                "noto": "https://cdn.ipregistry.co/flags/noto/ma.png",
+                "twemoji": "https://cdn.ipregistry.co/flags/twemoji/ma.svg",
+                "wikimedia": "https://cdn.ipregistry.co/flags/wikimedia/ma.svg"
+            },
+            "languages": [
+                {
+                    "code": "ar",
+                    "name": "Arabic",
+                    "native": "\u0627\u0644\u0639\u0631\u0628\u064a\u0629"
+                },
+                {
+                    "code": "fr",
+                    "name": "French",
+                    "native": "fran\u00e7ais"
+                }
+            ],
+            "tld": ".ma"
+        },
+        "region": {
+            "code": "MA-06",
+            "name": "Casablanca-Settat"
+        },
+        "city": "Casablanca",
+        "postal": null,
+        "latitude": 33.59223,
+        "longitude": -7.61839,
+        "language": {
+            "code": "ar",
+            "name": "Arabic",
+            "native": "\u0627\u0644\u0639\u0631\u0628\u064a\u0629"
+        },
+        "in_eu": false
+    },
+    "security": {
+        "is_bogon": false,
+        "is_cloud_provider": false,
+        "is_tor": false,
+        "is_tor_exit": false,
+        "is_proxy": false,
+        "is_anonymous": false,
+        "is_abuser": false,
+        "is_attacker": false,
+        "is_threat": false
+    },
+    "time_zone": {
+        "id": "Africa/Casablanca",
+        "abbreviation": "WET",
+        "current_time": "2021-10-08T19:17:03+01:00",
+        "name": "Western European Time",
+        "offset": 3600,
+        "in_daylight_saving": true
+    },
+    "user_agent": {
+        "header": "Ipregistry/Python3/3.0.0",
+        "name": "Ipregistry",
+        "type": "special",
+        "version": "Python3",
+        "version_major": "Python3",
+        "device": {
+            "brand": null,
+            "name": null,
+            "type": null
+        },
+        "engine": {
+            "name": null,
+            "type": null,
+            "version": null,
+            "version_major": null
+        },
+        "os": {
+            "name": null,
+            "type": null,
+            "version": null
+        }
+    }
+}
