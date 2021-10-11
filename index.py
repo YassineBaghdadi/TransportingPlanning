@@ -1,5 +1,8 @@
+import ctypes
 import json
 import ntpath
+import platform
+import time
 import webbrowser
 from time import gmtime, strftime
 
@@ -16,9 +19,12 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
 # import pyrebase
+from pydrive.auth import GoogleAuth
+from pydrive.drive import GoogleDrive
 from pyrebase import pyrebase
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
+import win32com.shell.shell as shell
 
 radius = 40.0
 
@@ -32,9 +38,14 @@ port = server["port"]
 
 today = datetime.datetime.today().strftime('%Y-%m-%d')
 
+DESKTOP = os.path.join(os.path.join(os.environ['USERPROFILE']),'Desktop') if platform.system() == 'Windows' else os.path.join(os.path.join(os.path.expanduser('~')), 'Desktop')
 
 
-
+def is_admin():
+    try:
+        return ctypes.windll.shell32.IsUserAnAdmin()
+    except:
+        return False
 
 def notif(self = None, title = '', msg = ''):
     try:
@@ -698,6 +709,10 @@ class Main(QtWidgets.QWidget):
 
         self.about.installEventFilter(self)
         self.about.setPixmap(QtGui.QPixmap('src/img/about.png'))
+
+        self.backup_btn.installEventFilter(self)
+        self.backup_btn.setPixmap(QtGui.QPixmap('src/img/bckup.png'))
+        self.backup_btn.setScaledContents(True)
         # tip = '''STM 0.1 SACCOM TRANSPORT MANAGEMENT\nCreated by Yassine Baghdadi\nwith help from Anass Kada\nbig thanks to Saccom IT team'''
         # self.about.setToolTip(tip)
         self.about.setScaledContents(True)
@@ -746,6 +761,49 @@ class Main(QtWidgets.QWidget):
 
 
 
+
+    def backup(self):
+
+
+
+        deleteAfterSave = True
+        def upload(file):
+            gauth = GoogleAuth()
+
+            gauth.LocalWebserverAuth()
+            drive = GoogleDrive(gauth)
+
+            f = drive.CreateFile({'title': file})
+            f.SetContentFile(file)
+            f.Upload()
+
+
+        name = f"STM_backUp_{time.strftime('%Y%m%d%H%M%S')}.sql"
+        # fileName, _ = QtWidgets.QFileDialog.getSaveFileName(self, "Save Back up file ...",
+        #                                                     name,
+        #                                                     "SQL Files (*.sql)")
+        # if not fileName:
+        #
+        #     deleteAfterSave = True
+        #     command = f'mysqldump -h {host} -P {port} -u VP -p{psswrd} {database} > {name}'
+        #
+        # else:
+        #     command = f'cd {str(os.path.split(os.path.abspath(fileName))[0])} &&  mysqldump -h {host} -P {port} -u VP -p{psswrd} {database} > {os.path.split(os.path.abspath(fileName))[1]}'
+        path = os.path.join(os.getcwd(), name)
+        command = f'mysqldump -h {host} -P {port} -u VP -p{psswrd} {database} > {name}'
+        print(f"command : ==> {command} ")
+
+        os.popen(command)
+        # shell.ShellExecuteEx(lpVerb='runas', lpFile='cmd.exe', lpParameters=command)
+
+        # time.sleep(1)
+
+        upload(name)
+
+        if deleteAfterSave:
+            os.remove(name)
+
+
     def paintEvent(self, event):
         # get current window size
         opt = QtWidgets.QStyleOption()
@@ -791,6 +849,11 @@ class Main(QtWidgets.QWidget):
 
             if s is self.about:
                 webbrowser.open("https://yassinebaghdadi.github.io/")
+
+            if s is self.backup_btn:
+                self.backup()
+
+
         if e.type() == QtCore.QEvent.Enter:
             st = '''
                     background-color: #d85c00;
