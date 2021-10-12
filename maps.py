@@ -10,7 +10,7 @@ import webbrowser
 import firebase_admin
 from firebase_admin import credentials, db
 
-maps = [[34.7696791,-1.9393712], [34.6900348,-1.9197214], [34.6577664,-1.9171417]]
+maps = [[34.7696791,-1.9393712], [34.6900348,-1.9197214], [34.6577664,-1.9171417], [34.725058, -1.987886], [34.688932, -1.830644], [34.632510, -1.867125]]
 #
 # gmap = gmplot.GoogleMapPlotter(35, -102, 5)
 # gmap.apikey = apikey
@@ -29,26 +29,26 @@ maps = [[34.7696791,-1.9393712], [34.6900348,-1.9197214], [34.6577664,-1.9171417
 # 
 # 
 # def openTrajet(data : list):
-#     drvs = db.reference('drivers')
-# 
-#     trip = drvs.child("said").child("trips").child("2022-09-15 17:00:00").child("tracking")
-#     print(list(dict(trip.get()).values()))
-#     # [print(v) for i, v in dict(trip.get()).items()]
-#     # tripID = trip.child("id").get()
-#     # trck = trip.child("tracking").get()
-#     # done = []
-#     # result = {}
-#     # if trck:
-#     #     for key, value in trck.items():
-#     #         if value not in result.values() and value != '0':
-#     #             result[key] = value
-#     #
-#     #     print(f"{result}")
-#     # url = "https://www.google.com/maps/dir"
-#     # for i in data:
-#     #     url += f"/{i[0]},{i[1]}"
-#     #
-#     # webbrowser.open(url)
+    # drvs = db.reference('drivers')
+    #
+    # trip = drvs.child("said").child("trips").child("2022-09-15 17:00:00").child("tracking")
+    # print(list(dict(trip.get()).values()))
+    # [print(v) for i, v in dict(trip.get()).items()]
+    # tripID = trip.child("id").get()
+    # trck = trip.child("tracking").get()
+    # done = []
+    # result = {}
+    # if trck:
+    #     for key, value in trck.items():
+    #         if value not in result.values() and value != '0':
+    #             result[key] = value
+    #
+    #     print(f"{result}")
+    # url = "https://www.google.com/maps/dir"
+    # for i in data:
+    #     url += f"/{i[0]},{i[1]}"
+    #
+    # webbrowser.open(url)
 # 
 # 
 # openTrajet(maps)
@@ -85,10 +85,22 @@ maps = [[34.7696791,-1.9393712], [34.6900348,-1.9197214], [34.6577664,-1.9171417
 # response = requests.get(url).json()
 # print(response)
 # print(f'{response[0]["lat"]},{response[0]["lon"]}')
+#
+# from ipregistry import IpregistryClient
+#
+# client = IpregistryClient("tryout")
+# ipInfo = json.loads(str(client.lookup()))['location']
+#
+# print(f"{ipInfo['latitude']},{ipInfo['longitude']}")
 
-from ipregistry import IpregistryClient
+url1 = "https://www.google.com/maps/dir"
+for i in sorted(maps):
+    url1 += f"/{i[0]},{i[1]}"
 
-client = IpregistryClient("tryout")
-ipInfo = json.loads(str(client.lookup()))['location']
 
-print(f"{ipInfo['latitude']},{ipInfo['longitude']}")
+url2 = "https://www.google.com/maps/dir"
+for i in maps:
+    url2 += f"/{i[0]},{i[1]}"
+
+
+print(f'URL 1 ==> {url1}\nURL 2 ==> {url2}')

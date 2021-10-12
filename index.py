@@ -69,7 +69,7 @@ def preparingDB():
     cur.execute('''Create table if not exists users (id  INT AUTO_INCREMENT, firstName Varchar(50), LastName Varchar(50), username Varchar(50), pass Varchar(50), role INT , PRIMARY KEY (id));''')
     cur.execute('''create table if not exists grps (id  INT AUTO_INCREMENT, name Varchar(50), shift Varchar(20) , PRIMARY KEY (id));''')
     cnx.commit()
-    cur.execute('''create table if not exists agents (id  INT AUTO_INCREMENT, matrr varchar(50) not null, firstName Varchar(50), LastName Varchar(50), CIN varchar(50), address Varchar(100), grp int, zone Varchar(45), street  Varchar(45), pic text, PRIMARY KEY (id), foreign key(grp) references grps(id));''')
+    cur.execute('''create table if not exists agents (id  INT AUTO_INCREMENT, matrr varchar(50) not null, firstName Varchar(50), LastName Varchar(50), CIN varchar(50), address Varchar(100), grp int, zone Varchar(45), rpr  Varchar(45), pic text, PRIMARY KEY (id), foreign key(grp) references grps(id));''')
     cur.execute('''create table if not exists vans (id  INT AUTO_INCREMENT, matr Varchar(50), driver varchar(50), max_places int , PRIMARY KEY (id))''')
     cur.execute('''create table if not exists vans(id  INT AUTO_INCREMENT, matricule varchar(50), max_places int , PRIMARY KEY (id))''')
     cur.execute('''create table if not exists drivers(id  INT AUTO_INCREMENT, firstName Varchar(50), LastName varchar(50), username Varchar(45), pass Varchar(45), PRIMARY KEY (id))''')
@@ -228,98 +228,14 @@ def create_trip(self, date, type, driver, van):
     cur.execute(f'''select id from drivers where firstName like "{driver.split(" ")[0]}" and LastName like "{driver.split(" ")[1]}"''')
     driver = int(cur.fetchone()[0])
 
-    tday, trips_time, trip_type = date.split(' ')[0], int(date.split(' ')[1].split(':')[0]), type
-    cur.execute(f'''select count(id) from trips where datetime like "{date}" and driver = {driver};''')
-    if not cur.fetchone()[0]:
-        cur.execute(f'''select max_places from vans where id = {van}''')
-        max_places = int(cur.fetchone()[0])
-        beforHour = trips_time - 1
-        afterHour = trips_time + 1
-        cur.execute(f'''select count(id) from trips 
-        where (datetime like "{tday} {beforHour if beforHour > 9 else f"0{beforHour}"}:00:00" 
-        OR datetime like "{tday} {afterHour if afterHour > 9 else f"0{afterHour}"}:00:00") 
-        and driver = {driver} and van = {van};''')
-        if not cur.fetchone()[0]:
+    tday, trips_hour, trip_type = date.split(' ')[0], int(date.split(' ')[1].split(':')[0]), type
 
-            if 6 > trips_time > 20:
-                cur.execute('''select zone from agents''')
-                zones = set(i[0] for i in cur.fetchall())
-                zone1 = []
-                zone2 = []
-                for z in zones:
-                    if z in ['Sidi Yahya', 'Sidi Ziane']:
-                        zone1.append(z)
-                    else:
-                        zone2.append(z)
+    cur.execute(f'''select a.id, a.rpr from agents a inner join grps g on a.grp = g.id 
+        where g.shift like "{f'{int(trips_hour) if int(trips_hour) > 9 else f"0{trips_hour}"}:%' if trip_type.lower() == "in" else f'%:{int(trips_hour) if int(trips_hour) > 9 else f"0{trips_hour}"}'}"''')
 
-                cur.execute(
-                    f'''select id from agents where zone in ({[i for i in zone1]})'''.replace('[', '').replace(']', ''))
-
-                agentZone1 = [i[0] for i in cur.fetchall()]
-
-                cur.execute(
-                    f'''select id from agents where zone in ({[i for i in zone2]})'''.replace('[', '').replace(']', ''))
-
-                agentZone2 = [i[0] for i in cur.fetchall()]
-
-                for i in range(1, 3):
-                    cur.execute(
-                        f'''insert into trips (van, driver, datetime, ttype)values ({i}, {i}, "{tday} {trips_time if trips_time > 9 else f"0{trips_time}"}:00:00", "{trip_type}")''')
-                    cnx.commit()
-                    cur.execute(f'''select id from trips where datetime like "{date}" and van = {i} and diver = {i}''')
-                    trip_id = cur.fetchone()[0]
-                    if i == 1:
-                        cur.execute(
-                            f'''insert into trips_histoy(trip, agent) values {[f"({trip_id}, {agent})" for agent in agentZone1]}'''.replace(
-                                '[', '').replace(']', '').replace("'", ""))
-
-                    if i == 2:
-                        cur.execute(
-                            f'''insert into trips_histoy(trip, agent) values {[f"({trip_id}, {agent})" for agent in agentZone2]}'''.replace(
-                                '[', '').replace(']', '').replace("'", ""))
-
-
-                    cnx.commit()
-                    Trip_View(role=0, id=(trip_id,))
-
-            else:
-                cur.execute(
-                    f'''insert into trips (van, driver, datetime, ttype)values ({van}, {driver}, "{tday} {trips_time if trips_time > 9 else f"0{trips_time}"}:00:00", "{trip_type}")''')
-                cnx.commit()
-                cur.execute(f'''select id from trips where datetime like "{date}"''')
-                trip_id = cur.fetchone()[0]
-                cur.execute(f'''select a.id from agents a inner join grps g on a.grp = g.id inner join trips_history th on th.agent = a.id inner join trips t on th.trip = t.id
-                where g.shift like "{f"{trips_time if trips_time > 9 else f'0{trips_time}'}-%" if trip_type == 'IN' else f"%-{trips_time if trips_time > 9 else f'0{trips_time}'}"}" 
-                and t.datetime != "{date}" order by a.zone''')
-                agents = [i[0] for i in set(cur.fetchall())]
-                print(agents)
-                if agents:
-                    if len(agents) > max_places:
-
-                        grp1 = [i for i in agents[:len(agents) // 2]]
-                        for a in grp1:
-                            # query = f'''insert into trips_history(trip, agent) values {[f"({trip_id}, {agent})" for agent in grp1]}'''.replace('[', '').replace(']', '').replace("'", "")
-                            query = f'''insert into trips_history(trip, agent) values({trip_id}, {a}) ;'''
-                            print(query)
-                            cur.execute(query)
-                            cnx.commit()
-                        Trip_View(role=0, id=(trip_id,)).show()
-                        cur.execute(
-                            f'''select d.id from drivers d inner join trips t on t.driver = d.id  where d.id != (select driver from trips where id = {trip_id})''')
-                        driver2 = cur.fetchone()[0]
-                        cur.execute(
-                            f'''select v.id from vans v inner join trips t on t.van = v.id  where v.id != (select van from trips where id = {trip_id})''')
-                        van2 = cur.fetchone()[0]
-                        create_trip(self, date=date, driver=driver2, van=van2, type=trip_type)
-                    else:
-                        for a in agents:
-                            # query = f'''insert into trips_history(trip, agent) values {[f"({trip_id}, {agent})" for agent in agents]}'''.replace('[', '').replace(']', '').replace("'", "")
-                            query = f'''insert into trips_history(trip, agent) values({trip_id}, {a}) ;'''
-                            print(query)
-                            cur.execute(query)
-                            cnx.commit()
-                        Trip_View(role=0, id=trip_id).show()
-                        # self.close()
+    trip_agents = [[i[0], i[1]] for i in cur.fetchall()].sort(key= lambda x: x[1])
+    print(trip_agents)
+    for i in [x[0] for x in trip_agents]:
 
 
 
@@ -327,11 +243,6 @@ def create_trip(self, date, type, driver, van):
 
 
 
-        else:
-            print('cant create this trip right now')
-
-    else:
-        print('the trip already exists ...')
 
     cnx.close()
 
