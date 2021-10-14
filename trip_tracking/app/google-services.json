@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "817733299864",
+    "firebase_url": "https://saccomxd-stm-yassine-baghdadi-default-rtdb.firebaseio.com",
+    "project_id": "saccomxd-stm-yassine-baghdadi",
+    "storage_bucket": "saccomxd-stm-yassine-baghdadi.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:817733299864:android:b144c2d65b57cb5f62aaed",
+        "android_client_info": {
+          "package_name": "com.saccomxd.baghdadi.trip_tracking"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "817733299864-f554ej57qgi7h2ra6rbc4qurq7ksmkua.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnY8VSJL_760Dq4fx6oCD_uWf3MTshFGI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "817733299864-f554ej57qgi7h2ra6rbc4qurq7ksmkua.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:817733299864:android:3a831ba62376ec3c62aaed",
+        "android_client_info": {
+          "package_name": "com.saccomxd.baghdadi.yassine"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "817733299864-f554ej57qgi7h2ra6rbc4qurq7ksmkua.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnY8VSJL_760Dq4fx6oCD_uWf3MTshFGI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "817733299864-f554ej57qgi7h2ra6rbc4qurq7ksmkua.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

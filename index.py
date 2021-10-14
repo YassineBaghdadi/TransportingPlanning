@@ -66,10 +66,11 @@ def con():
 def preparingDB():
     cnx = con()
     cur = cnx.cursor()
+    cur.execute(f'create database if not exists {database};')
     cur.execute('''Create table if not exists users (id  INT AUTO_INCREMENT, firstName Varchar(50), LastName Varchar(50), username Varchar(50), pass Varchar(50), role INT , PRIMARY KEY (id));''')
     cur.execute('''create table if not exists grps (id  INT AUTO_INCREMENT, name Varchar(50), shift Varchar(20) , PRIMARY KEY (id));''')
     cnx.commit()
-    cur.execute('''create table if not exists agents (id  INT AUTO_INCREMENT, matrr varchar(50) not null, firstName Varchar(50), LastName Varchar(50), CIN varchar(50), address Varchar(100), grp int, zone Varchar(45), rpr  Varchar(45), pic text, PRIMARY KEY (id), foreign key(grp) references grps(id));''')
+    cur.execute('''create table if not exists agents (id  INT AUTO_INCREMENT, matrr varchar(50) not null, firstName Varchar(50), LastName Varchar(50), CIN varchar(50), address Varchar(100), grp int, zone Varchar(45), rpr  Varchar(100), rpr_map varchar(100), pic text, PRIMARY KEY (id), foreign key(grp) references grps(id));''')
     cur.execute('''create table if not exists vans (id  INT AUTO_INCREMENT, matr Varchar(50), driver varchar(50), max_places int , PRIMARY KEY (id))''')
     cur.execute('''create table if not exists vans(id  INT AUTO_INCREMENT, matricule varchar(50), max_places int , PRIMARY KEY (id))''')
     cur.execute('''create table if not exists drivers(id  INT AUTO_INCREMENT, firstName Varchar(50), LastName varchar(50), username Varchar(45), pass Varchar(45), PRIMARY KEY (id))''')
@@ -223,22 +224,20 @@ print('test')
 def create_trip(self, date, type, driver, van):
     cnx = con()
     cur = cnx.cursor()
-    cur.execute(f'''select id from vans where matr like "{van}"''')
-    van = int(cur.fetchone()[0])
+    cur.execute(f'''select id, max_places from vans where matr like "{van}"''')
+    van, maxP = cur.fetchone()
     cur.execute(f'''select id from drivers where firstName like "{driver.split(" ")[0]}" and LastName like "{driver.split(" ")[1]}"''')
     driver = int(cur.fetchone()[0])
 
     tday, trips_hour, trip_type = date.split(' ')[0], int(date.split(' ')[1].split(':')[0]), type
 
-    cur.execute(f'''select a.id, a.rpr from agents a inner join grps g on a.grp = g.id 
-        where g.shift like "{f'{int(trips_hour) if int(trips_hour) > 9 else f"0{trips_hour}"}:%' if trip_type.lower() == "in" else f'%:{int(trips_hour) if int(trips_hour) > 9 else f"0{trips_hour}"}'}"''')
+    cur.execute(f'''select a.id from agents a inner join grps g on a.grp = g.id 
+        where g.shift like "{f'{int(trips_hour) if int(trips_hour) > 9 else f"0{trips_hour}"}:%' if trip_type.lower() == "in" else f'%:{int(trips_hour) if int(trips_hour) > 9 else f"0{trips_hour}"}'}" order by a.rpr_map ''')
 
-    trip_agents = [[i[0], i[1]] for i in cur.fetchall()].sort(key= lambda x: x[1])
-    print(trip_agents)
+    # trip_agents = [i[0] for i in cur.fetchall()].sort(key= lambda x: x[1])
+    trip_agents = [i[0] for i in cur.fetchall()]
+
     for i in [x[0] for x in trip_agents]:
-
-
-
 
 
 
