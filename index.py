@@ -221,27 +221,50 @@ print('test')
 #     notif(title="Saccom IT Departement : ", msg=f'{len(doneDates)} Plannings has been created : {doneDates} ')
 
 
-def create_trip(self, date, type, driver, van):
+def create_trip(self, date, type, driver, van, user):
     cnx = con()
     cur = cnx.cursor()
+    cur.execute(f'''select id from drivers where firstName like "{driver.split(" ")[0]}" and LastName like "{driver.split(" ")[1]}"''')
+    driver_id = int(cur.fetchone()[0])
     cur.execute(f'''select id, max_places from vans where matr like "{van}"''')
     van, maxP = cur.fetchone()
-    cur.execute(f'''select id from drivers where firstName like "{driver.split(" ")[0]}" and LastName like "{driver.split(" ")[1]}"''')
-    driver = int(cur.fetchone()[0])
 
+    print("*"*100)
+
+    get_trip = f'''select count(id), id from trips where van = {van} and datetime like "{date}"; '''
+    # print(get_trip)
+    cur.execute(get_trip)
+    # print(cur.fetchone())
     tday, trips_hour, trip_type = date.split(' ')[0], int(date.split(' ')[1].split(':')[0]), type
-
-    cur.execute(f'''select a.id from agents a inner join grps g on a.grp = g.id 
-        where g.shift like "{f'{int(trips_hour) if int(trips_hour) > 9 else f"0{trips_hour}"}:%' if trip_type.lower() == "in" else f'%:{int(trips_hour) if int(trips_hour) > 9 else f"0{trips_hour}"}'}" order by a.rpr_map LIMIT {int(maxP)}''')
-
-    # trip_agents = [i[0] for i in cur.fetchall()].sort(key= lambda x: x[1])
-    trip_agents = [i[0] for i in cur.fetchall()]
-
-    for i in [x[0] for x in trip_agents]:
+    existsTripCount, existsTripId = cur.fetchone()
+    if not int(existsTripCount):
+        cur.execute(f'''insert into trips (van, driver, datetime, ttype) values({van}, {driver_id}, "{date}", "{trip_type}")''')
+        cnx.commit()
+        cur.execute(f'''select id from trips where van = {van} and datetime like "{date}"; ''')
+        trip_id = cur.fetchone()[0]
 
 
+        cmd = f'''select a.id from agents a inner join grps g on a.grp = g.id 
+            where g.shift like "{f'{int(trips_hour) if int(trips_hour) > 9 else f"0{trips_hour}"}-%' if trip_type.lower() == "in" else f'%-{int(trips_hour) if int(trips_hour) > 9 else f"0{trips_hour}"}'}" order by a.rpr_map LIMIT {int(maxP)}'''
+        cur.execute(cmd )
+        # print(cmd)
+        # trip_agents = [i[0] for i in cur.fetchall()].sort(key= lambda x: x[1])
+        trip_agents = [i[0] for i in cur.fetchall()]
+        # print(trip_agents)
+        for i in trip_agents:
+            cur.execute(f'''select count(id) from trips_history where agent = {i} and trip = {trip_id}; ''')
+            # print(f'''select count(id) from trips_history where agent = {i} and trip = {trip_id}; ''')
+            # print(not int(cur.fetchone()[0]))
+            if not int(cur.fetchone()[0]):
+                cur.execute(f'''insert into trips_history (trip, agent) values({trip_id}, {i})''')
+                cnx.commit()
+
+        Trip_View(user, id=trip_id).show()
 
 
+    else :
+        notif(self=self, title="can't create this trip ", msg="there is allready trips with the same data in the database ")
+        Trip_View(user, id=existsTripId).show()
 
     cnx.close()
 
@@ -997,10 +1020,20 @@ class Trip_View(QtWidgets.QWidget):
         cur = cnx.cursor()
         cur.execute(f'''select v.matr, t.datetime, concat(d.firstName, " ", d.LastName) as driverName, t.starttime, t.startloc, t.stoptime, t.stoploc, t.tracking from
                         vans v inner join trips t on t.van = v.id inner join drivers d on t.driver = d.id where t.id = {int(self.id_)}''')
+
+        print(f'''select v.matr, t.datetime, concat(d.firstName, " ", d.LastName) as driverName, t.starttime, t.startloc, t.stoptime, t.stoploc, t.tracking from
+                        vans v inner join trips t on t.van = v.id inner join drivers d on t.driver = d.id where t.id = {int(self.id_)}''')
+
         self.setWindowTitle('View The Trip\'s Details')
         self.trip_id.setText(str(self.id_))
 
-        dt = cur.fetchone()
+        dt = []
+        for i in cur.fetchone():
+            try:
+                dt.append(str(i))
+            except Exception as e:
+                dt.append("")
+
 
         self.van_matr.setText(dt[0])
         self.trip_time.setText(dt[1])
@@ -1018,7 +1051,8 @@ class Trip_View(QtWidgets.QWidget):
 
         self.stop_loc = dt[6]
         self.trajet = ""
-        if dt[7]:
+        print(dt[7])
+        if dt[7] != "None":
             print(dt[7])
             litlot = json.loads(dt[7].replace("'", '"'))
             print("#"*100)
@@ -1376,7 +1410,7 @@ class AddTrip(QtWidgets.QWidget):
             #
             #
             # cnx.close()
-            create_trip(self, date=f'{dt}:00:00', van=self.van_.currentText(), type="IN" if self.IN.isChecked() else "OUT", driver=self.drivers_.currentText())
+            create_trip(self, date=f'{dt}:00:00', van=self.van_.currentText(), type="IN" if self.IN.isChecked() else "OUT", driver=self.drivers_.currentText(), user=self.role)
             self.close()
         else:
             notif(title="ERORR", msg=f"Can't create a trip with this date : {dt}")
@@ -2526,6 +2560,7 @@ class AddAgent(QtWidgets.QWidget):
 
 if __name__ == '__main__' :
     app = QtWidgets.QApplication(sys.argv)
-    splash_wn = Splash()
+    # splash_wn = Splash()
+    splash_wn = AddTrip("0")
     splash_wn.show()
     sys.exit(app.exec_())
