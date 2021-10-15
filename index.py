@@ -24,7 +24,7 @@ from pydrive.drive import GoogleDrive
 from pyrebase import pyrebase
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
-import win32com.shell.shell as shell
+# import win32com.shell.shell as shell
 
 radius = 40.0
 
@@ -232,7 +232,7 @@ def create_trip(self, date, type, driver, van):
     tday, trips_hour, trip_type = date.split(' ')[0], int(date.split(' ')[1].split(':')[0]), type
 
     cur.execute(f'''select a.id from agents a inner join grps g on a.grp = g.id 
-        where g.shift like "{f'{int(trips_hour) if int(trips_hour) > 9 else f"0{trips_hour}"}:%' if trip_type.lower() == "in" else f'%:{int(trips_hour) if int(trips_hour) > 9 else f"0{trips_hour}"}'}" order by a.rpr_map ''')
+        where g.shift like "{f'{int(trips_hour) if int(trips_hour) > 9 else f"0{trips_hour}"}:%' if trip_type.lower() == "in" else f'%:{int(trips_hour) if int(trips_hour) > 9 else f"0{trips_hour}"}'}" order by a.rpr_map LIMIT {int(maxP)}''')
 
     # trip_agents = [i[0] for i in cur.fetchall()].sort(key= lambda x: x[1])
     trip_agents = [i[0] for i in cur.fetchall()]
@@ -336,8 +336,7 @@ def syncFirebase():
 
     # cur.execute(f'''select t.id, v.matr, d.username , t.datetime, (select count(id) from trips_history where trip = t.id) as Agent_numbers, t.ttype
     #                     from trips t inner join vans v on t.van = v.id inner join drivers d on t.driver = d.id where date(t.datetime) < "{today} 00:00:00" order by t.datetime;''')
-    cur.execute(f'''select datetime 
-                        from trips where date(datetime) < "{today} 00:00:00" order by datetime;''')
+    cur.execute(f'''select datetime from trips where date(datetime) < "{today} 00:00:00" order by datetime;''')
 
     toDelete = [i[0] for i in cur.fetchall()]
 
@@ -1658,6 +1657,14 @@ class Agents(QtWidgets.QWidget):
         self.back_icon.setPixmap(QtGui.QPixmap('src/img/back.png'))
         self.back_icon.setScaledContents(True)
         self.back_icon.installEventFilter(self)
+
+        self.maxmin.setPixmap(QtGui.QPixmap('src/img/maxmin.png'))
+        self.maxmin.setScaledContents(True)
+        self.maxmin.installEventFilter(self)
+
+        self.minimize.setPixmap(QtGui.QPixmap('src/img/minimize.png'))
+        self.minimize.setScaledContents(True)
+        self.minimize.installEventFilter(self)
         self.cls.setPixmap(QtGui.QPixmap('src/img/cls.png'))
         self.cls.setScaledContents(True)
         self.cls.installEventFilter(self)
@@ -1695,8 +1702,6 @@ class Agents(QtWidgets.QWidget):
             self.offset = None
             super().mouseReleaseEvent(event)
 
-
-
     def eventFilter(self, s, e):
         if s is self.back_icon:
             if e.type() == QtCore.QEvent.MouseButtonPress:
@@ -1717,6 +1722,15 @@ class Agents(QtWidgets.QWidget):
             elif e.type() == QtCore.QEvent.MouseButtonPress:
                 os._exit(0)
 
+        if e.type() == QtCore.QEvent.MouseButtonPress:
+            if s is self.maxmin:
+                if self.isFullScreen():
+                    self.showNormal()
+                else:
+                    self.showFullScreen()
+            if s is self.minimize:
+                self.showMinimized()
+
         return super(Agents, self).eventFilter(s, e)
 
     def searching(self):
@@ -1724,18 +1738,17 @@ class Agents(QtWidgets.QWidget):
         self.refreshTable(key= self.search.text() if self.search.text() else None)
 
     def refreshTable(self, key = None):
-
         self.tableWidget.setRowCount(0)
 
         cnx = con()
         cur = cnx.cursor()
 
         if key:= self.search.text():
-            query = f'''select a.matrr, a.firstName, a.LastName, a.CIN, a.address, g.name, g.shift, a.zone  from 
+            query = f'''select a.matrr, a.firstName, a.LastName, a.CIN, a.address, g.name, g.shift, a.rpr  from 
             agents a inner join grps g on a.grp = g.id where
             {f"(g.name like '{self.groups.currentText()}') and "if self.groups.currentIndex() != 0 else " "} ( a.firstName like "%{key}%" or a.LastName like "%{key}%" or a.CIN like "%{key}%" or a.address like "%{key}%" or g.name like "%{key}%");'''
         else:
-            query = f'''select a.matrr, a.firstName, a.LastName, a.CIN, a.address, g.name, g.shift, a.zone  from 
+            query = f'''select a.matrr, a.firstName, a.LastName, a.CIN, a.address, g.name, g.shift, a.rpr  from 
                         agents a inner join grps g on a.grp = g.id {f" where g.name like '{self.groups.currentText()}'" if self.groups.currentIndex() != 0 else ""}'''
 
         #print('#'*30)
@@ -1770,7 +1783,7 @@ class Agents(QtWidgets.QWidget):
 
             for r in data:
                 agents.append([r[0], f'{r[1]} {r[2]}', r[3], r[4], r[5], r[6], r[7]])
-            head = ['Agent ID ', 'Full Name', 'CIN', 'Adress', 'Group', 'Shift', 'Zone']
+            head = ['Agent ID ', 'Full Name', 'CIN', 'Adress', 'Group', 'Shift', 'PDR']
             #print(agents)
             self.tableWidget.setColumnCount(len(agents[0]))
             self.tableWidget.setRowCount(len(agents))
@@ -1778,12 +1791,12 @@ class Agents(QtWidgets.QWidget):
             # self.tableWidget.resizeColumnsToContents()
 
             self.tableWidget.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeToContents)
-            self.tableWidget.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch)
-            self.tableWidget.horizontalHeader().setSectionResizeMode(2, QHeaderView.Fixed)
+            self.tableWidget.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeToContents)
+            self.tableWidget.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeToContents)
             self.tableWidget.horizontalHeader().setSectionResizeMode(3, QHeaderView.ResizeToContents)
             self.tableWidget.horizontalHeader().setSectionResizeMode(4, QHeaderView.ResizeToContents)
             self.tableWidget.horizontalHeader().setSectionResizeMode(5, QHeaderView.ResizeToContents)
-            self.tableWidget.horizontalHeader().setSectionResizeMode(6, QHeaderView.ResizeToContents)
+            self.tableWidget.horizontalHeader().setSectionResizeMode(6, QHeaderView.Stretch)
 
             self.tableWidget.setHorizontalHeaderLabels(head)
             for r in range(len(agents)):
@@ -1847,7 +1860,7 @@ class Vans(QtWidgets.QWidget):
     def __init__(self, role):
         super(Vans, self).__init__()
         QtWidgets.QWidget.__init__(self)
-        uic.loadUi(os.path.join(os.path.dirname(__file__), "ui/vans.ui"), self)
+        uic.loadUi(os.path.join(os.path.dirname(__file__), "ui/Vans.ui"), self)
         self.add_btn.clicked.connect(self.add)
         self.setWindowTitle('All vehicles')
         self.role = role
