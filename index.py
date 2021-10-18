@@ -232,11 +232,11 @@ def create_trip(self, date, type, driver, van, user):
     print("*"*100)
 
     get_trip = f'''select count(id), id from trips where van = {van} and datetime like "{date}"; '''
-    # print(get_trip)
+    print(get_trip)
     cur.execute(get_trip)
     # print(cur.fetchone())
-    tday, trips_hour, trip_type = date.split(' ')[0], int(date.split(' ')[1].split(':')[0]), type
     existsTripCount, existsTripId = cur.fetchone()
+    tday, trips_hour, trip_type = date.split(' ')[0], int(date.split(' ')[1].split(':')[0]), type
     if not int(existsTripCount):
         cur.execute(f'''insert into trips (van, driver, datetime, ttype) values({van}, {driver_id}, "{date}", "{trip_type}")''')
         cnx.commit()
@@ -259,7 +259,7 @@ def create_trip(self, date, type, driver, van, user):
                 cur.execute(f'''insert into trips_history (trip, agent) values({trip_id}, {i})''')
                 cnx.commit()
 
-        Trip_View(user, id=trip_id).show()
+        Trip_View(user, id=trip_id, desibleedit=False).show()
 
 
     else :
@@ -1285,6 +1285,8 @@ class Trip_View(QtWidgets.QWidget):
             for r in range(len(agents)):
                 for c in range(len(agents[r])):
                     self.tableWidget.setItem(r, c, QtWidgets.QTableWidgetItem(str(agents[r][c])))
+        else:
+            self.agnts.setEnabled(True)
 
         cur.execute(f'select agent from trips_history where trip = {self.trip_id.text()}')
         # ##print(f'current agents == > {list(set([i[0] for i in cur.fetchall()]))}')
