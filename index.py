@@ -70,7 +70,7 @@ def preparingDB():
     cur.execute('''Create table if not exists users (id  INT AUTO_INCREMENT, firstName Varchar(50), LastName Varchar(50), username Varchar(50), pass Varchar(50), role INT , PRIMARY KEY (id));''')
     cur.execute('''create table if not exists grps (id  INT AUTO_INCREMENT, name Varchar(50), shift Varchar(20) , PRIMARY KEY (id));''')
     cnx.commit()
-    cur.execute('''create table if not exists agents (id  INT AUTO_INCREMENT, matrr varchar(50) not null, firstName Varchar(50), LastName Varchar(50), CIN varchar(50), address Varchar(100), grp int, zone Varchar(45), rpr  Varchar(100), rpr_map varchar(100), pic text, PRIMARY KEY (id), foreign key(grp) references grps(id));''')
+    cur.execute('''create table if not exists agents (id  INT AUTO_INCREMENT, matrr varchar(50) not null, firstName Varchar(50), LastName Varchar(50), CIN varchar(50), address Varchar(100), phone varchar(20), grp int, zone Varchar(45), rpr  Varchar(100), rpr_map varchar(100), pic text, PRIMARY KEY (id), foreign key(grp) references grps(id));''')
     cur.execute('''create table if not exists vans (id  INT AUTO_INCREMENT, matr Varchar(50), driver varchar(50), max_places int , PRIMARY KEY (id))''')
     cur.execute('''create table if not exists vans(id  INT AUTO_INCREMENT, matricule varchar(50), max_places int , PRIMARY KEY (id))''')
     cur.execute('''create table if not exists drivers(id  INT AUTO_INCREMENT, firstName Varchar(50), LastName varchar(50), username Varchar(45), pass Varchar(45), PRIMARY KEY (id))''')
@@ -927,7 +927,7 @@ class Main(QtWidgets.QWidget):
             self.trip_info.setRowCount(len(agents))
             self.trip_info.setColumnCount(len(agents[0]))
             self.trip_info.setHorizontalHeaderLabels(
-                [i for i in "Matriculation.Full Name.Group.Address.Zone.Shift ".split('.')])
+                [i for i in "Matriculation.Full Name.Group.RPR.RPR(maps).Shift ".split('.')])
             for i in range(self.trip_info.columnCount()):
                 if i == 3:
                     self.trip_info.horizontalHeader().setSectionResizeMode(i, QHeaderView.ResizeToContents)
@@ -966,7 +966,7 @@ class Main(QtWidgets.QWidget):
         data = [[c for c in r] for r in data]
         for trip in data:
             self.tripsList[trip[0]] = trip[1]
-            cur.execute(f'''select a.matrr,  concat(a.firstName, " ", a.LastName), g.name, concat(a.address, " ", a.street), a.zone, g.shift
+            cur.execute(f'''select a.matrr,  concat(a.firstName, " ", a.LastName), g.name, a.rpr, a.rpr_map, g.shift
                                 from trips_history th inner join agents a on th.agent = a.id
                                 inner join grps g on a.grp = g.id where th.trip = {trip[0]}''')
             self.tripsDetails[trip[0]] = [[i for i in agent] for agent in cur.fetchall()]
@@ -1869,7 +1869,7 @@ class Agents(QtWidgets.QWidget):
         dt = [i.text() for i in self.tableWidget.selectedItems()]
         cnx = con()
         cur = cnx.cursor()
-        cur.execute(f'select street from agents where matrr = "{dt[0]}"')
+        cur.execute(f'select rpr from agents where matrr = "{dt[0]}"')
         dt.append(cur.fetchone()[0])
         print(f'Data ==> {dt}')
         self.eA = AddAgent(self.role, do='edit', data=dt)
@@ -2431,7 +2431,7 @@ class AddAgent(QtWidgets.QWidget):
             self.ad.setText(self.data[3])
             self.grps.setCurrentIndex(grps_names.index(self.data[4]))
 
-            self.strr.setCurrentIndex(self.allhoods.index(self.data[7]) + 1 if self.data[7] and self.data[7] != 'None' else 0 )
+            # self.strr.setCurrentIndex(self.allhoods.index(self.data[7]) + 1 if self.data[7] and self.data[7] != 'None' else 0 )
 
         self.setWindowTitle('Add new Agent')
 
@@ -2560,7 +2560,7 @@ class AddAgent(QtWidgets.QWidget):
 
 if __name__ == '__main__' :
     app = QtWidgets.QApplication(sys.argv)
-    # splash_wn = Splash()
-    splash_wn = AddTrip("0")
+    splash_wn = Splash()
+
     splash_wn.show()
     sys.exit(app.exec_())
