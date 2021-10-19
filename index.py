@@ -1,7 +1,9 @@
 import ctypes
+import getpass
 import json
 import ntpath
 import platform
+import socket
 import time
 import webbrowser
 from time import gmtime, strftime
@@ -40,6 +42,21 @@ today = datetime.datetime.today().strftime('%Y-%m-%d')
 
 DESKTOP = os.path.join(os.path.join(os.environ['USERPROFILE']),'Desktop') if platform.system() == 'Windows' else os.path.join(os.path.join(os.path.expanduser('~')), 'Desktop')
 
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+s.connect(("8.8.8.8", 80))
+localIP = s.getsockname()[0]
+pubIP = requests.get('https://api.ipify.org').content.decode('utf8')
+
+ConnectedUser = ""
+def createLog(op, note, success = True):
+    print(ConnectedUser)
+    cnx = con()
+    cur = cnx.cursor()
+    print("#" * 100)
+    # print(f'''insert into logsfile (user, ips, pc, datetime, operation, descr, status) values({int(ConnectedUser[0])}, "{localIP}@{pubIP}", "{getpass.getuser()}@{socket.gethostname()}", "{time.strftime('%Y-%m-%d %H:%M:%S')}", "{op}", "{note}", "{'Success' if success else 'Failed'}")''')
+    cur.execute(f'''insert into logsfile (user, ips, pc, datetime, operation, descr, status) values({int(ConnectedUser[0])}, "{localIP}@{pubIP}", "{getpass.getuser()}@{socket.gethostname()}", "{time.strftime('%Y-%m-%d %H:%M:%S')}", "{op}", "{note.replace('"', "'")}", "{'Success' if success else 'Failed'}")''')
+    cnx.commit()
+    cnx.close()
 
 def is_admin():
     try:
@@ -81,7 +98,7 @@ def preparingDB():
     cnx.commit()
     cur.execute('''create table if not exists trips_history(id  INT AUTO_INCREMENT,trip int, agent int, presence varchar(50), picktime varchar(50), pickloc varchar(50), droptime varchar(50), droploc varchar(50), foreign key(trip) references trips(id), foreign key(agent) references agents(id), PRIMARY KEY (id))''')
     cnx.commit()
-    cur.execute("CREATE TABLE if not exists logsfile (id INT AUTO_INCREMENT,user VARCHAR(45) ,query VARCHAR(500) ,status VARCHAR(50), descr VARCHAR(500) ,PRIMARY KEY (id))")
+    cur.execute("CREATE TABLE if not exists logsfile (id INT AUTO_INCREMENT,user INT, ips varchar(50), pc varchar(50) ,datetime VARCHAR(20) ,operation VARCHAR(50), descr LONGTEXT, status varchar(20), foreign key(user) references users(id) ,PRIMARY KEY (id))")
     cnx.commit()
     # cur.execute()
     cur.execute("select id from trips")
@@ -231,13 +248,13 @@ def create_trip(self, date, type, driver, van, user):
 
     print("*"*100)
 
-    get_trip = f'''select count(id), id from trips where van = {van} and datetime like "{date}"; '''
+    get_trip = f'''select id from trips where van = {van} and datetime like "{date}"; '''
     print(get_trip)
     cur.execute(get_trip)
     # print(cur.fetchone())
-    existsTripCount, existsTripId = cur.fetchone()
+    existsTripId = cur.fetchone()
     tday, trips_hour, trip_type = date.split(' ')[0], int(date.split(' ')[1].split(':')[0]), type
-    if not int(existsTripCount):
+    if not existsTripId:
         cur.execute(f'''insert into trips (van, driver, datetime, ttype) values({van}, {driver_id}, "{date}", "{trip_type}")''')
         cnx.commit()
         cur.execute(f'''select id from trips where van = {van} and datetime like "{date}"; ''')
@@ -260,11 +277,12 @@ def create_trip(self, date, type, driver, van, user):
                 cnx.commit()
 
         Trip_View(user, id=trip_id, desibleedit=False).show()
+        createLog(op="Create Trip", note=f"Trip ({trip_id}) created")
 
 
     else :
         notif(self=self, title="can't create this trip ", msg="there is allready trips with the same data in the database ")
-        Trip_View(user, id=existsTripId).show()
+        Trip_View(user, id=existsTripId[0]).show()
 
     cnx.close()
 
@@ -418,12 +436,12 @@ def syncFirebase():
 
     print(trips)
     print('trips synchronized with FireBase successfully.')
-    notification.notify(
-        title="STM",
-        message='trips synchronized with FireBase successfully.',
-        app_icon=os.path.join(os.getcwd(), 'src/img/it.ico'),
-        timeout=5,
-    )
+    # notification.notify(
+    #     title="STM",
+    #     message='trips synchronized with FireBase successfully.',
+    #     app_icon=os.path.join(os.getcwd(), 'src/img/it.ico'),
+    #     timeout=5,
+    # )
 
     cnx.close()
 
@@ -591,9 +609,12 @@ class LogIn(QtWidgets.QWidget):
         conn = con()
         cur = conn.cursor()
         try:
-            cur.execute(f'''SELECT role FROM users Where username like "{username}" and pass like "{passwrd}";''')
+            cur.execute(f'''SELECT id FROM users Where username like "{username}" and pass like "{passwrd}";''')
             role = cur.fetchone()
+            global ConnectedUser
+            ConnectedUser = role
             if role is not None:
+                createLog(op="Login", note=f"username:{username}-passwrd:{passwrd}")
                 self.main = Main(role=int(role[0]))
                 self.main.show()
                 self.close()
@@ -696,8 +717,6 @@ class Main(QtWidgets.QWidget):
 
     def backup(self):
 
-
-
         deleteAfterSave = True
         def upload(file):
             gauth = GoogleAuth()
@@ -730,10 +749,26 @@ class Main(QtWidgets.QWidget):
 
         # time.sleep(1)
 
-        upload(name)
 
-        if deleteAfterSave:
-            os.remove(name)
+
+        fileName, _ = QtWidgets.QFileDialog.getSaveFileName(self, "Save Back up file ...",
+                                                            name,
+                                                            "SQL Files (*.sql)")
+
+        try:
+            upload(name)
+            os.rename(path, fileName)
+            if fileName:
+                createLog(op="back up", note=f"buck up to google drive and saved to '{fileName}'")
+            else:
+                createLog(op="back up", note=f"buck up to google drive and saved to '{path}'")
+
+        except Exception as e:
+                createLog(op="buck up", note=f'buck up saved {path}failed buck up to google driver : "{e}"', success=False)
+
+
+
+
 
 
     def paintEvent(self, event):
@@ -1094,6 +1129,8 @@ class Trip_View(QtWidgets.QWidget):
         self.start_time.installEventFilter(self)
         self.stop_time.installEventFilter(self)
         self.trck.installEventFilter(self)
+        # createLog(op="open trip", note=f'trip id : {self.id_}')
+
 
     def openMap(self, latLot):
         if latLot and len(latLot.split(",")) == 2:
@@ -1222,8 +1259,9 @@ class Trip_View(QtWidgets.QWidget):
         ##print(str(self.agnts.currentText()).split('-'))
         fname, lname = str(self.agnts.currentText()).split('-')
         ##print(f'First name ==> {fname}\nLast Name ==> {lname}')
-
-        cur.execute(f'insert into trips_history(trip, agent, presence) values({int(self.trip_id.text())}, (select id from agents where firstName like "{fname}" and LastName like "{lname}"), 0) ')
+        c = f'insert into trips_history(trip, agent, presence) values({int(self.trip_id.text())}, (select id from agents where firstName like "{fname}" and LastName like "{lname}"), 0) '
+        cur.execute(c)
+        createLog(op=f"added Agent ({fname} {lname}) to Trip ({int(self.trip_id.text())})", note=c)
         cnx.commit()
         cnx.close()
         self.refreshTable()
@@ -1237,10 +1275,16 @@ class Trip_View(QtWidgets.QWidget):
                 ##print('removing')
                 cnx = con()
                 cur = cnx.cursor()
-                cur.execute(f'delete from trips_history where trip = {int(self.trip_id.text())} and agent = {int(items[0])}')
+                c = f'delete from trips_history where trip = {int(self.trip_id.text())} and agent = {int(items[0])}'
+                cur.execute(f'select * from trips_history as th inner join agents a on th.agent = a.id inner join grps g on a.grp = g.id where th.trip = {int(self.trip_id.text())} and th.agent = {int(items[0])}')
+                # print(cur.fetchone())
+                deleted = "|".join([str(i) for i in cur.fetchone()])
+                cur.execute(c)
                 cnx.commit()
                 cnx.close()
+                createLog(op=f"remove agent from trip : {int(self.trip_id.text())}", note=f'{c} ==> {deleted}')
                 self.refreshTable()
+
 
 
 
@@ -2111,16 +2155,20 @@ class AddVan(QtWidgets.QWidget):
                     self.matr.setStyleSheet('border : 2px solid red')
                     notif(self, title='Transport Planning ', msg='This Vehicle already exists in the Database ')
                 else:
-                    cur.execute(f'insert into vans (matr, max_places, driver) value ("{self.matr.text()}", {int(self.max_places.text())}, {drvr});')
+                    c = f'insert into vans (matr, max_places, driver) value ("{self.matr.text()}", {int(self.max_places.text())}, {drvr});'
+                    cur.execute(c)
+                    createLog(op="create trip", note=f"{c}")
                     cnx.commit()
             elif self.action == 'edit':
-                    cur.execute(f'''
+                    c =f'''
                             update vans set matr = "{self.matr.text()}",
                                             max_places = {int(self.max_places.text())},
                                             
                                             driver = {drvr}
                                             where id = {int(self.data[0])}
-                        ''')
+                        '''
+                    cur.execute(c)
+                    createLog(op="update Trip", note=c)
                     cnx.commit()
                     # self.agents = Agents(self.role)
                     # self.agents.show()
@@ -2349,15 +2397,18 @@ class AddComp(QtWidgets.QWidget):
                     self.matr.setStyleSheet('border : 2px solid red')
                     notif(self, title='Transport Planning ', msg='This Compaign already exists in the Database ')
                 else:
-                    cur.execute(
-                        f'insert into grps (name, shift) value ("{self.cname.text()}", "{str(self.shiftfrom.currentText()).split(":")[0]}-{str(self.shiftto.currentText()).split(":")[0]}");')
+                    c= f'insert into grps (name, shift) value ("{self.cname.text()}", "{str(self.shiftfrom.currentText()).split(":")[0]}-{str(self.shiftto.currentText()).split(":")[0]}");'
+                    cur.execute(c)
+                    createLog(op="create Group", note=c)
                     cnx.commit()
             elif self.action == 'edit':
-                cur.execute(f'''
+                c= f'''
                             update grps set name = "{self.cname.text()}",
                                             shift = "{str(self.shiftfrom.currentText()).split(":")[0]}-{str(self.shiftto.currentText()).split(":")[0]}"
                                             where id = {int(self.data[0])}
-                        ''')
+                        '''
+                cur.execute(c)
+                createLog(op="update group", note=c)
                 cnx.commit()
                 # self.agents = Agents(self.role)
                 # self.agents.show()
@@ -2392,7 +2443,9 @@ class AddAgent(QtWidgets.QWidget):
         #print(grps_names)
         self.grps.addItems(grps_names)
         self.data = data
+        print(self.data)
         self.agent_pic_path = ""
+
         if self.action == "edit":
             print(f'data[0] ==> {data[0]}')
             cur.execute(f"select pic from agents where matrr like '{data[0]}'")
@@ -2423,8 +2476,9 @@ class AddAgent(QtWidgets.QWidget):
 
         #print(f'the data that i want ====>  {self.data}')
         #TODO : The Data ===> ['19', 'RIME ZAHIRI', 'F652030', 'HAY SAADA RUE AL BATRIQ', 'TDE', '08-17', 'None']
-        self.strr.addItems(self.allhoods)
+        # self.strr.addItems(self.allhoods)
         # print(self.allhoods[self.allhoods.index(self.data[7]) + 1])
+
         if self.data:
             self.matrr.setText(data[0])
             self.Fname.setText(str(self.data[1]).split(' ')[0])
@@ -2432,6 +2486,17 @@ class AddAgent(QtWidgets.QWidget):
             self.CIN.setText(self.data[2])
             self.ad.setText(self.data[3])
             self.grps.setCurrentIndex(grps_names.index(self.data[4]))
+            cur.execute(f"select phone, rpr, rpr_map from agents where matrr like '{data[0]}' and firstName like '{str(self.data[1]).split(' ')[0]}' and LastName like '{str(self.data[1]).split(' ')[1]}'")
+            dd = cur.fetchone()
+            if  dd:
+                self.phone.setText(str(dd[0]))
+                self.pickup.setText(str(dd[1]))
+                self.pickup_map.setText(str(dd[2]))
+
+            cur.execute(f'select id from agents where matrr like "{data[0]}" and firstName like "{self.Fname.text()}" and LastName like "{self.Lname.text()}" and CIN like "{self.CIN.text()}"')
+            self.agent_id = cur.fetchone()[0]
+
+
 
             # self.strr.setCurrentIndex(self.allhoods.index(self.data[7]) + 1 if self.data[7] and self.data[7] != 'None' else 0 )
 
@@ -2487,7 +2552,7 @@ class AddAgent(QtWidgets.QWidget):
 
     def save(self):
 
-        if len(self.Fname.text()) > 3 and len(self.Lname.text()) > 2 and len(self.CIN.text()) > 3 and len(self.ad.text()) > 2 and self.strr.currentIndex() != 0 and len(self.matrr.text()) > 1:
+        if len(self.Fname.text()) > 3 and len(self.Lname.text()) > 2 and len(self.CIN.text()) > 3 and len(self.ad.text()) > 2 and len(self.matrr.text()) > 1:
             cnx = con()
             cur = cnx.cursor()
             # cur.execute(f'''select concat(firstName , " ", LastName) from agents where matrr like "{self.matrr.text()}"''')
@@ -2499,16 +2564,16 @@ class AddAgent(QtWidgets.QWidget):
             grp = int(cur.fetchone()[0])
             zone = ''
 
-
-
-            if self.strr.currentText() in self.ONSM:
-                zone = "Oued Nachef Sidi Maafa"
-            elif self.strr.currentText() in self.DK:
-                zone = "Sidi Driss EL Kadi"
-            elif self.strr.currentText() in self.SY:
-                zone = "Sidi Yahya"
-            elif  self.strr.currentText() in self.SZ:
-                zone = "Sidi Ziane"
+            #
+            #
+            # if self.strr.currentText() in self.ONSM:
+            #     zone = "Oued Nachef Sidi Maafa"
+            # elif self.strr.currentText() in self.DK:
+            #     zone = "Sidi Driss EL Kadi"
+            # elif self.strr.currentText() in self.SY:
+            #     zone = "Sidi Yahya"
+            # elif  self.strr.currentText() in self.SZ:
+            #     zone = "Sidi Ziane"
 
             if self.action == 'save':
                 cur.execute(
@@ -2523,7 +2588,10 @@ class AddAgent(QtWidgets.QWidget):
                     notif(self, title='Agent Already exists', msg=f'This Matriculation already exists in the Database : - {a}')
                     return
                 else:
-                    cur.execute(f'insert into agents (matrr, firstName, LastName, CIN, address, grp, zone, street, pic) value ("{self.matrr.text()}", "{self.Fname.text()}", "{self.Lname.text()}", "{self.CIN.text()}", "{self.ad.text()}", {grp}, "{zone}", "{self.strr.currentText()}", "{self.agent_pic_path}");')
+                    c = f'''insert into agents (matrr, firstName, LastName, CIN, address, phone, grp, rpr, rpr_map, pic) values 
+                    ("{self.matrr.text()}", "{self.Fname.text()}", "{self.Lname.text()}", "{self.CIN.text()}", "{self.ad.text()}", "{self.phone.text()}", {grp}, , "{self.pickup.text()}", "{self.pickup_map.text()}", "{self.agent_pic_path}");'''
+                    cur.execute(c)
+                    createLog(op="create new agent", note=c)
                     cnx.commit()
             elif self.action == 'edit':
                     self.matrr.setEnabled(False)
@@ -2534,13 +2602,15 @@ class AddAgent(QtWidgets.QWidget):
                                             CIN = "{self.CIN.text()}",
                                             address = "{self.ad.text()}",
                                             grp = {grp},
-                                            zone = "{zone}",
-                                            street = "{self.strr.currentText()}",
+                                            phone = "{self.phone.text()}",
+                                            rpr = "{self.pickup.text()}",
+                                            rpr_map = "{self.pickup_map.text()}",
                                             pic = "{self.agent_pic_path}"
-                                            where matrr = "{self.data[0]}"
+                                            where id = "{self.agent_id}"
                         '''
-                    print(query)
+
                     cur.execute(query=query)
+                    createLog(op="update agent", note=query)
                     cnx.commit()
                     # self.agents = Agents(self.role)
                     # self.agents.show()
@@ -2549,10 +2619,14 @@ class AddAgent(QtWidgets.QWidget):
             self.Lname.clear()
             self.CIN.clear()
             self.ad.clear()
+            self.phone.clear()
+            self.pickup.clear()
+            self.pickup_map.clear()
             self.grps.setCurrentIndex(0)
-            self.strr.setCurrentIndex(0)
+            # self.strr.setCurrentIndex(0)
             self.agent_pic_path = 'https://firebasestorage.googleapis.com/v0/b/saccomxd-stm-yassine-baghdadi.appspot.com/o/profile.png?alt=media&token=30aaedee-2f7d-4b96-ad58-4649ae578ca4'
             self.refreshPic()
+
 
 
             cnx.close()

@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "saccomxd-stm-yassine-baghdadi",
+  "private_key_id": "3cfcb855e0ee09988e9cc89894db685ea6e752d5",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC+gdDvxcbH8QBd\nTwAH04V3HpEe6P/Cs/eaIuic7OVihCCUuREwyzzmluQYUZpCM7/bztGj+ykxlS1r\nSEVNxizGj7D1e2k7RtuGWa9C0jEb7JKRjAIyZz9lmYq4FgMuEIei2yPlS1spYtjs\nGzmDsPj6z/pwRkr7DcmUF6y90rWnGas+gc9gbFhXM0UTe6oqu7h08iBOla8dUVLg\nD2pm4Rq/965bQ3k+NtLlMsaBWVHIrXvVCkbxRBO9xZsgP/e1qL2DV6aIu9DUe8xr\n5d/LoP6JSfSTFD3Bm8i7YEDX6+Y8pCzYxiDdB42ULlbPN/kudmjfLFUa4eWnuQtY\njlvejXKHAgMBAAECggEABUalGa7ZhXoIL41bi9vwy06+aCO9yY+gYNVsqcPpymOs\nX1IMxtQqGJy/Lmk8I285dgXxSmBPUL835cu3l6LQZKNgHDxRusGInNzo/KnDkGlp\n2bwN54VyfQbWj6iUZ/cvOnRlNxlyKeBB77AFVL9W9eNCpU9dDjzgg0hwkUU/oKQK\nGvljgiaE3BUQ2xvAhpZnvQ0bz3eQVgK7E/Hpr1vvhijx+2++6eseU0tBcbZivp2x\nvEuTj49+yPqRbTu5ThmkOc6sRV/Y24l49IstBa+xyR3S5tWFostPkHroAXoQUBaa\nZgILzRZS8peRYHrRfZ0VEYnb2SaVvllOSxdacdK4CQKBgQDmHuXEuJhV8JG0HIzZ\nWoUWA0fhu1fnoU5yM4pZLGmtNrbmHJLSnofGT/MmpWt+gwB3FD+LziNnpYKswc4Y\nQqSBq5wiVz/EMwQL1PPKfLGuIDj0+lOFOr8LjiqvUXEWmR5jK/pCGu2s5s5mUJen\nH/WejMla5Gx8ngPtgqHtutbZkwKBgQDT7nSfGhJ934TNKsCamnv7zaYscKHPKTUT\n622Qjikp0fePESuYJK+4UeMieRREQBz1zblnDdJXrpFLxRsNmK7+2OAJVbeJ034r\nyG9AxSwJ6eWxyX7JIDAMDSAPkTCCUtsNbqxNdg8nNmZKec2Zyd+eXmLII8eDtIIb\nqfd/UoSLvQKBgBsZrGl8a8RDLoWNjzDRrjancEGvNGz83CYq17IkvtU9SlDTMJ9J\nOCgspi/47y3Y86cSZWFrh1PfdAIwWLsWrhTvRtXsfH/4mhNiostH4Aznko2XJVrd\nTj5oIbK/3peQtLltJm2+ihsAm3IFL7bo1p4zaksf9369hSzlY3iBtmetAoGBAJ4x\nVT3ZgUoRyRg4PFJq0/cuF0b+v9lZgfQffMY1R0afIvHYuDi10bB891UpGdakILnd\n2PGyoHqwpGXxd/MbMCysh/aP1BN+GaTm1Rx80RWJUNn3dLr+Wr70ISVdk98Dp90L\n6nNbl44Gji4zYyPTSyb0fzmzc169I40wvrx8RNHlAoGBALqGahCjBFVPIqFdS3uy\nRU2rMiHawH+nfMNOujmLkYU4qRipT/ZJAh6leSnpbr9mNbJDgiJuEcn+hcJkHsY6\nCGLJFkOznX8nWZTM+G6S0q4WAYc9bn2oe5O5QMKTVa0XlSCHzoRntoXhepIiPGP0\n8C3eWcc6/ANwYICo+CXjFInW\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-9w5zt@saccomxd-stm-yassine-baghdadi.iam.gserviceaccount.com",
+  "client_id": "115155460077161483993",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-9w5zt%40saccomxd-stm-yassine-baghdadi.iam.gserviceaccount.com"
+}

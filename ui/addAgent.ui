@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>350</width>
-    <height>449</height>
+    <height>483</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -780,24 +780,6 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="strr">
-       <property name="insertPolicy">
-        <enum>QComboBox::InsertAtTop</enum>
-       </property>
-       <property name="sizeAdjustPolicy">
-        <enum>QComboBox::AdjustToContents</enum>
-       </property>
-       <property name="frame">
-        <bool>true</bool>
-       </property>
-       <item>
-        <property name="text">
-         <string>Choose Neighberhood ...</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-     <item>
       <widget class="QLineEdit" name="ad">
        <property name="font">
         <font>
@@ -811,6 +793,40 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
        </property>
        <property name="placeholderText">
         <string>Address</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="pickup">
+       <property name="font">
+        <font>
+         <family>Segoe Print</family>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+       <property name="placeholderText">
+        <string>pick-up point</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="pickup_map">
+       <property name="font">
+        <font>
+         <family>Segoe Print</family>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+       <property name="placeholderText">
+        <string>pick-up point(map)</string>
        </property>
       </widget>
      </item>

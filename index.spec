@@ -5,7 +5,7 @@ block_cipher = None
 
 
 a = Analysis(['index.py'],
-             pathex=['D:\\TransportingPlanning'],
+             pathex=['E:\\TransportingPlanning'],
              binaries=[],
              datas=[],
              hiddenimports=[],
