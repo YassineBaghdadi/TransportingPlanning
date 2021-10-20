@@ -87,7 +87,7 @@ def preparingDB():
     cur.execute('''Create table if not exists users (id  INT AUTO_INCREMENT, firstName Varchar(50), LastName Varchar(50), username Varchar(50), pass Varchar(50), role INT , PRIMARY KEY (id));''')
     cur.execute('''create table if not exists grps (id  INT AUTO_INCREMENT, name Varchar(50), shift Varchar(20) , PRIMARY KEY (id));''')
     cnx.commit()
-    cur.execute('''create table if not exists agents (id  INT AUTO_INCREMENT, matrr varchar(50) not null, firstName Varchar(50), LastName Varchar(50), CIN varchar(50), address Varchar(100), phone varchar(20), grp int, zone Varchar(45), rpr  Varchar(100), rpr_map varchar(100), pic text, PRIMARY KEY (id), foreign key(grp) references grps(id));''')
+    cur.execute('''create table if not exists agents (id  INT AUTO_INCREMENT, matrr varchar(50) not null, firstName Varchar(50), LastName Varchar(50), CIN varchar(50), address Varchar(100), phone varchar(20), grp int, zone Varchar(45), rpr  Varchar(100), rpr_map varchar(100), pic text, status int, pickT varchar(20), PRIMARY KEY (id), foreign key(grp) references grps(id));''')
     cur.execute('''create table if not exists vans (id  INT AUTO_INCREMENT, matr Varchar(50), driver varchar(50), max_places int , PRIMARY KEY (id))''')
     cur.execute('''create table if not exists vans(id  INT AUTO_INCREMENT, matricule varchar(50), max_places int , PRIMARY KEY (id))''')
     cur.execute('''create table if not exists drivers(id  INT AUTO_INCREMENT, firstName Varchar(50), LastName varchar(50), username Varchar(45), pass Varchar(45), PRIMARY KEY (id))''')
@@ -262,7 +262,7 @@ def create_trip(self, date, type, driver, van, user):
 
 
         cmd = f'''select a.id from agents a inner join grps g on a.grp = g.id 
-            where g.shift like "{f'{int(trips_hour) if int(trips_hour) > 9 else f"0{trips_hour}"}-%' if trip_type.lower() == "in" else f'%-{int(trips_hour) if int(trips_hour) > 9 else f"0{trips_hour}"}'}" order by a.rpr_map LIMIT {int(maxP)}'''
+            where g.shift like "{f'{int(trips_hour) if int(trips_hour) > 9 else f"0{trips_hour}"}-%' if trip_type.lower() == "in" else f'%-{int(trips_hour) if int(trips_hour) > 9 else f"0{trips_hour}"}'}" and a.status = 1 order by a.rpr_map LIMIT {int(maxP)}'''
         cur.execute(cmd )
         # print(cmd)
         # trip_agents = [i[0] for i in cur.fetchall()].sort(key= lambda x: x[1])
@@ -1218,12 +1218,12 @@ class Trip_View(QtWidgets.QWidget):
             cnx = con()
             cur = cnx.cursor()
             cur.execute(
-                f'''select a.firstName, a.LastName, g.name from 
+                f'''select a.firstName, a.LastName, g.name, rpr, pickT from 
                 trips_history th 
                 inner join agents a on th.agent = a.id 
                 inner join trips t on th.trip = t.id 
                 inner join grps g on a.grp = g.id  
-                where t.id = {self.trip_id.text()} order by g.name asc''')
+                where t.id = {self.trip_id.text()} order by a.rpr_map asc''')
             data = cur.fetchall()
             thin_border = Border(left=Side(style='thin'),
                                  right=Side(style='thin'),
@@ -1233,18 +1233,18 @@ class Trip_View(QtWidgets.QWidget):
             sheet['D1'] = f'{self.trip_id.text()} / {self.driver_name.text()}'
             sheet['D2'] = f'{self.trip_time.text()}'
 
-            cc = [i for i in 'B C D '.split()]
+            cc = [i for i in 'B C D E F '.split()]
             indx = 1
             for i in range(4, len(data) + 4):
                 sheet[f'A{i}'] = indx
                 indx += 1
                 for c in range(len(cc)):
-                    sheet[f"{cc[c]}{i}"] = data[i-4][c]
+                    sheet[f"{cc[c]}{i}"] = data[i - 4][c]
 
                     ##print(f"{cc[c]}{i}")
 
             for r in range(1, len(data) + 5):
-                for c in range(1, 8):
+                for c in range(1, 9):
                     sheet.cell(row=r, column=c).border = thin_border
 
             workbook.save(filename=fileName)
@@ -2486,14 +2486,21 @@ class AddAgent(QtWidgets.QWidget):
             self.CIN.setText(self.data[2])
             self.ad.setText(self.data[3])
             self.grps.setCurrentIndex(grps_names.index(self.data[4]))
-            cur.execute(f"select phone, rpr, rpr_map from agents where matrr like '{data[0]}' and firstName like '{str(self.data[1]).split(' ')[0]}' and LastName like '{str(self.data[1]).split(' ')[1]}'")
+            cur.execute(f"select phone, rpr, rpr_map, status, pickT from agents where matrr like '{data[0]}' and firstName like '{str(self.data[1]).split(' ')[0]}' and LastName like '{str(self.data[1]).split(' ')[1]}'")
             dd = cur.fetchone()
             if  dd:
                 self.phone.setText(str(dd[0]))
                 self.pickup.setText(str(dd[1]))
                 self.pickup_map.setText(str(dd[2]))
+                try:
+                    self.active.setChecked(True if int(dd[3]) else False)
+                    self.pickTime.setTime(QtCore.QTime(int(str(dd[4]).split(":")[0]), int(str(dd[4]).split(":")[1]) ))
+                except Exception as e:
+                    print(e)
 
-            cur.execute(f'select id from agents where matrr like "{data[0]}" and firstName like "{self.Fname.text()}" and LastName like "{self.Lname.text()}" and CIN like "{self.CIN.text()}"')
+            c = f'select id from agents where matrr like "{data[0]}" and firstName like "{self.Fname.text()}" and LastName like "{self.Lname.text()}" and CIN like "{self.CIN.text()}"'
+            cur.execute(c)
+            print(c)
             self.agent_id = cur.fetchone()[0]
 
 
@@ -2588,24 +2595,27 @@ class AddAgent(QtWidgets.QWidget):
                     notif(self, title='Agent Already exists', msg=f'This Matriculation already exists in the Database : - {a}')
                     return
                 else:
-                    c = f'''insert into agents (matrr, firstName, LastName, CIN, address, phone, grp, rpr, rpr_map, pic) values 
-                    ("{self.matrr.text()}", "{self.Fname.text()}", "{self.Lname.text()}", "{self.CIN.text()}", "{self.ad.text()}", "{self.phone.text()}", {grp}, , "{self.pickup.text()}", "{self.pickup_map.text()}", "{self.agent_pic_path}");'''
+                    c = f'''insert into agents (matrr, firstName, LastName, CIN, address, phone, grp, rpr, rpr_map, pic, status, pickT) values 
+                    ("{self.matrr.text()}", "{str(self.Fname.text()).replace(' ', '-').strip()}", "{self.Lname.text().replace(' ', '-').strip()}", "{self.CIN.text().replace(' ', '-').strip()}", "{self.ad.text()}", "{self.phone.text()}", {grp}, , "{self.pickup.text()}", "{self.pickup_map.text()}", "{self.agent_pic_path}", {1 if self.active.isChecked() else 0}, "{':'.join(self.pickTime.time().toString().split(":")[:2])}");'''
                     cur.execute(c)
                     createLog(op="create new agent", note=c)
                     cnx.commit()
             elif self.action == 'edit':
                     self.matrr.setEnabled(False)
+                    print(f'''pickT ==> {":".join(self.pickTime.time().toString().split(":")[:2])}''')
                     query = f'''
                             update agents set  
-                                            firstName = "{self.Fname.text()}",
-                                            LastName = "{self.Lname.text()}",
-                                            CIN = "{self.CIN.text()}",
+                                            firstName = "{self.Fname.text().replace(' ', '-').strip()}",
+                                            LastName = "{self.Lname.text().replace(' ', '-').strip()}",
+                                            CIN = "{self.CIN.text().replace(' ', '-').strip()}",
                                             address = "{self.ad.text()}",
                                             grp = {grp},
                                             phone = "{self.phone.text()}",
                                             rpr = "{self.pickup.text()}",
                                             rpr_map = "{self.pickup_map.text()}",
-                                            pic = "{self.agent_pic_path}"
+                                            pic = "{self.agent_pic_path}",
+                                            status = {1 if self.active.isChecked() else 0},
+                                            pickT = "{':'.join(self.pickTime.time().toString().split(":")[:2])}"
                                             where id = "{self.agent_id}"
                         '''
 
@@ -2625,6 +2635,8 @@ class AddAgent(QtWidgets.QWidget):
             self.grps.setCurrentIndex(0)
             # self.strr.setCurrentIndex(0)
             self.agent_pic_path = 'https://firebasestorage.googleapis.com/v0/b/saccomxd-stm-yassine-baghdadi.appspot.com/o/profile.png?alt=media&token=30aaedee-2f7d-4b96-ad58-4649ae578ca4'
+            self.pickTime.setTime(QtCore.QTime(0, 0))
+            self.active.setChecked(False)
             self.refreshPic()
 
 
