@@ -345,9 +345,11 @@ def syncFirebase():
 
 
 
+    qq = f'''select t.id, v.matr, d.username , t.datetime, (select count(id) from trips_history where trip = t.id) as Agent_numbers, t.ttype
+                        from trips t inner join vans v on t.van = v.id inner join drivers d on t.driver = d.id where date(t.datetime) >= "{datetime.datetime.today().strftime('%Y-%m-%d')}%" order by t.datetime;'''
 
-    cur.execute(f'''select t.id, v.matr, d.username , t.datetime, (select count(id) from trips_history where trip = t.id) as Agent_numbers, t.ttype
-                        from trips t inner join vans v on t.van = v.id inner join drivers d on t.driver = d.id where date(t.datetime) >= "{datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S')}" order by t.datetime;''') #todo
+    print(qq)
+    cur.execute(qq) #todo
 
     # cur.execute(f'''select t.id, v.matr, d.username , t.datetime, (select count(id) from trips_history where trip = t.id) as Agent_numbers, t.ttype
     #                     from trips t inner join vans v on t.van = v.id inner join drivers d on t.driver = d.id order by t.datetime;''')
@@ -1095,6 +1097,9 @@ class Trip_View(QtWidgets.QWidget):
             for i in litlot.values():
                 print(i)
                 self.trajet += f'/{i}'
+        else:
+            self.trck.setEnabled(False)
+
 
 
 
@@ -1193,6 +1198,7 @@ class Trip_View(QtWidgets.QWidget):
                 self.openMap(self.stop_loc)
 
         if s is self.trck and e.type() == QtCore.QEvent.MouseButtonPress:
+            if len(self.trajet.replace("/", "").strip().split()) > 0:
                 # webbrowser.open(f"https://www.google.com/maps/dir{self.trajet}")
 
 
@@ -2596,7 +2602,7 @@ class AddAgent(QtWidgets.QWidget):
                     return
                 else:
                     c = f'''insert into agents (matrr, firstName, LastName, CIN, address, phone, grp, rpr, rpr_map, pic, status, pickT) values 
-                    ("{self.matrr.text()}", "{str(self.Fname.text()).replace(' ', '-').strip()}", "{self.Lname.text().replace(' ', '-').strip()}", "{self.CIN.text().replace(' ', '-').strip()}", "{self.ad.text()}", "{self.phone.text()}", {grp}, , "{self.pickup.text()}", "{self.pickup_map.text()}", "{self.agent_pic_path}", {1 if self.active.isChecked() else 0}, "{':'.join(self.pickTime.time().toString().split(":")[:2])}");'''
+                    ("{self.matrr.text()}", "{str(self.Fname.text()).replace(' ', '').strip()}", "{self.Lname.text().replace(' ', '').strip()}", "{self.CIN.text().replace(' ', '').strip()}", "{self.ad.text()}", "{self.phone.text()}", {grp}, , "{self.pickup.text()}", "{self.pickup_map.text()}", "{self.agent_pic_path}", {1 if self.active.isChecked() else 0}, "{':'.join(self.pickTime.time().toString().split(":")[:2])}");'''
                     cur.execute(c)
                     createLog(op="create new agent", note=c)
                     cnx.commit()

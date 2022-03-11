@@ -131,7 +131,7 @@ public class AgentsList extends AppCompatActivity {
         });
 
 
-        Toast.makeText(getApplicationContext(), "You have " + agentsNames.size() + " Agents in this trip .", Toast.LENGTH_SHORT).show();
+
 
 //        active_trip = pref.getString("activetrip", null);
 
@@ -266,6 +266,7 @@ public class AgentsList extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(getApplicationContext(), "Loading Data Error : " + error, Toast.LENGTH_SHORT).show();
             }
+
         });
 
 
